@@ -186,12 +186,9 @@ export default function Register() {
                            Đăng ký
                         </Button>
                      </Form.Item>
-                     <Form.Item label={null}>
-                        <Button
-                           className="auth__form-btn-back-login">
-                           <Link onClick={goBackLogin}>Trở về đăng nhập</Link>
-                        </Button>
-                     </Form.Item>
+                     <div className="auth__form-btn-back-login">
+                        <Link onClick={goBackLogin}>Trở về đăng nhập</Link>
+                     </div>
                   </Form>
                </div>
             </div>

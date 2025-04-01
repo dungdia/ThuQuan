@@ -8,6 +8,7 @@ import searchIcon from "@/assets/icons/search.svg";
 import heartIcon from "@/assets/icons/heart.svg";
 import orderIcon from "@/assets/icons/order.svg";
 import avatarImage from "@/assets/images/avatar.jpg";
+import { Modal } from "antd";
 export default function HeaderUser() {
    const navigate = useNavigate();
 
@@ -119,7 +120,7 @@ export default function HeaderUser() {
                         </li>
                         <li>
                            <NavLink
-                              to="/user/booking-history"
+                              to="/booking-history"
                               className="navbar__link"
                            >
                               Lịch Sử Đặt
