@@ -29,7 +29,7 @@ public class AuthService : IAuthService
             issuer: _configuration["Jwt:Issuer"],
             audience: _configuration["Jwt:Audience"],
             claims: claims,
-            expires: DateTime.Now.AddSeconds(_configuration.GetValue<int>("JWT:ExpiryInSeconds")),
+            expires: DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpiryInMinutes")),
             signingCredentials: credentials
         );
 
