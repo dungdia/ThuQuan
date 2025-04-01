@@ -19,7 +19,6 @@ const BookManager = React.lazy(() => import("@/pages/user/bookManager"));
 const DeviceManager = React.lazy(() => import("@/pages/user/deviceManager"));
 const BookingHistory = React.lazy(() => import("@/pages/user/bookingHistory"));
 const Contact = React.lazy(() => import("@/pages/user/contact"));
-const ItemDetail = React.lazy(() => import("@/pages/itemDetail"))
 
 const routers = createBrowserRouter([
    {
@@ -47,12 +46,12 @@ const routers = createBrowserRouter([
       ),
    },
    {
-      path: "/itemDetail",
+      path: "/booking-history",
       element: (
          <LazyLoadComponent>
-            <ItemDetail />
+            <BookingHistory />
          </LazyLoadComponent>
-      )
+      ),
    },
    {
       path: "/user",
@@ -75,14 +74,6 @@ const routers = createBrowserRouter([
             element: (
                <LazyLoadComponent>
                   <DeviceManager />
-               </LazyLoadComponent>
-            ),
-         },
-         {
-            path: "booking-history",
-            element: (
-               <LazyLoadComponent>
-                  <BookingHistory />
                </LazyLoadComponent>
             ),
          },
