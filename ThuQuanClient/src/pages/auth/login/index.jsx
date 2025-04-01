@@ -41,6 +41,10 @@ export default function Register() {
       navigate("/register");
    };
 
+   const goBackToHome = () => {
+      navigate("/user");
+   }
+
    return (
       <>
          {/* Giao diện quên mật khẩu */}
@@ -115,11 +119,11 @@ export default function Register() {
             <div id="auth-content-login" className="auth__content-login hide">
                <div className="auth__content-login-inner">
                   {/* Logo */}
-                  <NavLink className="logo auth__content-login-logo ">
+                  <NavLink to="/user" className="logo auth__content-login-logo ">
                      <img src={logoIcon} alt="Thư quán" className="logo__img" />
                      <h1 className="logo__title">Thư quán</h1>
                   </NavLink>
-                  <h1 className="auth__heading">Đăng nhập Tài Khoản</h1>
+                  <h1 className="auth__heading">Đăng nhập</h1>
                   <p className="auth__desc">
                      Chào mừng bạn quay lại để đăng nhập. Là khách hàng quay
                      lại, bạn có thể truy cập vào tất cả thông tin đã lưu trước
@@ -226,7 +230,7 @@ export default function Register() {
                            Đăng nhập
                         </Button>
                      </Form.Item>
-                     <div className="auth__form-btn-back-rtegister">
+                     <div className="auth__form-btn-back-register">
                         <Link onClick={goBackRegister}>Đăng kí tài khoản</Link>
                      </div>
                   </Form>
