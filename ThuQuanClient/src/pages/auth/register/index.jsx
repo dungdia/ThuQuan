@@ -50,11 +50,11 @@ export default function Register() {
             <div id="auth-content" className="auth__content hide">
                <div className="auth__content-inner">
                   {/* Logo */}
-                  <NavLink className="logo auth__content-logo ">
+                  <NavLink to="/user" className="logo auth__content-logo ">
                      <img src={logoIcon} alt="Thư quán" className="logo__img" />
                      <h1 className="logo__title">Thư quán</h1>
                   </NavLink>
-                  <h1 className="auth__heading">Đăng Ký Tài Khoản</h1>
+                  <h1 className="auth__heading">Đăng Ký</h1>
                   <p className="auth__desc">
                      Hãy tạo tài khoản và mua/đặt như một người chuyên nghiệp và
                      tiết kiệm tiền.
