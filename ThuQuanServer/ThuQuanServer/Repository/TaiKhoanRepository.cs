@@ -1,4 +1,5 @@
 using ThuQuanServer.ApplicationContext;
+using ThuQuanServer.Dtos.InsertObject;
 using ThuQuanServer.Dtos.Request;
 using ThuQuanServer.Interfaces;
 using ThuQuanServer.Models;
@@ -8,12 +9,12 @@ namespace ThuQuanServer.Repository;
 public class TaiKhoanRepository : ITaiKhoanRepository
 {
     private readonly DbContext _dbContext;
-    
+
     public TaiKhoanRepository(DbContext dbContext)
     {
         _dbContext = dbContext;
     }
-    
+
     public ICollection<TaiKhoan> GetAccount()
     {
         string query = "SELECT * FROM TaiKhoan";
@@ -24,7 +25,7 @@ public class TaiKhoanRepository : ITaiKhoanRepository
     public ICollection<TaiKhoan> GetAccountByProps(object? values)
     {
         var p = values.GetType().GetProperties();
-        
+
         var query = "SELECT * FROM TaiKhoan WHERE ";
         if (p.Length == 1)
         {
@@ -34,15 +35,23 @@ public class TaiKhoanRepository : ITaiKhoanRepository
         {
             query += string.Join("=? AND ", p.Select(p => p.Name)) + "=?";
         }
+
         Console.WriteLine(query);
-        
+
         var props = p.Select(p => p.GetValue(values)).ToArray();
 
-        var nhanvien = _dbContext.GetData<TaiKhoan>(query, props);
-        return nhanvien;
+        var taiKhoan = _dbContext.GetData<TaiKhoan>(query, props);
+        return taiKhoan;
     }
-    
-    public bool AddThanhVien(TaiKhoanRequestDto taikhoan)
+
+    public ICollection<ThanhVien> GetThanhVien()
+    {
+        string query = "SELECT * FROM ThanhVien";
+        var thanhVien = _dbContext.GetData<ThanhVien>(query);
+        return thanhVien;
+    }
+
+    public bool AddThanhVien(TaikhoanInsertDTO taikhoan)
     {
         // Add TaiKhoan
         _dbContext.Add<TaiKhoan>(taikhoan);
@@ -51,22 +60,18 @@ public class TaiKhoanRepository : ITaiKhoanRepository
         
         // Create new ThanhVien
         ThanhVienRequestDto thanhvien = new ThanhVienRequestDto();
-        thanhvien.IdTaiKhoan = lastInsertId;
+        thanhvien.Id_TaiKhoan = lastInsertId;
+        thanhvien.HoTen = "";
+        thanhvien.SoDienThoai = "";
+        thanhvien.TinhTrang = 1;
         _dbContext.Add<ThanhVien>(thanhvien);
         
         // Save changes
         return _dbContext.SaveChange();
     }
 
-    public bool UpdateThanhVien(ThanhVienRequestDto thanhvien, int idTaiKhoan)
+    public bool UpdateThanhVien(ThanhVienRequestDto thanhvien, int idThanhVien)
     {
-        // query find ThanhVien where IdTaiKhoan
-        var query = "SELECT * FROM ThanhVien WHERE IdTaiKhoan = ?";
-        // Take first element from list
-        var idThanhVien = _dbContext.GetData<ThanhVien>(query, idTaiKhoan).First().Id;
-        // Assign id to thanhvien
-        thanhvien.IdTaiKhoan = idTaiKhoan;
-        
         // Update thanhvien
         _dbContext.Update<ThanhVien>(thanhvien, idThanhVien);
         

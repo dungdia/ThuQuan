@@ -10,5 +10,7 @@ public class TaiKhoan
     public string    Password { get; set; }
     public string    Email { get; set; }
     public DateTime  NgayThamGia { get; set; }
-    public string    VaiTro { get; set; }
+    public int    VaiTro { get; set; }
+    
+    public string TinhTrang { get; set; }
 }

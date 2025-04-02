@@ -1,6 +1,7 @@
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using MySql.Data.MySqlClient;
@@ -92,7 +93,7 @@ public class DbContext
     
         // Get all column names and placeholders
         var tableName = typeof(T).Name;
-        var colNames = string.Join(", ", props.Select(p => p.Name));
+        var colNames = string.Join(", ", props.Select(p => $"`{p.Name}`"));
         var placeholders = string.Join(", ", props.Select(_ => "?"));
         string query = $"INSERT INTO {tableName} ({colNames}) VALUES ({placeholders})";
         Console.WriteLine(query);
@@ -137,14 +138,15 @@ public class DbContext
         var props = value.GetType().GetProperties();
         
         var colNames = string.Join(", ", props
-            .Where(p => p.GetValue(value) != null && p.GetValue(value)?.ToString() != "")
+            .Where(p => p.GetValue(value) != null)
             .Select(p => $"{p.Name} = ?"));
         
         var query = $"UPDATE {tableName} SET {string.Join(", ", colNames)} WHERE Id = ?";
         Console.WriteLine(query);
         
-        object?[] values = props.Select(p =>
+        object?[] values = props.Where(p => p.GetValue(value) != null).Select(p =>
         {
+            
             if(p.GetValue(value)?.GetType() == typeof(DateTime))
             {
                 return ((DateTime?)p.GetValue(value))?.ToString("yyyy-MM-dd");

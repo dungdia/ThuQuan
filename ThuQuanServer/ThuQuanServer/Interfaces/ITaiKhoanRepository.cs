@@ -1,3 +1,4 @@
+using ThuQuanServer.Dtos.InsertObject;
 using ThuQuanServer.Dtos.Request;
 using ThuQuanServer.Models;
 
@@ -7,6 +8,7 @@ public interface ITaiKhoanRepository
 {
     public ICollection<TaiKhoan> GetAccount();
     public ICollection<TaiKhoan> GetAccountByProps(object? values);
-    public bool AddThanhVien(TaiKhoanRequestDto taikhoan);
-    public bool UpdateThanhVien(ThanhVienRequestDto taikhoan, int idTaiKhoan);
+    public ICollection<ThanhVien> GetThanhVien();
+    public bool AddThanhVien(TaikhoanInsertDTO taikhoan);
+    public bool UpdateThanhVien(ThanhVienRequestDto taikhoan, int idThanhVien);
 }

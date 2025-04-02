@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ThuQuanServer.Interfaces;
 using ThuQuanServer.Models;
+using ThuQuanServer.Repository;
 
 namespace ThuQuanServer.Endpoints;
 
@@ -8,22 +11,33 @@ public static class SecurityEndpoint
     public static void MapSecurityEndpoints(this IEndpointRouteBuilder app)
     {
         var authService = app.ServiceProvider.GetRequiredService<IAuthService>();
+        var taikhoanRepository = app.ServiceProvider.GetRequiredService<ITaiKhoanRepository>();
+        var passwordHashService = app.ServiceProvider.GetRequiredService<IPasswordHashService>();
         var groupName = "Xac thuc";
 
-        app.MapPost("JwtLogin", () =>
+        app.MapGet("/login", ( [FromQuery] string username, [FromQuery] string password) =>
         {
-            TaiKhoan tk = new TaiKhoan
+            
+            var taikhoan = taikhoanRepository.GetAccountByProps(new {username=username});
+            if (taikhoan.Count == 0)
             {
-                Id = 1,
-                UserName = "admin",
-                Password = "admin",
-                Email = "admin@gmail.com",
-                NgayThamGia = DateTime.Now,
-                VaiTro = "admin"
-            };
+                return Results.BadRequest("Không đúng tài khoản hoặc mật khẩu");
+            }
+
+            var tk = taikhoan.First();
+            Console.WriteLine(tk.UserName);
+            Console.WriteLine(tk.Password);
+            if(!passwordHashService.VerifyPassword(password, tk.Password))
+                return Results.BadRequest("Không đúng tài khoản hoặc mật khẩu");
+            
             var accessToken = authService.GenerateJwtAccessToken(tk);
             
             return Results.Ok(accessToken);
+        }).WithTags(groupName);
+
+        app.MapGet("/JwtSecure", [Authorize](HttpContext context) =>
+        {
+            return Results.Ok(context);
         }).WithTags(groupName);
     }
 }
