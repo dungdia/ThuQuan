@@ -1,9 +1,11 @@
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Dynamic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using Org.BouncyCastle.Asn1.X509.Qualified;
@@ -43,6 +45,42 @@ public class DbContext
                 .ToList();
 
             return collection;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        finally
+        {
+            _connection.Close();
+        }
+    }
+    
+    public IEnumerable<Dictionary<string,object>> ExcuteQuerry(string query, params object?[] values)
+    {
+        _connection.Open();
+        try
+        {
+            var cmd = new MySqlCommand(query, _connection);
+            Console.WriteLine(query);
+            if (values.Length > 0)
+            {
+                for (var i = 0; i < values.Length; ++i)
+                {
+                    cmd.Parameters.AddWithValue($"@{i}", values[i]);
+                    Console.WriteLine(values[i]);
+                }
+            }
+            
+            var adapter = new MySqlDataAdapter(cmd);
+            var dataTable = new DataTable();
+            adapter.Fill(dataTable);
+
+            var collection = dataTable.AsEnumerable();
+            var data = dataTable.Rows.OfType<DataRow>()
+                .Select(row => dataTable.Columns.OfType<DataColumn>()
+                    .ToDictionary(col => col.ColumnName, c => row[c]));
+            return data;
         }
         catch (Exception e)
         {

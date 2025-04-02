@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ThuQuanServer.ApplicationContext;
 using ThuQuanServer.Interfaces;
 using ThuQuanServer.Models;
 using ThuQuanServer.Repository;
@@ -35,9 +36,9 @@ public static class SecurityEndpoint
             return Results.Ok(accessToken);
         }).WithTags(groupName);
 
-        app.MapGet("/JwtSecure", [Authorize](HttpContext context) =>
+        app.MapGet("/JwtSecure", () =>
         {
-            return Results.Ok(context);
-        }).WithTags(groupName);
+            return "hello world";
+        }).WithTags(groupName).RequireAuthorization();
     }
 }
