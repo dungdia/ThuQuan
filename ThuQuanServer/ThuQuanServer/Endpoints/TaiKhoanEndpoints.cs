@@ -14,6 +14,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Text.Json;
 using Microsoft.OpenApi.Models;
+using ThuQuanServer.Dtos.InsertObject;
 
 namespace ThuQuanServer.Endpoints;
 
@@ -33,7 +34,7 @@ public static class TaiKhoanEndpoints
             var taikhoan = taiKhoanRepository.GetAccount();
             return Results.Ok(taikhoan);
         }).WithTags(groupName);
-        
+
         app.MapGet("/GetTaiKhoanById/{id}", ([FromRoute , Required] int? id) =>
         {
             var taikhoan = taiKhoanRepository.GetAccountByProps(new {
@@ -50,14 +51,20 @@ public static class TaiKhoanEndpoints
             });
             return Results.Ok(taikhoan);
         }).WithTags(groupName);
+        
+        app.MapGet("/GetThanhVien", () =>
+        {
+            var thanhvien = taiKhoanRepository.GetThanhVien();
+            return Results.Ok(thanhvien);
+        }).WithTags(groupName);
 
         // POST API
         app.MapPost("/InsertTaiKhoan", (
-            [FromBody] TaiKhoanRequestDto thanhVienRequest) =>
+            [FromBody] TaiKhoanRequestDto taikhoanRequest) =>
         {
             // Check existed username
             var existedUserName = taiKhoanRepository.GetAccount()
-                .Where(p => p.UserName == thanhVienRequest.UserName);
+                .Where(p => p.UserName == taikhoanRequest.UserName);
             
             if (existedUserName.Any())
             {
@@ -66,20 +73,26 @@ public static class TaiKhoanEndpoints
             
             // Check existed email
             var existedEmail = taiKhoanRepository.GetAccount()
-                .Where(p => p.Email == thanhVienRequest.Email);
+                .Where(p => p.Email == taikhoanRequest.Email);
             
             if (existedEmail.Any())
             {
                 return Results.BadRequest("Email is already exist");
             }
+
+            TaikhoanInsertDTO taikhoanInsertDto = new TaikhoanInsertDTO();
+            
+            taikhoanInsertDto.UserName = taikhoanRequest.UserName;
+            taikhoanInsertDto.Email = taikhoanRequest.Email;
+            taikhoanInsertDto.VaiTro = taikhoanRequest.VaiTro;
             
             // Hash password
-            thanhVienRequest.Password = passwordHashService.HashPassword(thanhVienRequest.Password);
+            taikhoanInsertDto.Password = passwordHashService.HashPassword(taikhoanRequest.Password);
             
             // Time
-            thanhVienRequest.NgayThamGia = (DateTime.Now);
+            taikhoanInsertDto.NgayThamGia = (DateTime.Now);
             
-            if (!taiKhoanRepository.AddThanhVien(thanhVienRequest))
+            if (!taiKhoanRepository.AddThanhVien(taikhoanInsertDto))
             {
                 return Results.BadRequest("Insert TaiKhoan failed");
             }
@@ -88,7 +101,7 @@ public static class TaiKhoanEndpoints
             {
                 Success = true,
                 Message = $"Insert thanh vien successully",
-                Data = thanhVienRequest
+                Data = taikhoanRequest
             });
         }).WithMetadata(typeof(TaiKhoanRequestDto)).WithOpenApi(o =>
         {
@@ -112,7 +125,7 @@ public static class TaiKhoanEndpoints
                 Message = $"update thanh vien {id} successully",
                 Data = thanhVienRequest
             });
-        }).WithMetadata(typeof(TaiKhoanRequestDto)).WithOpenApi(o =>
+        }).WithMetadata(typeof(ThanhVienRequestDto)).WithOpenApi(o =>
         {
             o.Security = new List<OpenApiSecurityRequirement>();
             return o;

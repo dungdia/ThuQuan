@@ -20,11 +20,9 @@ public class TaiKhoanRequestDto
     public string     Password { get; set; }
     
     [Required(ErrorMessage = "Email la khong de trong")]
-    public string     Email { get; set; }
+    public string Email { get; set; }
     
-    public DateTime? NgayThamGia { get; set; } = DateTime.Now;
-    
-    [DefaultValue("Thanh Vien")]
-    [Description("""Vai Tro: Nhan Vien, Quan Ly, Thanh Vien""")]
-    public string    VaiTro { get; set; }
+    [DefaultValue(0)]
+    [Description("""Vai Tro: Thành viên = 0, Nhân viên = 1""")]
+    public int VaiTro { get; set; }
 }
