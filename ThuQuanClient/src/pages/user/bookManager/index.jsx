@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import heartIcon from "@/assets/icons/heart.svg";
 import heartRedIcon from "@/assets/icons/heart-red.svg";
 import starIcon from "@/assets/icons/star.svg";
@@ -9,9 +9,16 @@ import bookItem_3 from "@/assets/images/book/item-3.png";
 import bookItem_4 from "@/assets/images/book/item-4.png";
 
 export default function BookManager() {
+
+   const navigate = useNavigate()
+
+   const toItemDetailPage = () => {
+      navigate("/itemDetail")
+   }
+
    return (
       <>
-         <div className="row row-cols-4 row-cols-lg-2 row-cols-sm-1 g-3">
+         <div onClick={toItemDetailPage} className="row row-cols-4 row-cols-lg-2 row-cols-sm-1 g-3">
             {/* Book card 1 */}
             <div className="col">
                <article className="book-card">

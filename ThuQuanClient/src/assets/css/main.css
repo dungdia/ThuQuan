@@ -2535,4 +2535,71 @@ html {
   width: 100%;
 }
 
+.item__container {
+  margin-top: 50px;
+}
+
+.item {
+  width: 100%;
+  height: 500px;
+  display: flex;
+  background-color: #EDEDED;
+}
+.item__img {
+  width: 35%;
+  display: flex;
+  justify-content: center;
+}
+.item__img > img {
+  height: 100%;
+}
+.item__info {
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  margin: 20px 40px;
+}
+.item__info__name {
+  width: 100%;
+  font-size: 26px;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 50px;
+}
+.item__info__description {
+  width: 100%;
+  height: 80%;
+  font-size: 20px;
+  line-height: 36px;
+  overflow-y: scroll;
+}
+.item__info__description::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+.item__info__description::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #444, #222); /* Màu tối với hiệu ứng gradient */
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+.item__info__description::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #666, #333); /* Màu sáng hơn khi hover */
+}
+.item__info__button {
+  width: 100%;
+  margin-top: 2%;
+}
+.item__info__button__booking {
+  padding: 14px 20px;
+  background-color: #FFB700;
+  font-size: 18px;
+  transition: 0.3s;
+  border-radius: 5px;
+  float: right;
+  margin-right: 20px;
+}
+.item__info__button__booking:hover {
+  background-color: #E09C00;
+}
+
 /*# sourceMappingURL=main.css.map */
