@@ -8,10 +8,11 @@ using ThuQuanServer.Models;
 using ThuQuanServer.Repository;
 using ThuQuanServer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ZstdSharp.Unsafe;
-
+Console.OutputEncoding = System.Text.Encoding.UTF8;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add db access
@@ -30,6 +31,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
             ClockSkew = TimeSpan.Zero,
         };
 
@@ -68,6 +70,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    IdentityModelEventSource.ShowPII = true;
+    IdentityModelEventSource.LogCompleteSecurityArtifact = true;
     app.MapOpenApi();
     
     // Add Scalar API Reference
@@ -79,7 +83,7 @@ app.UseAuthorization();
 app.UseAuthentication();
 
 // Check validation
-// app.UseValidationMiddleware();
+app.UseValidationMiddleware();
 
 // Endpoints
 app.MapTaiKhoanEndpoints();
