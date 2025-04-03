@@ -21,7 +21,7 @@ public static class SecurityEndpoint
         var passwordHashService = app.ServiceProvider.GetRequiredService<IPasswordHashService>();
         var groupName = "Xac thuc";
 
-        app.MapPost("UserLogin", ([FromBody] LoginRequestDto loginRequestDto) =>
+        app.MapPost("/userlogin", ([FromBody] LoginRequestDto loginRequestDto) =>
         {
 
             var taikhoan = taikhoanRepository.GetAccountByProps(new { Email = loginRequestDto.Email });
