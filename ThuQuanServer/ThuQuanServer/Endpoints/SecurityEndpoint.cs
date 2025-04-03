@@ -1,3 +1,4 @@
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -70,9 +71,14 @@ public static class SecurityEndpoint
             return o;
         }).WithTags(groupName);
 
-        app.MapGet("/JwtSecure", () =>
+        app.MapGet("JwtSecure", (HttpContext context) =>
         {
-            return "hello world";
-        }).WithTags(groupName).RequireAuthorization();
+          var Authoriation = context.Request.Headers.Authorization.ToString();
+          var token = Authoriation.Substring(7,Authoriation.Length-7);
+          
+          Console.WriteLine(token);
+          return Results.Ok($"tai khoan id: {authService.DecodeJwtAccessToken(token)}");
+        })
+        .WithTags(groupName).RequireAuthorization();
     }
 }

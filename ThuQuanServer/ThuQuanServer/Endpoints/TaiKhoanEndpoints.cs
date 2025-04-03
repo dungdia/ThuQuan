@@ -133,7 +133,7 @@ public static class TaiKhoanEndpoints
         }).WithTags(groupName);
 
         //API đổi mật khẩu
-        app.MapPut("/change-password", ([FromBody] ChangePasswordRequestDto changePasswordRequestDto) =>
+        app.MapPut("/change-password", [Authorize] ([FromBody] ChangePasswordRequestDto changePasswordRequestDto) =>
         {
             var tk = taiKhoanRepository.GetAccountByProps(new {Email=changePasswordRequestDto.Email}).FirstOrDefault();
             if (tk ==null)
@@ -178,7 +178,7 @@ public static class TaiKhoanEndpoints
         }).WithTags(groupName);
         
         // API kiểm tra password
-        app.MapPost("/check-password", ([FromBody] LoginRequestDto LoginRequestDto) =>
+        app.MapPost("/check-password", [Authorize] ([FromBody] LoginRequestDto LoginRequestDto) =>
         {
             var tk = taiKhoanRepository.GetAccountByProps(new { Email = LoginRequestDto.Email }).FirstOrDefault();
             if (tk == null)

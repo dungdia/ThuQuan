@@ -35,4 +35,14 @@ public class AuthService : IAuthService
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+    
+    public int DecodeJwtAccessToken(string token)
+    {
+        
+        var handler = new JwtSecurityTokenHandler();
+        var jwtSecurityToken = handler.ReadJwtToken(token);
+    
+        var idTaiKhoan = jwtSecurityToken.Claims.First(claim => claim.Type == JwtRegisteredClaimNames.Sub).Value;
+        return Int32.Parse(idTaiKhoan);
+    }
 }

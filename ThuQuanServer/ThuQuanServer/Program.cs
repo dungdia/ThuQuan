@@ -52,18 +52,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 // Add CORS services
-// Add CORS services
 builder.Services.AddCors(options =>
 {
+    options.AddPolicy("AllowAll",policy => 
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
     options.AddPolicy("AllowSpecificOrigin", policy =>
     {
         policy.WithOrigins("http://localhost:5173") // Cho phép frontend truy cập
             .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowCredentials(); // Cho phép gửi cookie/token
+            .AllowCredentials(); // Cho phép gửi cookie
     });
 });
-
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
