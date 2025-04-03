@@ -19,7 +19,7 @@ public class TaiKhoanRequestDto
     [MaxLength(255, ErrorMessage = "Mat khau nhieu nhat la 255 ky tu")]
     public string     Password { get; set; }
     
-    [Required(ErrorMessage = "Email la khong de trong")]
+    [Required(ErrorMessage = "Email la khong duoc de trong")]
     public string Email { get; set; }
     
     [DefaultValue(0)]
