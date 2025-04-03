@@ -19,9 +19,20 @@ import {
    Space,
 } from "antd";
 import Cookies from "js-cookie";
-import { Factory } from "lucide-react";
+import {
+   Factory,
+   Mail,
+   Phone,
+   UserRoundCheck,
+   UserRoundPen,
+} from "lucide-react";
 import { useForm } from "antd/es/form/Form";
-import { changePassword, checkCurrentPassword } from "@/services/user/header";
+import {
+   changePassword,
+   checkCurrentPassword,
+   findAccountByEmail,
+   UpdateInfoUser,
+} from "@/services/user/header";
 import { HttpStatusCode } from "axios";
 import {
    handleConfirmPassword,
@@ -29,6 +40,8 @@ import {
    handlePasswordChange,
 } from "@/utils/validate";
 import { useDebounce } from "@/hook/useDebounce";
+import { toggleDarkMode } from "@/utils/theme";
+import { use } from "react";
 
 export default function HeaderUser() {
    const navigate = useNavigate();
@@ -42,6 +55,18 @@ export default function HeaderUser() {
    const [passwordStatus, setPasswordStatus] = useState("");
    const [newPasswordStatus, setNewPasswordStatus] = useState("");
    const [confirmPasswordStatus, setConfirmPasswordStatus] = useState("");
+   const [isShowInfoModal, setIsShowInfoModal] = useState(false);
+   const [formInfo] = useForm();
+   const [valueInfoUserName, setValueInfoUserName] = useState(null);
+   const [valueInfoHoten, setValueInfoHoten] = useState(null);
+   const [valueInfoEmail, setValueInfoEmail] = useState(null);
+   const [valueInfoSDT, setValueInfoSDT] = useState(null);
+   const [isShowModalUpdateInfo, setIsShowModalUpdateInfo] = useState(false);
+   const [formUpdateInfo] = useForm();
+   const userNameRef = useRef(null);
+   const [account, setAccount] = useState({});
+   const [baseId, setBaseId] = useState(null);
+   const [isLoadingUpdateInfo, setIsLoadingUpdateInfo] = useState(false);
 
    // Lấy thông tin từ localStorage
    const accountLoggedin =
@@ -53,6 +78,136 @@ export default function HeaderUser() {
       const initials = words?.map((word) => word.charAt(0).toUpperCase());
       return initials?.join("");
    };
+
+   // Tự chạy khi accountLoggedin thay đổi
+   useEffect(() => {
+      if (accountLoggedin) {
+         setValueInfoEmail(accountLoggedin.email);
+         setValueInfoHoten(accountLoggedin.hoten);
+         setValueInfoUserName(accountLoggedin.userName);
+         setValueInfoSDT(accountLoggedin.sdt);
+      }
+   }, [accountLoggedin]);
+
+   // Hàm mở modal thông tin cá nhân
+   const handleShowInfoModal = async () => {
+      setIsShowInfoModal(true);
+      await fetchAccount();
+      if (accountLoggedin) {
+         formInfo.setFieldsValue(accountLoggedin);
+      }
+   };
+
+   // Hàm đóng modal thông tin cá nhân
+   const handleCloseInfoModal = () => {
+      setIsShowInfoModal(false);
+      setBaseId(null);
+      setAccount(null);
+   };
+
+   // Ngăn chặn sự focus của label
+   const handlePreventFocus = (e) => {
+      e.preventDefault();
+   };
+
+   // Hàm mở modal cập nhật thông tin cá nhân
+   const handleShowModalUpdateInfo = () => {
+      setIsShowModalUpdateInfo(true);
+      setIsShowInfoModal(false);
+
+      // Lấy id từ tài khoản
+      setBaseId(account.id);
+
+      if (accountLoggedin) {
+         formUpdateInfo.setFieldsValue(accountLoggedin);
+      }
+
+      setTimeout(() => {
+         if (passwordRef.current) {
+            passwordRef.current.focus();
+         }
+      }, 100);
+   };
+
+   // Hàm đóng modal cập nhật thông tin cá nhân
+   const handleCloseModalUpdateInfo = () => {
+      setIsShowModalUpdateInfo(false);
+      setIsShowInfoModal(true);
+      setBaseId(null);
+   };
+
+   // Hàm tự focus vào userName
+   useEffect(() => {
+      if (isShowModalUpdateInfo && userNameRef.current) {
+         userNameRef.current.focus();
+      }
+   }, [isShowModalUpdateInfo]);
+
+   // Hàm lấy dữ liệu từ tài khoản bởi email
+   const fetchAccount = async () => {
+      const response = await findAccountByEmail(accountLoggedin.email);
+      setAccount(response.data);
+   };
+
+   // Hàm xử lý cập nhật thông tin
+   const handleUpdateInfo = async () => {
+      try {
+         setIsLoadingUpdateInfo(true);
+
+         const values = formUpdateInfo.getFieldsValue();
+
+         const { email, hoten, sdt, userName } = values;
+         const id = baseId;
+
+         const response = await UpdateInfoUser({
+            Id: id,
+            UserName: userName,
+            HoTen: hoten,
+            Email: email,
+            sdt: sdt,
+         });
+
+         if (response.status === 200) {
+            // Hiển thị thông báo thành công
+            message.success("Cập nhật thông tin thành công!");
+
+            // Lưu dữ liệu mới vào localStorage
+            const updatedAccount = {
+               ...accountLoggedin,
+               email,
+               hoten,
+               sdt,
+               userName,
+            };
+            localStorage.setItem(
+               "accountLoggedin",
+               JSON.stringify(updatedAccount)
+            );
+
+            // Đóng modal sau khi cập nhật
+            setIsShowModalUpdateInfo(false);
+            setIsShowInfoModal(true);
+            // Cập nhật form thông tin cá nhân
+            formInfo.setFieldsValue(updatedAccount);
+         } else {
+            message.error(response?.data?.message || "Cập nhật thất bại!");
+         }
+      } catch (error) {
+         if (error.status === HttpStatusCode.BadRequest) {
+            message.error(error.response.data);
+         } else {
+            message.error("Đã xảy ra lỗi, vui lòng thử lại!");
+         }
+         console.log("error ", error);
+      } finally {
+         setIsLoadingUpdateInfo(false);
+      }
+   };
+
+   // Sẽ gọi mỗi khi vào trang user
+   useEffect(() => {
+      fetchAccount();
+   }, []);
 
    // Hàm mở modal đổi mật khẩu
    const handleShowModalChangePassword = () => {
@@ -160,7 +315,7 @@ export default function HeaderUser() {
    // Các thành phần của DropDown của Avatar
    const items = [
       {
-         label: <div>Thông tin cá nhân</div>,
+         label: <div onClick={handleShowInfoModal}>Thông tin cá nhân</div>,
          key: "0",
       },
       {
@@ -168,7 +323,7 @@ export default function HeaderUser() {
          key: "1",
       },
       {
-         label: <div>Giao diện</div>,
+         label: <div onClick={toggleDarkMode}>Giao diện</div>,
          key: "3",
       },
       {
@@ -233,9 +388,163 @@ export default function HeaderUser() {
 
    return (
       <>
-         {/* Giao diện đổi mật khẩu */}
-
+         {/* Giao diện cập nhật thông tin cá nhân */}
          <Modal
+            onCancel={handleCloseModalUpdateInfo}
+            title="Cập nhật thông tin cá nhân"
+            open={isShowModalUpdateInfo}
+            footer={
+               <div>
+                  <Button
+                     color="danger"
+                     variant="dashed"
+                     onClick={handleCloseModalUpdateInfo}
+                  >
+                     Đóng
+                  </Button>
+                  <Button
+                     onClick={handleUpdateInfo}
+                     loading={isLoadingUpdateInfo}
+                     ghost
+                     type="primary"
+                  >
+                     Lưu
+                  </Button>
+               </div>
+            }
+         >
+            <Form
+               form={formUpdateInfo}
+               name="Cập nhật thông tin ca nhan"
+               layout="vertical"
+               requiredMark={false}
+               autoComplete="off"
+            >
+               <Form.Item
+                  hasFeedback
+                  validateStatus={
+                     valueInfoUserName !== null ? "success" : "error"
+                  }
+                  label={<div>Tên người dùng</div>}
+                  name="userName"
+               >
+                  <Input
+                     ref={userNameRef}
+                     prefix={
+                        <UserRoundCheck className="size-5 text-slate-600" />
+                     }
+                  />
+               </Form.Item>
+               <Form.Item
+                  hasFeedback
+                  validateStatus={valueInfoHoten !== null ? "success" : "error"}
+                  label={<div>Họ và tên</div>}
+                  name="hoten"
+               >
+                  <Input
+                     prefix={<UserRoundPen className="size-5 text-slate-600" />}
+                  />
+               </Form.Item>
+               <Form.Item
+                  hasFeedback
+                  validateStatus={valueInfoEmail !== null ? "success" : "error"}
+                  label={<div>Email</div>}
+                  name="email"
+               >
+                  <Input prefix={<Mail className="size-5 text-slate-600" />} />
+               </Form.Item>
+               <Form.Item
+                  hasFeedback
+                  validateStatus={valueInfoSDT !== null ? "success" : "error"}
+                  label={<div>Số điện thoại</div>}
+                  name="sdt"
+               >
+                  <Input prefix={<Phone className="size-5 text-slate-600" />} />
+               </Form.Item>
+            </Form>
+         </Modal>
+
+         {/* Giao diện thông tin cá nhân */}
+         <Modal
+            onCancel={handleCloseInfoModal}
+            title="Thông tin cá nhân"
+            open={isShowInfoModal}
+            footer={
+               <div>
+                  <Button
+                     color="danger"
+                     variant="dashed"
+                     onClick={handleCloseInfoModal}
+                  >
+                     Đóng
+                  </Button>
+                  <Button onClick={handleShowModalUpdateInfo} type="primary">
+                     Cập nhật
+                  </Button>
+               </div>
+            }
+         >
+            <Form
+               form={formInfo}
+               name="Thong tin ca nhan"
+               layout="vertical"
+               requiredMark={false}
+               autoComplete="off"
+            >
+               <Form.Item
+                  hasFeedback
+                  validateStatus={
+                     valueInfoUserName !== null ? "success" : "error"
+                  }
+                  label={<div onClick={handlePreventFocus}>Tên người dùng</div>}
+                  name="userName"
+               >
+                  <Input
+                     prefix={
+                        <UserRoundCheck className="size-5 text-slate-600" />
+                     }
+                     className="select-none"
+                  />
+               </Form.Item>
+               <Form.Item
+                  hasFeedback
+                  validateStatus={valueInfoHoten !== null ? "success" : "error"}
+                  label={<div onClick={handlePreventFocus}>Họ và tên</div>}
+                  name="hoten"
+               >
+                  <Input
+                     prefix={<UserRoundPen className="size-5 text-slate-600" />}
+                     className="select-none"
+                  />
+               </Form.Item>
+               <Form.Item
+                  hasFeedback
+                  validateStatus={valueInfoEmail !== null ? "success" : "error"}
+                  label={<div onClick={handlePreventFocus}>Email</div>}
+                  name="email"
+               >
+                  <Input
+                     prefix={<Mail className="size-5 text-slate-600" />}
+                     className="select-none"
+                  />
+               </Form.Item>
+               <Form.Item
+                  hasFeedback
+                  validateStatus={valueInfoSDT !== null ? "success" : "error"}
+                  label={<div onClick={handlePreventFocus}>Số điện thoại</div>}
+                  name="sdt"
+               >
+                  <Input
+                     prefix={<Phone className="size-5 text-slate-600" />}
+                     className="select-none font-normal text-red-400"
+                  />
+               </Form.Item>
+            </Form>
+         </Modal>
+
+         {/* Giao diện đổi mật khẩu */}
+         <Modal
+            title="Đổi mật khẩu"
             footer={
                <div className="flex justify-end gap-2">
                   <Button onClick={handleCloseModalChangePassword}>Hủy</Button>

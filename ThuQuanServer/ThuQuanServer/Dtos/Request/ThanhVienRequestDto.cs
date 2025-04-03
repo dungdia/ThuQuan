@@ -15,6 +15,7 @@ public class ThanhVienRequestDto
     [Length(10, 11, ErrorMessage = "So dien thoai co dinh dang co 10-11 ky tu")]
     public string SoDienThoai { get; set; }
     
+
     public int? Id_TaiKhoan { get; set; }
     
     [DefaultValue(1)]

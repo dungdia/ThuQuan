@@ -55,3 +55,10 @@ select {
       padding-right: 20px !important;
    }
 }
+
+.select-none {
+   user-select: none;
+   pointer-events: none;
+   color: #f87171;
+   font-weight: 400;
+}

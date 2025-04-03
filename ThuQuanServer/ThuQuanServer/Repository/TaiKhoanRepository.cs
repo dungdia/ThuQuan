@@ -1,6 +1,7 @@
 using ThuQuanServer.ApplicationContext;
 using ThuQuanServer.Dtos.InsertObject;
 using ThuQuanServer.Dtos.Request;
+using ThuQuanServer.Dtos.Response;
 using ThuQuanServer.Interfaces;
 using ThuQuanServer.Models;
 
@@ -84,5 +85,17 @@ public class TaiKhoanRepository : ITaiKhoanRepository
         _dbContext.Update<TaiKhoan>(taikhoan, idTaiKhoan);
         
         return _dbContext.SaveChange(); 
+    }
+    
+    public bool UpdateThanhVien(ThanhVienUpdateResponseDTO thanhvien, int idThanhVien)
+    {
+        _dbContext.Update<ThanhVien>(thanhvien, idThanhVien);
+        return _dbContext.SaveChange();
+    }
+
+    public bool UpdateTaiKhoan(TaiKhoanUpdateResponseDTO taikhoan, int idTaiKhoan)
+    {
+        _dbContext.Update<TaiKhoan>(taikhoan, idTaiKhoan);
+        return _dbContext.SaveChange();
     }
 }
