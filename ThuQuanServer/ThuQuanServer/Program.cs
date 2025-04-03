@@ -19,6 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<DbContext>();
 builder.Services.AddSingleton<ITaiKhoanRepository , TaiKhoanRepository>();
 builder.Services.AddSingleton<IPasswordHashService , PasswordHashService>();
+builder.Services.AddSingleton<ILoaiVatDungRepository , LoaiVatDungRepository>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
 
 builder.Services.AddAuthorization();
@@ -103,6 +104,7 @@ app.MapPhieuDatEndpoints();
 app.MapPhieuMuonEndpoints();
 app.MapPhieuTraEndpoints();
 app.MapVatDungEndpoints();
+app.MapLoaiVatDungEndpoint();
 app.MapSecurityEndpoints();
 
 app.Run();
