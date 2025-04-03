@@ -50,6 +50,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// Add CORS services
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        cp => cp.WithOrigins(builder.Configuration["AllowedHosts"])
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
+
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi(options =>
@@ -81,6 +90,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Use CORS middleware
+app.UseCors("AllowSpecificOrigin");
 
 // Check validation
 app.UseValidationMiddleware();
