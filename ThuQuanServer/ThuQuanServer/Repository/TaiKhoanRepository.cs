@@ -78,4 +78,11 @@ public class TaiKhoanRepository : ITaiKhoanRepository
         // Save 
         return _dbContext.SaveChange();
     }
+
+    public bool UpdateTaiKhoan(TaikhoanInsertDTO taikhoan, int idTaiKhoan)
+    {
+        _dbContext.Update<TaiKhoan>(taikhoan, idTaiKhoan);
+        
+        return _dbContext.SaveChange(); 
+    }
 }

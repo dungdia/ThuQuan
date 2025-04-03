@@ -19,6 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<DbContext>();
 builder.Services.AddSingleton<ITaiKhoanRepository , TaiKhoanRepository>();
 builder.Services.AddSingleton<IPasswordHashService , PasswordHashService>();
+builder.Services.AddSingleton<ILoaiVatDungRepository , LoaiVatDungRepository>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
 
 builder.Services.AddAuthorization();
@@ -50,6 +51,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// Add CORS services
+// Add CORS services
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173") // Cho phép frontend truy cập
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials(); // Cho phép gửi cookie/token
+    });
+});
+
+
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi(options =>
@@ -79,8 +94,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
+
+// Use CORS middleware
+app.UseCors("AllowSpecificOrigin");
 
 // Check validation
 app.UseValidationMiddleware();
@@ -91,6 +109,7 @@ app.MapPhieuDatEndpoints();
 app.MapPhieuMuonEndpoints();
 app.MapPhieuTraEndpoints();
 app.MapVatDungEndpoints();
+app.MapLoaiVatDungEndpoint();
 app.MapSecurityEndpoints();
 
 app.Run();

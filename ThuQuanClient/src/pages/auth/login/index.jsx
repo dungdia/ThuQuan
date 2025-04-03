@@ -1,11 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import logoIcon from "@/assets/icons/logo.svg";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Button, Form, Input, Modal } from "antd";
+import { Button, Form, Input, message, Modal } from "antd";
 import { LockKeyhole, UserPen, UserRound } from "lucide-react";
 import introRegister from "@/assets/images/auth/intro.png";
 import introArrowIcon from "@/assets/icons/intro-arrow.svg";
 import { initJsToggle } from "@/assets/js/header";
+import Cookies from "js-cookie";
+import { HttpStatusCode } from "axios";
+import { login } from "@/services/auth/login";
+
+// Cú pháp lưu cookie và lấy cookie
 
 export default function Register() {
    const navigate = useNavigate();
@@ -13,6 +18,50 @@ export default function Register() {
    const [formEmail] = Form.useForm(); // Form cho email
    const emailRefForgotPass = useRef(null);
    const [isLoadingForgotPass, setIsLoadingForgotPass] = useState(false);
+
+   // Kiểm tra xem người dùng đã đăng nhập chưa, nếu rồi thì quay lại trang người dùng
+   useEffect(() => {
+      // Kiểm tra token từ cookie
+      const accessToken = Cookies.get("accessToken");
+
+      if (accessToken) {
+         navigate("/user");
+      }
+   }, []);
+
+   // Hàm đăng nhập
+   const onFinish = async (values) => {
+      try {
+         // Gọi API
+         const response = await login(values);
+
+         // Dùng destructuring để lấy ra các key của object
+         const { accessToken, ...filtedData } = response;
+
+         // Lưu token lên cookie hoặc local
+         Cookies.set("accessToken", accessToken, {
+            expires: 1,
+            secure: true,
+            sameSite: "strict",
+         });
+
+         // Lưu thông tin cá nhân của tài khoản đã đăng nhập lên localStorage
+         localStorage.setItem("accountLoggedin", JSON.stringify(filtedData));
+
+         // Hiển thị thông báo đăng nhập thành công và chuyển trang
+         message.success("Đăng nhập thành công", 1, () => {
+            navigate("/user");
+         });
+      } catch (error) {
+         if (error?.status === HttpStatusCode.BadRequest) {
+            console.log("error ", error);
+
+            message.error(error?.response?.data || "Có sự cố xảy ra!");
+         } else {
+            message.error("Máy chủ đang gặp sự cố. Vui lòng thử lại sau!");
+         }
+      }
+   };
 
    // Hàm mở quên mật khẩu
    const handleForgotPassword = () => {
@@ -43,7 +92,7 @@ export default function Register() {
 
    const goBackToHome = () => {
       navigate("/user");
-   }
+   };
 
    return (
       <>
@@ -119,7 +168,10 @@ export default function Register() {
             <div id="auth-content-login" className="auth__content-login hide">
                <div className="auth__content-login-inner">
                   {/* Logo */}
-                  <NavLink to="/user" className="logo auth__content-login-logo ">
+                  <NavLink
+                     to="/user"
+                     className="logo auth__content-login-logo "
+                  >
                      <img src={logoIcon} alt="Thư quán" className="logo__img" />
                      <h1 className="logo__title">Thư quán</h1>
                   </NavLink>
@@ -131,7 +183,7 @@ export default function Register() {
                   </p>
                   <Form
                      // form={form}
-                     // onFinish={onFinish}
+                     onFinish={onFinish}
                      layout="vertical"
                      name="basic"
                      autoComplete="off"
@@ -145,7 +197,7 @@ export default function Register() {
                               Email
                            </span>
                         }
-                        name="email"
+                        name="Email"
                         rules={[
                            {
                               required: true,
@@ -174,15 +226,15 @@ export default function Register() {
                               Mật khẩu
                            </span>
                         }
-                        name="password"
+                        name="Password"
                         rules={[
                            {
                               required: true,
                               message: "Mật khẩu không được để trống",
                            },
                            {
-                              pattern: /^[A-Za-z0-9]{5,}$/,
-                              message: "Password phải từ 5 ký tự trở lên",
+                              pattern: /^[A-Za-z0-9]{6,100}$/,
+                              message: "Password phải có 6-100 ký tự",
                            },
                         ]}
                      >
