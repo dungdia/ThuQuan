@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { initJsToggle } from "../../../assets/js/header";
 import moreIcon from "@/assets/icons/more.svg";
@@ -8,10 +8,68 @@ import searchIcon from "@/assets/icons/search.svg";
 import heartIcon from "@/assets/icons/heart.svg";
 import orderIcon from "@/assets/icons/order.svg";
 import avatarImage from "@/assets/images/avatar.jpg";
-import { Modal } from "antd";
+import { Avatar, Button, Dropdown, Modal, Space } from "antd";
+import Cookies from "js-cookie";
+
 export default function HeaderUser() {
    const navigate = useNavigate();
+   const [isShowModalLogOut, setIsShowModalLogOut] = useState(false);
 
+   // Lấy thông tin từ localStorage
+   const accountLoggedin =
+      JSON.parse(localStorage.getItem("accountLoggedin")) || {};
+
+   // Hàm để lấy các chữ cái đầu của mỗi từ trong tên
+   const getInitials = (userName) => {
+      const words = userName?.split(" ");
+      const initials = words?.map((word) => word.charAt(0).toUpperCase());
+      return initials?.join("");
+   };
+
+   // Hàm mở modal xác nhận đăng xuất
+   const handleShowModalLogOut = () => {
+      setIsShowModalLogOut(true);
+   };
+
+   // Hàm đóng modal xác nhận đăng xuất
+   const handleCloseModalLogOut = () => {
+      setIsShowModalLogOut(false);
+   };
+
+   // Hàm xác nhận đăng xuất tài khoản\
+   const handleLogOut = () => {
+      // Xóa token khỏi Cookie
+      Cookies.remove("accessToken");
+      // Xóa dữ liệu từ localStorage
+      localStorage.removeItem("accountLoggedin");
+      // Chuyển hướng và trang đăng nhập
+      navigate("/login");
+   };
+
+   // Các thành phần của DropDown của Avatar
+   const items = [
+      {
+         label: <div>Thông tin cá nhân</div>,
+         key: "0",
+      },
+      {
+         label: <div>Đổi mật khẩu</div>,
+         key: "1",
+      },
+      {
+         label: <div>Giao diện</div>,
+         key: "3",
+      },
+      {
+         type: "divider",
+      },
+      {
+         label: <div onClick={handleShowModalLogOut}>Đăng xuất</div>,
+         key: "4",
+      },
+   ];
+
+   // hàm cho mobile
    useEffect(() => {
       initJsToggle();
    }, []);
@@ -28,6 +86,24 @@ export default function HeaderUser() {
 
    return (
       <>
+         {/* Giao diện đăng xuất */}
+         <Modal
+            onClose={handleCloseModalLogOut}
+            title="Xác nhận đăng xuất"
+            onCancel={handleCloseModalLogOut}
+            open={isShowModalLogOut}
+            footer={
+               <div>
+                  <Button onClick={handleCloseModalLogOut}>Hủy</Button>
+                  <Button onClick={handleLogOut} danger type="primary">
+                     Đăng xuất
+                  </Button>
+               </div>
+            }
+         >
+            <p>Bạn có chắc chắn muốn đăng xuất không</p>
+         </Modal>
+
          <header className="header">
             <div className="container">
                {" "}
@@ -183,11 +259,22 @@ export default function HeaderUser() {
                      </div>
 
                      <div className="top-act__user">
-                        <img
+                        <Dropdown
+                           arrow
+                           placement="bottomRight"
+                           menu={{ items }}
+                           trigger={["click"]}
+                        >
+                           <Avatar className="top-act__avatar">
+                              {getInitials(accountLoggedin?.userName)}
+                           </Avatar>
+                        </Dropdown>
+
+                        {/* <img
                            src={avatarImage}
                            alt="Ảnh đại diện"
                            className="top-act__avatar"
-                        />
+                        /> */}
                      </div>
 
                      {/* <div className="top-act__group--account">
