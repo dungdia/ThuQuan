@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { initJsToggle } from "../../../assets/js/header";
 import moreIcon from "@/assets/icons/more.svg";
@@ -8,12 +8,40 @@ import searchIcon from "@/assets/icons/search.svg";
 import heartIcon from "@/assets/icons/heart.svg";
 import orderIcon from "@/assets/icons/order.svg";
 import avatarImage from "@/assets/images/avatar.jpg";
-import { Avatar, Button, Dropdown, Modal, Space } from "antd";
+import {
+   Avatar,
+   Button,
+   Dropdown,
+   Form,
+   Input,
+   message,
+   Modal,
+   Space,
+} from "antd";
 import Cookies from "js-cookie";
+import { Factory } from "lucide-react";
+import { useForm } from "antd/es/form/Form";
+import { changePassword, checkCurrentPassword } from "@/services/user/header";
+import { HttpStatusCode } from "axios";
+import {
+   handleConfirmPassword,
+   handleNewPasswordChange,
+   handlePasswordChange,
+} from "@/utils/validate";
+import { useDebounce } from "@/hook/useDebounce";
 
 export default function HeaderUser() {
    const navigate = useNavigate();
+   const [form] = useForm();
+   const passwordRef = useRef(null);
+   const [loading, setLoading] = useState(false);
    const [isShowModalLogOut, setIsShowModalLogOut] = useState(false);
+   const [isShowModalChangePassword, setIsShowModalChangePassword] =
+      useState(false);
+   const [currentPassword, setCurrentPassword] = useState("");
+   const [passwordStatus, setPasswordStatus] = useState("");
+   const [newPasswordStatus, setNewPasswordStatus] = useState("");
+   const [confirmPasswordStatus, setConfirmPasswordStatus] = useState("");
 
    // Lấy thông tin từ localStorage
    const accountLoggedin =
@@ -24,6 +52,89 @@ export default function HeaderUser() {
       const words = userName?.split(" ");
       const initials = words?.map((word) => word.charAt(0).toUpperCase());
       return initials?.join("");
+   };
+
+   // Hàm mở modal đổi mật khẩu
+   const handleShowModalChangePassword = () => {
+      setPasswordStatus("");
+      setNewPasswordStatus("");
+      setConfirmPasswordStatus("");
+      setIsShowModalChangePassword(true);
+      form.resetFields();
+      setTimeout(() => {
+         if (passwordRef.current) {
+            passwordRef.current.focus();
+         }
+      }, 100);
+   };
+
+   // Hàm tự focus vào đổi mật khẩu
+   useEffect(() => {
+      if (isShowModalChangePassword && passwordRef.current) {
+         passwordRef.current.focus();
+      }
+   }, [isShowModalChangePassword]);
+
+   // Hàm mở modal đổi mật khẩu
+   const handleCloseModalChangePassword = () => {
+      setPasswordStatus("");
+      setNewPasswordStatus("");
+      setConfirmPasswordStatus("");
+      setIsShowModalChangePassword(false);
+      form.resetFields();
+   };
+
+   // Hàm xác nhận đổi mật khẩu
+   const confirmChangePassword = async () => {
+      try {
+         // Lấy dữ liệu từ form
+         const values = await form.validateFields();
+         const { Password, NewPassword, ConfirmNewPassword } = values;
+         setLoading(true);
+
+         // Kiểm tra nếu ConfirmNewPassword không khớp với NewPassword
+         if (NewPassword !== ConfirmNewPassword) {
+            message.error("Mật khẩu xác thực không đúng");
+            return;
+         }
+         // Lấy email từ local
+         const email = accountLoggedin.email;
+
+         const isCurrentPasswordCorrect = await checkCurrentPassword({
+            email,
+            Password,
+         });
+
+         if (!isCurrentPasswordCorrect) {
+            message.error(error.response.data);
+            return;
+         }
+
+         // Gửi yêu cầu đổi mật khẩu
+         const response = await changePassword({
+            email,
+            Password,
+            NewPassword,
+         });
+
+         if (response) {
+            message.success("Đổi mật khẩu thành công!");
+            handleCloseModalChangePassword(); // Đóng modal sau khi đổi mật khẩu thành công
+            setPasswordStatus("");
+            setNewPasswordStatus("");
+            setConfirmPasswordStatus("");
+            setIsShowModalChangePassword(false);
+            form.resetFields();
+         } else {
+            message.error("Đổi mật khẩu thất bại, vui lòng thử lại!");
+         }
+      } catch (error) {
+         if (error?.status === HttpStatusCode.BadRequest) {
+            message.error(error.response.data);
+         }
+      } finally {
+         setLoading(false);
+      }
    };
 
    // Hàm mở modal xác nhận đăng xuất
@@ -53,7 +164,7 @@ export default function HeaderUser() {
          key: "0",
       },
       {
-         label: <div>Đổi mật khẩu</div>,
+         label: <div onClick={handleShowModalChangePassword}>Đổi mật khẩu</div>,
          key: "1",
       },
       {
@@ -68,6 +179,42 @@ export default function HeaderUser() {
          key: "4",
       },
    ];
+
+   // Sử dụng useDebounce để debounce giá trị password
+   const debouncedPassword = useDebounce(currentPassword, 800);
+
+   // Hàm xử lý onChangePassword
+   const handlePasswordChange = async (e) => {
+      const password = e.target.value;
+      setCurrentPassword(password);
+   };
+
+   // Hàm kiểm tra xem nhập passowrd giống với password của email muốn đổi mk chưa
+   useEffect(() => {
+      const checkPassword = async () => {
+         if (!debouncedPassword || !accountLoggedin?.email) return;
+
+         try {
+            const formData = {
+               email: accountLoggedin.email,
+               password: debouncedPassword,
+            };
+
+            // Gọi API kiểm tra mật khẩu
+            const isPasswordCorrect = await checkCurrentPassword(formData);
+
+            if (isPasswordCorrect) {
+               setPasswordStatus("success");
+            } else {
+               setPasswordStatus("error");
+            }
+         } catch (error) {
+            setPasswordStatus("error");
+         }
+      };
+
+      checkPassword();
+   }, [debouncedPassword]);
 
    // hàm cho mobile
    useEffect(() => {
@@ -86,6 +233,107 @@ export default function HeaderUser() {
 
    return (
       <>
+         {/* Giao diện đổi mật khẩu */}
+
+         <Modal
+            footer={
+               <div className="flex justify-end gap-2">
+                  <Button onClick={handleCloseModalChangePassword}>Hủy</Button>
+                  <Button
+                     onClick={confirmChangePassword}
+                     loading={loading}
+                     type="primary"
+                     danger
+                  >
+                     Lưu
+                  </Button>
+               </div>
+            }
+            onCancel={handleCloseModalChangePassword}
+            open={isShowModalChangePassword}
+         >
+            <Form
+               form={form}
+               layout="vertical"
+               name="basic"
+               requiredMark={false}
+            >
+               <Form.Item
+                  hasFeedback
+                  validateStatus={passwordStatus}
+                  label="Mật khẩu"
+                  name="Password"
+                  rules={[
+                     {
+                        required: true,
+                        message: "Mật khẩu không được để trống",
+                     },
+                     {
+                        pattern: /^[A-Za-z0-9]{6,100}$/,
+                        message: "Mật khẩu phải có 6-100 ký tự",
+                     },
+                  ]}
+               >
+                  <Input.Password
+                     ref={passwordRef}
+                     onChange={handlePasswordChange}
+                  />
+               </Form.Item>
+               <Form.Item
+                  hasFeedback
+                  validateStatus={newPasswordStatus}
+                  label="Mật khẩu mới"
+                  name="NewPassword"
+                  rules={[
+                     {
+                        required: true,
+                        message: "Mật khẩu không được để trống",
+                     },
+                     {
+                        pattern: /^[A-Za-z0-9]{6,100}$/,
+                        message: "Mật khẩu mới phải có 6-100 ký tự",
+                     },
+                  ]}
+               >
+                  <Input.Password
+                     onChange={(e) =>
+                        handleNewPasswordChange(
+                           e.target.value,
+                           setNewPasswordStatus
+                        )
+                     }
+                  />
+               </Form.Item>
+               <Form.Item
+                  hasFeedback
+                  validateStatus={confirmPasswordStatus}
+                  label="Xác nhận mật khẩu mới"
+                  name="ConfirmNewPassword"
+                  rules={[
+                     {
+                        required: true,
+                        message: "Mật khẩu không được để trống",
+                     },
+                     {
+                        pattern: /^[A-Za-z0-9]{6,100}$/,
+                        message:
+                           "Xác nhận mật phải phải trùng với mật khẩu mới",
+                     },
+                  ]}
+               >
+                  <Input.Password
+                     onChange={(e) =>
+                        handleConfirmPassword(
+                           e.target.value,
+                           form.getFieldValue("NewPassword"),
+                           setConfirmPasswordStatus
+                        )
+                     }
+                  />
+               </Form.Item>
+            </Form>
+         </Modal>
+
          {/* Giao diện đăng xuất */}
          <Modal
             onClose={handleCloseModalLogOut}

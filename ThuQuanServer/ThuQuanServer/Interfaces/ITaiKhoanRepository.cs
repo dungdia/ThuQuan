@@ -11,4 +11,5 @@ public interface ITaiKhoanRepository
     public ICollection<ThanhVien> GetThanhVien();
     public bool AddThanhVien(TaikhoanInsertDTO taikhoan);
     public bool UpdateThanhVien(ThanhVienRequestDto taikhoan, int idThanhVien);
+    public bool UpdateTaiKhoan(TaikhoanInsertDTO taikhoan, int idTaiKhoan);
 }
