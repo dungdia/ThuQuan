@@ -30,7 +30,7 @@ export default function ItemDetail() {
                         </span>
                     </div>
                     <div className="item__info__button">
-                        <button className="item__info__button__booking">Đặt sách</button>
+                        <button className="item__info__button__booking">Đặt ngay</button>
                     </div>
                 </div>
             </div>

@@ -14,7 +14,8 @@ public class TaiKhoanRequestDto
     
    
     public string     Password { get; set; }
-    
+
+    [Required(ErrorMessage = "Email la khong duoc de trong")]
     public string Email { get; set; }
     
     [DefaultValue(0)]
