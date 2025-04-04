@@ -9,6 +9,9 @@ import { initJsToggle } from "@/assets/js/header";
 import Cookies from "js-cookie";
 import { HttpStatusCode } from "axios";
 import { login } from "@/services/auth/login";
+import { decryptData, encryption, encryptPassword } from "@/utils/cryptoJS";
+import bcrypt from "bcryptjs";
+import { handleEmailChange, handlePasswordChange } from "@/utils/validate";
 
 // Cú pháp lưu cookie và lấy cookie
 
@@ -18,6 +21,57 @@ export default function Register() {
    const [formEmail] = Form.useForm(); // Form cho email
    const emailRefForgotPass = useRef(null);
    const [isLoadingForgotPass, setIsLoadingForgotPass] = useState(false);
+   const [rememberAccount, setRememberAccount] = useState(false);
+   const [valueEmail, setValueEmail] = useState("");
+   const [valuePass, setValuePass] = useState("");
+   const [form] = Form.useForm(); // Form cho đăng nhập
+   const emailRef = useRef(null);
+   const [loading, setLoading] = useState(false);
+   const [passStatus, setPassStatus] = useState("");
+   const [emailStatus, setEmailStatus] = useState("");
+
+   // Tự focus vào email khi vào trang login và tự động điền giá trị nếu trong localStorage đã có savedAccount khi nhấn "Nhớ tài khoản"
+   useEffect(() => {
+      const savedAccount = JSON.parse(localStorage.getItem("savedAccount"));
+      if (savedAccount) {
+         // Giải mã email và password trước khi điền vòa form
+         const decryptedEmail = decryptData(savedAccount.Email);
+         setValueEmail(decryptedEmail);
+
+         const beforeEncryption = sessionStorage.getItem("beforeEncryption");
+         // So sánh mật khẩu đã mã hóa (beforeEncryption.current) với mật khẩu lưu trong savedAccount
+         bcrypt
+            .compare(beforeEncryption, savedAccount.Password)
+            .then((isPasswordCorrect) => {
+               if (isPasswordCorrect) {
+                  // Giải mã mật khẩu sau khi xác nhận đúng mật khẩu
+                  const decryptedPassword = decryptData(beforeEncryption);
+                  setValuePass(decryptedPassword);
+                  // Cập nhật giá trị vào form
+                  form.setFieldsValue({
+                     Email: decryptedEmail,
+                     Password: decryptedPassword,
+                  });
+               } else {
+                  form.setFieldsValue({
+                     Email: decryptedEmail,
+                     Password: "", // Đảm bảo mật khẩu không bị hiển thị
+                  });
+               }
+            })
+            .catch((error) => {
+               // Cập nhật giá trị vào form
+               form.setFieldsValue({
+                  email: decryptedEmail,
+                  password: "",
+               });
+            });
+         setRememberAccount(true); //Đặt trạng thái checkbox về true
+      }
+      if (emailRef.current) {
+         emailRef.current.focus(); // Tự động focus vào ô email
+      }
+   }, []);
 
    // Kiểm tra xem người dùng đã đăng nhập chưa, nếu rồi thì quay lại trang người dùng
    useEffect(() => {
@@ -32,6 +86,7 @@ export default function Register() {
    // Hàm đăng nhập
    const onFinish = async (values) => {
       try {
+         setLoading(true);
          // Gọi API
          const response = await login(values);
 
@@ -48,6 +103,29 @@ export default function Register() {
          // Lưu thông tin cá nhân của tài khoản đã đăng nhập lên localStorage
          localStorage.setItem("accountLoggedin", JSON.stringify(filtedData));
 
+         if (rememberAccount) {
+            // Mã hóa email
+            const encryptedEmail = encryption(values.Email);
+            // Mã hóa mật khẩu nhẹ
+            const lightEncryption = encryption(values.Password);
+            // Lưu giá trị beforeEncryption vào sessionStorage
+            sessionStorage.setItem("beforeEncryption", lightEncryption);
+            //Mã hóa mật khẩu trước trở nên mạnh hơn khi gửi tới localStorage
+            const encryptedPassword = await encryptPassword(lightEncryption);
+            // Lưu vào localStorage khi nhấn nhớ tài khoản
+            localStorage.setItem(
+               "savedAccount",
+               JSON.stringify({
+                  Email: encryptedEmail, // Lưu email đã mã hóa
+                  Password: encryptedPassword, // Lưu mật khẩu đã mã hóa
+               })
+            );
+         } else {
+            // Xóa khỏi localStorage và sessionStorage
+            localStorage.removeItem("savedAccount");
+            sessionStorage.removeItem("beforeEncryption");
+         }
+
          // Hiển thị thông báo đăng nhập thành công và chuyển trang
          message.success("Đăng nhập thành công", 1, () => {
             navigate("/user");
@@ -60,8 +138,20 @@ export default function Register() {
          } else {
             message.error("Máy chủ đang gặp sự cố. Vui lòng thử lại sau!");
          }
+      } finally {
+         setLoading(false);
       }
    };
+
+   // Gọi lại handleEmailChange khi dữ liệu email thay đổi hoặc handlePasswordChange khi dữ liệu mật khẩu thay đổi
+   useEffect(() => {
+      if (valueEmail) {
+         handleEmailChange({ target: { value: valueEmail } }, setEmailStatus);
+      }
+      if (valuePass) {
+         handleEmailChange({ target: { value: valuePass } }, setPassStatus);
+      }
+   }, [valueEmail, valuePass]);
 
    // Hàm mở quên mật khẩu
    const handleForgotPassword = () => {
@@ -182,7 +272,7 @@ export default function Register() {
                      đó.
                   </p>
                   <Form
-                     // form={form}
+                     form={form}
                      onFinish={onFinish}
                      layout="vertical"
                      name="basic"
@@ -191,6 +281,8 @@ export default function Register() {
                      className="form auth__form-login"
                   >
                      <Form.Item
+                        hasFeedback
+                        validateStatus={emailStatus}
                         className="auth__form-login-item"
                         label={
                            <span className="auth__form-login-lable-input">
@@ -210,16 +302,23 @@ export default function Register() {
                         ]}
                      >
                         <Input
+                           ref={emailRef}
                            prefix={
                               <UserRound className="auth__form-login-icon icon" />
                            }
                            placeholder="Email"
                            className="auth__content-input"
                            autoComplete="email"
+                           value={valueEmail}
+                           onChange={(e) =>
+                              handleEmailChange(e, setEmailStatus)
+                           }
                         />
                      </Form.Item>
 
                      <Form.Item
+                        hasFeedback
+                        validateStatus={passStatus}
                         className="auth__form-login-item"
                         label={
                            <span className="auth__form-lable-input">
@@ -244,6 +343,10 @@ export default function Register() {
                            }
                            placeholder="Mật khẩu"
                            className="auth__content-input"
+                           value={valuePass}
+                           onChange={(e) =>
+                              handlePasswordChange(e, setPassStatus)
+                           }
                         />
                      </Form.Item>
 
@@ -260,6 +363,10 @@ export default function Register() {
                                  id="auth__form-login-act-remember-input"
                                  className="auth__form-login-act-remember-input"
                                  type="checkbox"
+                                 checked={rememberAccount}
+                                 onChange={(e) =>
+                                    setRememberAccount(e.target.checked)
+                                 }
                               />
                               <label
                                  htmlFor="auth__form-login-act-remember-input"
@@ -278,6 +385,7 @@ export default function Register() {
                            className="auth__form-btn-login "
                            type="primary"
                            htmlType="submit"
+                           loading={loading}
                         >
                            Đăng nhập
                         </Button>

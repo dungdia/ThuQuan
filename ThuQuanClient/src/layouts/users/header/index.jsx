@@ -167,10 +167,7 @@ export default function HeaderUser() {
             sdt: sdt,
          });
 
-         if (response.status === 200) {
-            // Hiển thị thông báo thành công
-            message.success("Cập nhật thông tin thành công!");
-
+         if (response?.status === 200) {
             // Lưu dữ liệu mới vào localStorage
             const updatedAccount = {
                ...accountLoggedin,
@@ -189,16 +186,20 @@ export default function HeaderUser() {
             setIsShowInfoModal(true);
             // Cập nhật form thông tin cá nhân
             formInfo.setFieldsValue(updatedAccount);
+
+            // Hiển thị thông báo thành công
+            message.success("Cập nhật thông tin thành công!");
          } else {
             message.error(response?.data?.message || "Cập nhật thất bại!");
          }
       } catch (error) {
-         if (error.status === HttpStatusCode.BadRequest) {
-            message.error(error.response.data);
+         if (error?.response?.status === HttpStatusCode.BadRequest) {
+            console.log("error ", error);
+
+            message.error(error?.response?.data);
          } else {
             message.error("Đã xảy ra lỗi, vui lòng thử lại!");
          }
-         console.log("error ", error);
       } finally {
          setIsLoadingUpdateInfo(false);
       }
@@ -423,7 +424,9 @@ export default function HeaderUser() {
                <Form.Item
                   hasFeedback
                   validateStatus={
-                     valueInfoUserName !== null ? "success" : "error"
+                     valueInfoUserName !== null && valueInfoUserName !== ""
+                        ? "success"
+                        : "error"
                   }
                   label={<div>Tên người dùng</div>}
                   name="userName"
@@ -437,7 +440,11 @@ export default function HeaderUser() {
                </Form.Item>
                <Form.Item
                   hasFeedback
-                  validateStatus={valueInfoHoten !== null ? "success" : "error"}
+                  validateStatus={
+                     valueInfoHoten !== null && valueInfoHoten !== ""
+                        ? "success"
+                        : "error"
+                  }
                   label={<div>Họ và tên</div>}
                   name="hoten"
                >
@@ -447,7 +454,11 @@ export default function HeaderUser() {
                </Form.Item>
                <Form.Item
                   hasFeedback
-                  validateStatus={valueInfoEmail !== null ? "success" : "error"}
+                  validateStatus={
+                     valueInfoEmail !== null && valueInfoEmail !== ""
+                        ? "success"
+                        : "error"
+                  }
                   label={<div>Email</div>}
                   name="email"
                >
@@ -455,7 +466,11 @@ export default function HeaderUser() {
                </Form.Item>
                <Form.Item
                   hasFeedback
-                  validateStatus={valueInfoSDT !== null ? "success" : "error"}
+                  validateStatus={
+                     valueInfoSDT !== null && valueInfoSDT !== ""
+                        ? "success"
+                        : "error"
+                  }
                   label={<div>Số điện thoại</div>}
                   name="sdt"
                >
@@ -494,7 +509,9 @@ export default function HeaderUser() {
                <Form.Item
                   hasFeedback
                   validateStatus={
-                     valueInfoUserName !== null ? "success" : "error"
+                     valueInfoUserName !== null && valueInfoUserName !== ""
+                        ? "success"
+                        : "error"
                   }
                   label={<div onClick={handlePreventFocus}>Tên người dùng</div>}
                   name="userName"
@@ -508,7 +525,11 @@ export default function HeaderUser() {
                </Form.Item>
                <Form.Item
                   hasFeedback
-                  validateStatus={valueInfoHoten !== null ? "success" : "error"}
+                  validateStatus={
+                     valueInfoHoten !== null && valueInfoHoten !== ""
+                        ? "success"
+                        : "error"
+                  }
                   label={<div onClick={handlePreventFocus}>Họ và tên</div>}
                   name="hoten"
                >
@@ -519,7 +540,11 @@ export default function HeaderUser() {
                </Form.Item>
                <Form.Item
                   hasFeedback
-                  validateStatus={valueInfoEmail !== null ? "success" : "error"}
+                  validateStatus={
+                     valueInfoEmail !== null && valueInfoEmail !== ""
+                        ? "success"
+                        : "error"
+                  }
                   label={<div onClick={handlePreventFocus}>Email</div>}
                   name="email"
                >
@@ -530,7 +555,11 @@ export default function HeaderUser() {
                </Form.Item>
                <Form.Item
                   hasFeedback
-                  validateStatus={valueInfoSDT !== null ? "success" : "error"}
+                  validateStatus={
+                     valueInfoSDT !== null && valueInfoSDT !== ""
+                        ? "success"
+                        : "error"
+                  }
                   label={<div onClick={handlePreventFocus}>Số điện thoại</div>}
                   name="sdt"
                >

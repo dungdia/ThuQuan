@@ -26,8 +26,21 @@ const handleEmailChange = (e, setEmailStatus) => {
 
 // Hàm kiểm tra định dạng của password
 const validatePassword = (password) => {
-   const regex = /^[A-Za-z0-9]{5,}$/;
+   const regex = /^[A-Za-z0-9]{6,}$/;
    return regex.test(password);
+};
+
+// Hàm xử lý name
+const handleNameChange = (e, setNameStatus) => {
+   const name = e.target.value;
+   // Cập nhật trạng thái validate
+   if (!name) {
+      setNameStatus(""); // Reset trạng thái nếu input rỗng
+   } else if (validateName(name)) {
+      setNameStatus("success"); // Tên hợp lệ
+   } else {
+      setNameStatus("error"); // Tên không hợp lệ
+   }
 };
 
 // Hàm xử lý password
@@ -69,6 +82,7 @@ const handleConfirmPassword = (
 };
 
 export {
+   handleNameChange,
    handleConfirmPassword,
    handleEmailChange,
    handlePasswordChange,
