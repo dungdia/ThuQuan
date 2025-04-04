@@ -149,7 +149,7 @@ export default function Register() {
          handleEmailChange({ target: { value: valueEmail } }, setEmailStatus);
       }
       if (valuePass) {
-         handleEmailChange({ target: { value: valuePass } }, setPassStatus);
+         handlePasswordChange({ target: { value: valuePass } }, setPassStatus);
       }
    }, [valueEmail, valuePass]);
 

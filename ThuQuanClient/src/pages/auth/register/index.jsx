@@ -8,7 +8,13 @@ import introArrowIcon from "@/assets/icons/intro-arrow.svg";
 import { initJsToggle } from "@/assets/js/header";
 import { register } from "@/services/auth/register";
 import { HttpStatusCode } from "axios";
-import { handleConfirmPassword, handleEmailChange, handleNameChange, handlePasswordChange } from "@/utils/validate";
+import {
+   handleConfirmPassword,
+   handleEmailChange,
+   handleNameChange,
+   handlePasswordChange,
+} from "@/utils/validate";
+import Cookies from "js-cookie";
 
 export default function Register() {
    const navigate = useNavigate();
@@ -19,6 +25,15 @@ export default function Register() {
    const [emailStatus, setEmailStatus] = useState("");
    const [passStatus, setPassStatus] = useState("");
    const [rePassStatus, setRePassStatus] = useState("");
+
+   // Kiểm tra trạng thái đăng nhập
+   useEffect(() => {
+      // Lấy dữ liệu từ Cookie
+      const accessToken = Cookies.get("accessToken");
+      if (accessToken) {
+         navigate("/user");
+      }
+   }, []);
 
    // Hàm tự focus vào trường userName
    useEffect(() => {
