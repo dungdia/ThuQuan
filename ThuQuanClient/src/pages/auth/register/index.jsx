@@ -1,18 +1,79 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import logoIcon from "@/assets/icons/logo.svg";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { LockKeyhole, UserPen, UserRound } from "lucide-react";
 import introRegister from "@/assets/images/auth/intro.png";
 import introArrowIcon from "@/assets/icons/intro-arrow.svg";
 import { initJsToggle } from "@/assets/js/header";
+import { register } from "@/services/auth/register";
+import { HttpStatusCode } from "axios";
+import {
+   handleConfirmPassword,
+   handleEmailChange,
+   handleNameChange,
+   handlePasswordChange,
+} from "@/utils/validate";
+import Cookies from "js-cookie";
 
 export default function Register() {
+   const navigate = useNavigate();
+   const [form] = Form.useForm();
+   const [loading, setLoading] = React.useState(false);
+   const nameRef = React.useRef();
+   const [nameStatus, setNameStatus] = useState("");
+   const [emailStatus, setEmailStatus] = useState("");
+   const [passStatus, setPassStatus] = useState("");
+   const [rePassStatus, setRePassStatus] = useState("");
+
+   // Kiểm tra trạng thái đăng nhập
+   useEffect(() => {
+      // Lấy dữ liệu từ Cookie
+      const accessToken = Cookies.get("accessToken");
+      if (accessToken) {
+         navigate("/user");
+      }
+   }, []);
+
+   // Hàm tự focus vào trường userName
+   useEffect(() => {
+      if (nameRef.current) nameRef.current.focus();
+   }, []);
+
+   const onFinish = async (values) => {
+      try {
+         setLoading(true);
+         if (values.password !== values.rePassword) {
+            message.error("Mật khẩu không khớp, vui lòng thử lại!");
+            return;
+         }
+
+         // Gọi API
+         const response = await register(values);
+         console.log("response ", response);
+
+         if (response?.status === 200) {
+            form.resetFields();
+            navigate("/login");
+            message.success("Đăng ký thành công");
+         } else {
+            message.error("Đăng ký thất bại, vui lòng thử lại!");
+         }
+      } catch (error) {
+         if (error?.status === HttpStatusCode.BadRequest) {
+            message.error(error?.response?.data);
+         } else {
+            message.error("Máy chủ đang gặp sự cố. Vui lòng thử lại sau!");
+         }
+         console.log("error: ", error);
+      } finally {
+         setLoading(false);
+      }
+   };
+
    useEffect(() => {
       initJsToggle();
    }, []);
-
-   const navigate = useNavigate();
 
    const goBackLogin = () => {
       navigate("/login");
@@ -60,8 +121,8 @@ export default function Register() {
                      tiết kiệm tiền.
                   </p>
                   <Form
-                     // onFinish={onFinish}
-                     // form={form}
+                     onFinish={onFinish}
+                     form={form}
                      layout="vertical"
                      name="basic"
                      autoComplete="off"
@@ -69,32 +130,33 @@ export default function Register() {
                      className="form auth__form"
                   >
                      <Form.Item
+                        hasFeedback
+                        validateStatus={nameStatus}
                         className="auth__form-item"
                         label={
                            <span className="auth__form-lable-input">
                               Tên người dùng
                            </span>
                         }
-                        name="username"
+                        name="userName"
                         rules={[
                            {
                               required: true,
                               message: "Tên không được để trống",
                            },
-                           {
-                              pattern:
-                                 /^[a-zA-ZÀÁẠÃẢẶẴẲẮẰÁĂÂẤẪẨẬẦÃÈẼẺẸÉÊẾỀỄỆỂÌÍỈỊIỢỠỚỜỞÕỌỎÒÓỔỖỐỒỘÔÕƯỨỪỰỮỬỤŨỦÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂÊƠàáạảãèéẹẻẽìíịỉĩòóọỏõùúụủũơớờợởỡăắằặẳẵâấầậẩẫêếềệểễđĩọỏốồộổỗồờớợởẽẹẻếìíùúụũưữựửữữýỳỵỷỹ ]+$/,
-                              message: "Tên chỉ được chứa chữ",
-                           },
                         ]}
                      >
                         <Input
+                           ref={nameRef}
                            prefix={<UserPen className="auth__form-icon icon" />}
                            placeholder="Nhập tên"
                            className="auth__content-input"
+                           onChange={(e) => handleNameChange(e, setNameStatus)}
                         />
                      </Form.Item>
                      <Form.Item
+                        hasFeedback
+                        validateStatus={emailStatus}
                         className="auth__form-item"
                         label={
                            <span className="auth__form-lable-input">Email</span>
@@ -118,10 +180,15 @@ export default function Register() {
                            placeholder="Email"
                            className="auth__content-input"
                            autoComplete="email"
+                           onChange={(e) =>
+                              handleEmailChange(e, setEmailStatus)
+                           }
                         />
                      </Form.Item>
 
                      <Form.Item
+                        hasFeedback
+                        validateStatus={passStatus}
                         className="auth__form-item"
                         label={
                            <span className="auth__form-lable-input">
@@ -135,8 +202,8 @@ export default function Register() {
                               message: "Mật khẩu không được để trống",
                            },
                            {
-                              pattern: /^[A-Za-z0-9]{5,}$/,
-                              message: "Password phải từ 5 ký tự trở lên",
+                              pattern: /^[A-Za-z0-9]{6,}$/,
+                              message: "Password phải từ 6 ký tự trở lên",
                            },
                         ]}
                      >
@@ -146,25 +213,30 @@ export default function Register() {
                            }
                            placeholder="Mật khẩu"
                            className="auth__content-input"
+                           onChange={(e) =>
+                              handlePasswordChange(e, setPassStatus)
+                           }
                         />
                      </Form.Item>
 
                      <Form.Item
+                        hasFeedback
+                        validateStatus={rePassStatus}
                         className="auth__form-item"
                         label={
                            <span className="auth__form-lable-input">
                               Xác nhận mật khẩu
                            </span>
                         }
-                        name="Repassword"
+                        name="rePassword"
                         rules={[
                            {
                               required: true,
                               message: "Mật khẩu không được để trống",
                            },
                            {
-                              pattern: /^[A-Za-z0-9]{5,}$/,
-                              message: "Password phải từ 5 ký tự trở lên",
+                              pattern: /^[A-Za-z0-9]{6,}$/,
+                              message: "Password phải từ 6 ký tự trở lên",
                            },
                         ]}
                      >
@@ -174,11 +246,19 @@ export default function Register() {
                            }
                            placeholder="Mật khẩu"
                            className="auth__content-input"
+                           onChange={(e) =>
+                              handleConfirmPassword(
+                                 e.target.value,
+                                 form.getFieldValue("password"),
+                                 setRePassStatus
+                              )
+                           }
                         />
                      </Form.Item>
 
                      <Form.Item label={null}>
                         <Button
+                           loading={loading}
                            className="auth__form-btn-register "
                            type="primary"
                            htmlType="submit"

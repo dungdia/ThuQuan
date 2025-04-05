@@ -189,6 +189,13 @@ select {
   }
 }
 
+.select-none {
+  user-select: none;
+  pointer-events: none;
+  color: #f87171;
+  font-weight: 400;
+}
+
 .row > *, .container-fluid, .container {
   padding-left: calc(var(--grid-gutter-x) * 0.5);
   padding-right: calc(var(--grid-gutter-x) * 0.5);

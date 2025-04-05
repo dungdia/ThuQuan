@@ -1,5 +1,6 @@
 using ThuQuanServer.Dtos.InsertObject;
 using ThuQuanServer.Dtos.Request;
+using ThuQuanServer.Dtos.Response;
 using ThuQuanServer.Models;
 
 namespace ThuQuanServer.Interfaces;
@@ -12,4 +13,7 @@ public interface ITaiKhoanRepository
     public bool AddThanhVien(TaikhoanInsertDTO taikhoan);
     public bool UpdateThanhVien(ThanhVienRequestDto taikhoan, int idThanhVien);
     public bool UpdateTaiKhoan(TaikhoanInsertDTO taikhoan, int idTaiKhoan);
+
+    public bool UpdateThanhVien(ThanhVienUpdateResponseDTO thanhvien, int idThanhVien);
+    public bool UpdateTaiKhoan(TaiKhoanUpdateResponseDTO taikhoan, int idTaiKhoan);
 }
