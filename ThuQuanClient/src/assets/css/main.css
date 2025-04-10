@@ -1402,6 +1402,13 @@ html {
 
 .header {
   background: var(--header-bg-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--header-bg-color);
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* tuỳ chọn để tạo hiệu ứng nổi */
 }
 
 .top_bar {
@@ -1892,11 +1899,14 @@ html {
 }
 
 .slideshow {
+  margin-top: 150px;
+  border-radius: 20px;
+  overflow: hidden;
   position: relative;
 }
 .slideshow__inner {
   display: flex;
-  overflow: hidden;
+  transition: all 0.5s ease-in-out;
 }
 .slideshow__item {
   position: relative;
@@ -2163,6 +2173,15 @@ html {
   font-weight: 500;
   line-height: 150%; /* 150% */
 }
+.book-card__price--available {
+  color: #ffb700;
+}
+.book-card__price--borrowed {
+  color: #81f781;
+}
+.book-card__price--broken {
+  color: #f78181;
+}
 .book-card__author {
   margin: 16px 0;
   color: #9e9da8;
@@ -2177,6 +2196,13 @@ html {
 }
 .book-card__star {
   margin: 0 6px 0 auto;
+}
+.book-card__pagenation-books {
+  margin-top: 60px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .home__container {
@@ -2543,14 +2569,14 @@ html {
 }
 
 .item__container {
-  margin-top: 50px;
+  margin-top: 150px;
 }
 
 .item {
   width: 100%;
   height: 500px;
   display: flex;
-  background-color: #EDEDED;
+  background-color: #ededed;
 }
 .item__img {
   width: 35%;
@@ -2598,15 +2624,27 @@ html {
 }
 .item__info__button__booking {
   padding: 14px 20px;
-  background-color: #FFB700;
+  background-color: #ffb700;
   font-size: 18px;
   transition: 0.3s;
   border-radius: 5px;
   float: right;
   margin-right: 20px;
 }
-.item__info__button__booking:hover {
-  background-color: #E09C00;
+.item__info__button__booking--available:hover {
+  background-color: #e09c00;
+}
+.item__info__button--borrowed {
+  background: #81f781;
+  color: #fff;
+  cursor: not-allowed;
+  user-select: none;
+}
+.item__info__button--broken {
+  background: #f78181;
+  color: #fff;
+  cursor: not-allowed;
+  user-select: none;
 }
 
 /*# sourceMappingURL=main.css.map */

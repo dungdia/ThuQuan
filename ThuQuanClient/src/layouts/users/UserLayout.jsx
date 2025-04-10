@@ -5,6 +5,7 @@ import Footer from "./footer";
 import SlideShow from "./slideShow";
 import Cookies from "js-cookie";
 import { Navigate, useNavigate } from "react-router-dom";
+import { UserHeaderProvider } from "@/providers/userHeaderProvider";
 
 export default function UserLayout() {
    const navigate = useNavigate();
@@ -19,12 +20,14 @@ export default function UserLayout() {
    }, []);
    return (
       <>
-         <HeaderUser />
-         <main className="container home">
-            <SlideShow />
-            <RenderBody />
-         </main>
-         <Footer />
+         <UserHeaderProvider>
+            <HeaderUser />
+            <main className="container home">
+               <SlideShow />
+               <RenderBody />
+            </main>
+            <Footer />
+         </UserHeaderProvider>
       </>
    );
 }

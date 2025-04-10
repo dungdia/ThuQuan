@@ -41,6 +41,20 @@
       line-height: 150%; /* 150% */
    }
 
+   &__price {
+      &--available {
+         color: #ffb700;
+      }
+
+      &--borrowed {
+         color: #81f781;
+      }
+
+      &--broken {
+         color: #f78181;
+      }
+   }
+
    &__author {
       margin: 16px 0;
       color: #9e9da8;
@@ -57,5 +71,13 @@
 
    &__star {
       margin: 0 6px 0 auto;
+   }
+
+   &__pagenation-books {
+      margin-top: 60px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
    }
 }

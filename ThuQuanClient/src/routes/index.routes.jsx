@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import LazyLoadComponent from "@/components/base/LazyLoadComponent";
 import React from "react";
+import { UserHeaderProvider } from "@/providers/userHeaderProvider";
 // Cách import thông thường => làm giảm hiệu năng ứng dụng
 // import BookManager from "../pages/user/bookManager";
 // import DeviceManager from "../pages/user/deviceManager";
@@ -19,7 +20,7 @@ const BookManager = React.lazy(() => import("@/pages/user/bookManager"));
 const DeviceManager = React.lazy(() => import("@/pages/user/deviceManager"));
 const BookingHistory = React.lazy(() => import("@/pages/user/bookingHistory"));
 const Contact = React.lazy(() => import("@/pages/user/contact"));
-const ItemDetail = React.lazy(() => import("@/pages/itemDetail"))
+const ItemDetail = React.lazy(() => import("@/pages/itemDetail"));
 
 const routers = createBrowserRouter([
    {
@@ -49,18 +50,22 @@ const routers = createBrowserRouter([
    {
       path: "/booking-history",
       element: (
-         <LazyLoadComponent>
-            <BookingHistory />
-         </LazyLoadComponent>
+         <UserHeaderProvider>
+            <LazyLoadComponent>
+               <BookingHistory />
+            </LazyLoadComponent>
+         </UserHeaderProvider>
       ),
    },
    {
       path: "/itemDetail",
       element: (
-         <LazyLoadComponent>
-            <ItemDetail/>
-         </LazyLoadComponent>
-      )
+         <UserHeaderProvider>
+            <LazyLoadComponent>
+               <ItemDetail />
+            </LazyLoadComponent>
+         </UserHeaderProvider>
+      ),
    },
    {
       path: "/user",

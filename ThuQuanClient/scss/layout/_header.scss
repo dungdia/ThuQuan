@@ -7,6 +7,13 @@
 
 .header {
    background: var(--header-bg-color);
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   background: var(--header-bg-color);
+   z-index: 10;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* tuỳ chọn để tạo hiệu ứng nổi */
 }
 
 .top_bar {
@@ -316,4 +323,3 @@
       }
    }
 }
- 

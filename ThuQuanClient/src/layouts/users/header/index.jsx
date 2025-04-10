@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { initJsToggle } from "../../../assets/js/header";
 import moreIcon from "@/assets/icons/more.svg";
@@ -42,8 +42,22 @@ import {
 import { useDebounce } from "@/hook/useDebounce";
 import { toggleDarkMode } from "@/utils/theme";
 import { use } from "react";
+import { HeaderContext } from "@/providers/userHeaderProvider";
 
 export default function HeaderUser() {
+   const context = useContext(HeaderContext);
+
+   if (!context) {
+      return null; // hoặc hiển thị fallback UI nào đó
+   }
+
+   const {
+      searchValue,
+      setSearchValue,
+      likedBooksContext,
+      setLikedBooksContext,
+   } = context;
+
    const navigate = useNavigate();
    const [form] = useForm();
    const passwordRef = useRef(null);
@@ -67,6 +81,21 @@ export default function HeaderUser() {
    const [account, setAccount] = useState({});
    const [baseId, setBaseId] = useState(null);
    const [isLoadingUpdateInfo, setIsLoadingUpdateInfo] = useState(false);
+   const [searchValueProduct, setSearchValueProduct] = useState("");
+
+   if (
+      searchValue === undefined ||
+      setSearchValue === undefined ||
+      likedBooksContext === undefined ||
+      setLikedBooksContext === undefined
+   ) {
+      console.log("Context values are missing!");
+   }
+
+   // Cập nhật searchValue khi người dùng nhập vào ô tìm kiếm
+   useEffect(() => {
+      setSearchValue(searchValueProduct);
+   }, [searchValueProduct, setSearchValue]);
 
    // Lấy thông tin từ localStorage
    const accountLoggedin =
@@ -386,6 +415,25 @@ export default function HeaderUser() {
    const handleNextPageLogin = () => {
       navigate("/login");
    };
+
+   // Các thành phần của DropDown của các sản phẩm yêu thích
+   let likedBooksLocal = JSON.parse(localStorage.getItem("likedBooks")) || {};
+
+   // Mỗi khi cập nhật danh sách yêu thích thì cập nhật lại
+   useEffect(() => {
+      likedBooksLocal = JSON.parse(localStorage.getItem("likedBooks")) || {};
+   }, [likedBooksContext]);
+
+   const favoritesDropdownItems = Object.values(likedBooksLocal).map(
+      (book) => ({
+         key: book.id,
+         label: (
+            <Link to="/itemDetail" state={{ book }}>
+               {book.tenVatDung}
+            </Link>
+         ),
+      })
+   );
 
    return (
       <>
@@ -733,6 +781,10 @@ export default function HeaderUser() {
                                  id=""
                                  placeholder="Tìm kiếm ..."
                                  className="navbar-act__search-field"
+                                 value={searchValueProduct}
+                                 onChange={(e) =>
+                                    setSearchValueProduct(e.target.value)
+                                 }
                               />
                               <div className="navbar-act__separate"></div>
                               <img
@@ -743,16 +795,26 @@ export default function HeaderUser() {
                            </button>
                         </div>
 
-                        {/* Luot thich va lich su dat mobile */}
+                        {/* Luot thich va lich su đặt mobile */}
                         <div className="navbar-act__group">
-                           <button className="navbar-act__btn">
-                              <img
-                                 src={heartIcon}
-                                 alt="Tim"
-                                 className="navbar-act__icon icon"
-                              />
-                              <span className="navbar-act__title">03</span>
-                           </button>
+                           {/* DropDown các sản phẩm yêu thích mobile */}
+                           <Dropdown
+                              arrow
+                              placement="bottomRight"
+                              menu={{ items: favoritesDropdownItems }}
+                              trigger={["click"]}
+                           >
+                              <button className="navbar-act__btn">
+                                 <img
+                                    src={heartIcon}
+                                    alt="Tim"
+                                    className="navbar-act__icon icon"
+                                 />
+                                 <span className="navbar-act__title">
+                                    {favoritesDropdownItems.length}
+                                 </span>
+                              </button>
+                           </Dropdown>
 
                            <div className="navbar-act__separate"></div>
 
@@ -805,11 +867,15 @@ export default function HeaderUser() {
                   {/* Actions */}
                   <div className="top-act">
                      <div className="top-act__group d-md-none top-act__group--single">
-                        <button className="top-act__btn">
+                        <div className="top-act__btn">
                            <input
                               type="text"
                               name=""
                               id=""
+                              value={searchValueProduct}
+                              onChange={(e) =>
+                                 setSearchValueProduct(e.target.value)
+                              }
                               placeholder="Tìm kiếm ..."
                               className="top-act__search-field "
                            />
@@ -820,18 +886,29 @@ export default function HeaderUser() {
                               className="top-act__icon icon"
                            />
                            <span className="top-act__title"></span>
-                        </button>
+                        </div>
                      </div>
 
                      <div className="top-act__group d-md-none">
-                        <button className="top-act__btn">
-                           <img
-                              src={heartIcon}
-                              alt="Tim"
-                              className="top-act__icon icon"
-                           />
-                           <span className="top-act__title">03</span>
-                        </button>
+                        {/* DropDown các sản phẩm yêu thích */}
+                        <Dropdown
+                           arrow
+                           placement="top"
+                           menu={{ items: favoritesDropdownItems }}
+                           trigger={["click"]}
+                           height={200}
+                        >
+                           <button className="top-act__btn">
+                              <img
+                                 src={heartIcon}
+                                 alt="Tim"
+                                 className="top-act__icon icon"
+                              />
+                              <span className="top-act__title">
+                                 {favoritesDropdownItems.length}
+                              </span>
+                           </button>
+                        </Dropdown>
 
                         <div className="top-act__separate"></div>
 

@@ -62,8 +62,8 @@ export default function Register() {
             .catch((error) => {
                // Cập nhật giá trị vào form
                form.setFieldsValue({
-                  email: decryptedEmail,
-                  password: "",
+                  Email: decryptedEmail,
+                  Password: "",
                });
             });
          setRememberAccount(true); //Đặt trạng thái checkbox về true
@@ -253,7 +253,6 @@ export default function Register() {
                   <img src={introArrowIcon} alt="" />
                </button>
             </div>
-
             {/* Auth content */}
             <div id="auth-content-login" className="auth__content-login hide">
                <div className="auth__content-login-inner">

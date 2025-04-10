@@ -25,9 +25,9 @@ export default function RenderBody() {
                               alt=""
                               className="cate-item__thumb"
                            />
-                           <div class="cate-item__info">
-                              <h3 class="cate-item__title">$24 - $150</h3>
-                              <p class="cate-item__desc">
+                           <div className="cate-item__info">
+                              <h3 className="cate-item__title">$24 - $150</h3>
+                              <p className="cate-item__desc">
                                  New sumatra mandeling coffe blend
                               </p>
                            </div>
@@ -82,14 +82,14 @@ export default function RenderBody() {
                      <strong className="home__heading-name">Đức</strong> Đến Thư
                      Quán
                   </h2>
-                  <button className="filter-btn">
+                  {/* <button className="filter-btn">
                      Filter
                      <img
                         src={filterIcon}
                         alt="filter"
                         className="filter-btn__icon icon"
                      />
-                  </button>
+                  </button> */}
                   {/* <div className="filter">
                      <h3 className="filter__heading">
                         Filter

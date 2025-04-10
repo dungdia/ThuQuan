@@ -16,12 +16,21 @@ public class DbContext
 {
     private readonly MySqlConnection _connection;
     private MySqlTransaction? _transaction;
+    private readonly string _connectionString;
     
     public DbContext(IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
-        _connection = new MySqlConnection(connectionString);
+        _connectionString= configuration.GetConnectionString("DefaultConnection");
+        _connection = new MySqlConnection(_connectionString);
     }
+    
+    public MySqlConnection GetOpenConnection()
+    {
+        var connection = new MySqlConnection(_connectionString);
+        connection.Open();
+        return connection;
+    }
+
 
     public ICollection<T> GetData<T>(string query, params object?[] values)
     {
@@ -251,21 +260,58 @@ public class DbContext
         }
     }
 
+    // private static T MapRowToType<T>(DataRow row)
+    // {
+    //     // Create an instance of the object
+    //     var obj = Activator.CreateInstance<T>();
+    //     
+    //     // Get all properties of the object
+    //     var properties = typeof(T).GetProperties();
+    //     foreach (var property in properties)
+    //     {
+    //         if (row[property.Name] != DBNull.Value)
+    //         {
+    //             var value = Convert.ChangeType(row[property.Name], property.PropertyType);
+    //             property.SetValue(obj, value);   
+    //         }
+    //     }
+    //     return obj;
+    // }
+    
     private static T MapRowToType<T>(DataRow row)
     {
-        // Create an instance of the object
         var obj = Activator.CreateInstance<T>();
-        
-        // Get all properties of the object
         var properties = typeof(T).GetProperties();
+
         foreach (var property in properties)
         {
-            if (row[property.Name] != DBNull.Value)
+            if (row.Table.Columns.Contains(property.Name) && row[property.Name] != DBNull.Value)
             {
-                var value = Convert.ChangeType(row[property.Name], property.PropertyType);
-                property.SetValue(obj, value);   
+                var rawValue = row[property.Name];
+
+                object? value = null;
+                if (property.PropertyType.IsEnum)
+                {
+                    var rawStr = rawValue.ToString()?.Replace(" ", "_");
+                    value = Enum.Parse(property.PropertyType, rawStr ?? "", ignoreCase: true);
+                }
+                else if (Nullable.GetUnderlyingType(property.PropertyType)?.IsEnum == true)
+                {
+                    var enumType = Nullable.GetUnderlyingType(property.PropertyType)!;
+                    var rawStr = rawValue.ToString()?.Replace(" ", "_");
+                    value = Enum.Parse(enumType, rawStr ?? "", ignoreCase: true);
+                }
+                else
+                {
+                    value = Convert.ChangeType(rawValue, property.PropertyType);
+                }
+
+                property.SetValue(obj, value);
             }
         }
+
         return obj;
     }
+
+
 }
