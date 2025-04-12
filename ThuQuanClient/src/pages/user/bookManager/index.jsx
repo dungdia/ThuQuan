@@ -27,18 +27,14 @@ export default function BookManager() {
    });
 
    // Lấy giá trị từ HeaderContext -> HeaderUser
-   const {
-      searchValue,
-      setSearchValue,
-      likedBooksContext,
-      setLikedBooksContext,
-   } = useContext(HeaderContext);
+   const { searchValue, setSearchValue, likedBookContext, setLikeBookContext } =
+      useContext(HeaderContext);
 
    if (
       searchValue === undefined ||
       setSearchValue === undefined ||
-      likedBooksContext === undefined ||
-      setLikedBooksContext === undefined
+      likedBookContext === undefined ||
+      setLikeBookContext === undefined
    ) {
       console.log("Context values are missing!");
    }
@@ -71,16 +67,10 @@ export default function BookManager() {
       fetchBooks();
    }, [debounceSearch, currentPage, pageSize]);
 
-   // Lấy chạy khi vào trang user
+   // chỉ chạy khi vào trang user
    useEffect(() => {
       fetchBooks();
    }, []);
-
-   // Hàm lấy dữ liệu từ các sách
-   const handleGetDataBook = (book) => {
-      // Lấy dữ liệu book rồi qua trang itemDetail
-      navigate("/itemDetail", { state: { book } });
-   };
 
    // Hàm chuyển trang
    const handleChangePage = (currentPage, pageSize) => {
@@ -88,6 +78,12 @@ export default function BookManager() {
       setCurrentPage(currentPage);
       // Cập nhật lại số lượng sản phẩm trên 1 trang
       setPageSize(pageSize);
+   };
+
+   // Hàm lấy dữ liệu từ các sách
+   const handleGetDataBook = (book) => {
+      // Lấy dữ liệu book rồi qua trang itemDetail
+      navigate("/itemDetail", { state: { book } });
    };
 
    // Hàm lấy ngẫu nhiên rating
@@ -105,7 +101,7 @@ export default function BookManager() {
          newLikedBooks[book.id] = book;
       }
       setLikedBooks(newLikedBooks);
-      setLikedBooksContext(newLikedBooks); // Cập nhật likedBooksContext trong HeaderContext
+      setLikeBookContext(newLikedBooks); // Cập nhật likedBookContext trong HeaderContext
       localStorage.setItem("likedBooks", JSON.stringify(newLikedBooks));
    };
 
@@ -127,7 +123,7 @@ export default function BookManager() {
                            >
                               <img
                                  src={book.hinhAnh}
-                                 alt=""
+                                 alt={book.tenVatDung}
                                  className="book-card__thumb"
                               />
                            </Link>
@@ -149,7 +145,10 @@ export default function BookManager() {
                               />
                            </button>
                         </div>
-                        <h3 className="book-card__title">
+                        <h3
+                           title={book.tenVatDung}
+                           className="book-card__title format w-text"
+                        >
                            <Link
                               to="#"
                               onClick={(e) => {
@@ -161,11 +160,12 @@ export default function BookManager() {
                            </Link>
                         </h3>
                         <p
+                           title={book.moTa}
                            onClick={(e) => {
                               e.preventDefault();
                               handleGetDataBook(book);
                            }}
-                           className="book-card__author"
+                           className="book-card__author format"
                         >
                            {book.moTa}
                         </p>

@@ -5,18 +5,30 @@ const HeaderContext = createContext();
 function UserHeaderProvider({ children }) {
    const [searchValue, setSearchValue] = useState("");
    // State để quản lý trạng thái thích (liked) của sách
-   const [likedBooksContext, setLikedBooksContext] = useState(() => {
+   const [likedBookContext, setLikeBookContext] = useState(() => {
       const stored = localStorage.getItem("likedBooks");
       return stored ? JSON.parse(stored) : {};
    });
+   // State để quản lý trạng thái thích (liked) của thiết bị
+   const [likedDeviceContext, setLikeDeviceContext] = useState(() => {
+      const stored = localStorage.getItem("likedDevices");
+      return stored ? JSON.parse(stored) : {};
+   });
+
+   // Lấy loại vật dụng
+   const [vatDungType, setVatDungType] = useState(null);
 
    return (
       <HeaderContext.Provider
          value={{
             searchValue,
             setSearchValue,
-            likedBooksContext,
-            setLikedBooksContext,
+            likedBookContext,
+            setLikeBookContext,
+            likedDeviceContext,
+            setLikeDeviceContext,
+            vatDungType,
+            setVatDungType,
          }}
       >
          {children}

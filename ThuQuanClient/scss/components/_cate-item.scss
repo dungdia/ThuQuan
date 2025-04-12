@@ -8,7 +8,9 @@
    padding: 20px 26px;
    border-radius: 16px;
    background: var(--cate-item-bg);
-
+   &:hover &__title {
+      color: #ffb700;
+   }
    @include abstracts.screen(xl) {
       flex-direction: column;
    }

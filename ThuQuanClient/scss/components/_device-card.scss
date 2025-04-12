@@ -1,13 +1,13 @@
 @use "../abstracts";
 
-.book-card {
+.device-card {
    display: flex;
    flex-direction: column;
    height: 100%;
    padding: 16px;
    border-radius: 20px;
-   background: var(--book-card-bg);
-   box-shadow: 0 20px 60px 10px var(--book-card-shadow);
+   background: var(--device-card-bg);
+   box-shadow: 0 20px 60px 10px var(--device-card-shadow);
 
    &__img-wrap {
       position: relative;
@@ -76,7 +76,7 @@
       margin: 0 6px 0 auto;
    }
 
-   &__pagenation-books {
+   &__pagenation-devices {
       margin-top: 60px;
       width: 100%;
       display: flex;

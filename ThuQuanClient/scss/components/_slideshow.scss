@@ -20,9 +20,22 @@
       @include abstracts.screen(md) {
          padding-top: 50%;
       }
+
+      // Fix Ant Design Image component not respecting width/height
+      .ant-image,
+      .ant-image-img {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100% !important;
+         height: 100% !important;
+         object-fit: cover;
+         border-radius: 20px;
+      }
    }
 
    &__img {
+      // Có thể giữ lại nếu bạn dùng <img />, không ảnh hưởng nếu là Ant Design
       position: absolute;
       top: 0;
       left: 0;
@@ -45,12 +58,12 @@
    &__num {
       font-size: 1.8rem;
       font-weight: 500;
-      line-height: 144.444%; /* 144.444% */
+      line-height: 144.444%;
       color: var(--color);
 
       @include abstracts.screen(md) {
          font-size: 1.4rem;
-         line-height: 142.857%; /* 142.857% */
+         line-height: 142.857%;
       }
    }
 

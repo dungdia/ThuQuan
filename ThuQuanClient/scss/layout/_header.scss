@@ -172,6 +172,7 @@
    &__list {
       @extend %flexItemsCenter;
       gap: 30px;
+      margin-bottom: 0;
 
       @include abstracts.screen(lg) {
          flex-direction: column;
@@ -308,11 +309,14 @@
    }
 
    &__avatar {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 50px;
       height: 50px;
       border-radius: 8px;
       cursor: pointer;
+      background: var(--bg-avatar-color);
    }
 
    &__sign-up {

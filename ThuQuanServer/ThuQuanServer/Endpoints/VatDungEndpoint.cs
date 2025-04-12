@@ -56,5 +56,29 @@ public static class VatDungEndpoint
             var pagedResult = vatDungRepository.GetVatDungBooks(search ?? "", page, pageSize);
             return Results.Ok(pagedResult);
         }).WithTags(tagName);
+        
+        // Lấy 3 vật dụng theo loại
+        app.MapGet("/VatDung/three-books", ([FromQuery] int loaiVatDung) =>
+        {
+            var result = vatDungRepository.GetThreeBook(loaiVatDung);
+            return Results.Ok(result);
+        }).WithTags(tagName);
+        
+        // Lấy danh thiết bị vật dụng loại thiết bị (Device)
+        app.MapGet("/VatDung/devices", () =>
+        {
+            var devices = vatDungRepository.GetDevice();
+            return Results.Ok(devices);
+        }).WithTags(tagName);
+
+        // Lấy danh sách có phân trang và tìm kiếm
+        app.MapGet("/VatDung/devices-paging", ( 
+           [FromQuery] string? search,
+           [FromQuery]  int page,
+           [FromQuery] int pageSize) =>
+        {
+           var result = vatDungRepository.GetVatDungDevices(search ?? "", page, pageSize);
+           return Results.Ok(result);
+        }).WithTags(tagName);
     }
 }

@@ -16,6 +16,7 @@ html {
    --top-act-group-shadow: rgba(237, 237, 246, 0.2);
    --top-act-group-separate: #ededf6;
    --placeholder-color: #b1b8bf;
+   --bg-avatar-color: #f3b94e;
 
    // Category
    --cate-item-bg: #eee;
@@ -32,11 +33,21 @@ html {
    // Buttons
    --filter-btn-color: #6c6c72;
    --filter-btn-bg: #fff;
-   --like-btn-shadow: rgba(124, 124, 124, 0.2);
+   --like-btn-shadow: 0 4px 12px 0 rgba(255, 182, 193, 0.2),
+      /* Hồng pastel */ 0 4px 12px 3px rgba(255, 223, 186, 0.2),
+      /* Cam nhạt */ 0 4px 12px 6px rgba(255, 255, 204, 0.2),
+      /* Vàng nhạt */ 0 4px 12px 9px rgba(204, 255, 204, 0.2),
+      /* Xanh lá nhạt */ 0 4px 12px 12px rgba(204, 229, 255, 0.2),
+      /* Xanh dương nhạt */ 0 4px 12px 15px rgba(221, 204, 255, 0.2),
+      /* Tím nhạt */ 0 4px 12px 18px rgba(255, 204, 229, 0.2); /* Hồng tím nhạt */
 
    // Book
    --book-card-bg: #fff;
    --book-card-shadow: rgba(237, 237, 246, 0.2);
+
+   // device
+   --device-card-bg: #fff;
+   --device-card-shadow: rgba(237, 237, 246, 0.2);
 
    // Footer
    --footer-bg-color: #eee;
@@ -55,4 +66,7 @@ html {
    --auth-form-icon-color: 000;
    --auth-content-input-bg: #fff;
    --auth-content-text-placeholder-color: #d2d1d6;
+
+   // itemDetail
+   --bg-content-color: #ededed;
 }

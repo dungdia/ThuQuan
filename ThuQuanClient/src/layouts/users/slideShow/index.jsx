@@ -6,7 +6,9 @@ import slideItem_3 from "@/assets/images/slideShow/item-3.jpg";
 import sildeItem_1_md from "@/assets/images/slideShow/item-1-md.png";
 import sildeItem_2_md from "@/assets/images/slideShow/item-2.jpg";
 import sildeItem_3_md from "@/assets/images/slideShow/item-3.jpg";
+import { Image } from "antd";
 
+// Dữ liệu slide gốc
 const slideData = [
    {
       desktop: slideItem_1,
@@ -22,14 +24,14 @@ const slideData = [
    },
 ];
 
-// Thêm bản sao của slide đầu vào cuối mảng
+// Clone thêm slide đầu để tạo hiệu ứng vòng lặp
 const slideDataClone = [...slideData, slideData[0]];
 
 export default function SlideShow() {
    const [currentIndex, setCurrentIndex] = useState(0);
    const [isTransitioning, setIsTransitioning] = useState(true);
 
-   // cập nhật vị trí hiện tại của slide
+   // Tự động chuyển slide
    useEffect(() => {
       const interval = setInterval(() => {
          setCurrentIndex((prev) => prev + 1);
@@ -38,16 +40,15 @@ export default function SlideShow() {
       return () => clearInterval(interval);
    }, []);
 
+   // Reset về slide đầu nếu đang ở slide clone
    useEffect(() => {
       if (currentIndex === slideData.length) {
-         // Đã đến slide clone, đợi animation kết thúc rồi reset về slide đầu
-         setTimeout(() => {
+         const timeout = setTimeout(() => {
             setIsTransitioning(false);
             setCurrentIndex(0);
          }, 500);
 
-         // Bật lại transition sau khi reset
-         setTimeout(() => {
+         const enableTransition = setTimeout(() => {
             setIsTransitioning(true);
          }, 600);
       }
@@ -65,23 +66,34 @@ export default function SlideShow() {
                      : "none",
                }}
             >
-               {slideDataClone.map((item, index) => (
-                  <div className="slideshow__item" key={index}>
-                     <NavLink>
-                        <picture>
-                           <source
-                              media="(max-width: 767.98px)"
-                              srcSet={item.mobile}
-                           />
-                           <img
-                              src={item.desktop}
-                              alt={`Slide ${index + 1}`}
-                              className="slideshow__img"
-                           />
-                        </picture>
-                     </NavLink>
-                  </div>
-               ))}
+               {slideData.length > 0 && (
+                  <Image.PreviewGroup
+                     preview={{ loop: true }} // dùng để xem trước khi xong vòng lặp
+                     items={slideData.map((item, index) => ({
+                        src: item?.desktop || "",
+                        alt: `Hình ảnh số ${index + 1}`,
+                     }))}
+                  >
+                     {slideDataClone?.map((item, index) => (
+                        <div className="slideshow__item" key={index}>
+                           <NavLink>
+                              <picture>
+                                 <source
+                                    media="(max-width: 767.98px)"
+                                    srcSet={item.mobile}
+                                 />
+                                 <Image
+                                    // Phải cấu hình width, height với class .ant-image, .ant-image-img có sẵn trong Image
+                                    src={item.desktop}
+                                    alt={`Slide ${index + 1}`}
+                                    className="slideshow__img"
+                                 />
+                              </picture>
+                           </NavLink>
+                        </div>
+                     ))}
+                  </Image.PreviewGroup>
+               )}
             </div>
 
             <div className="slideshow__page">

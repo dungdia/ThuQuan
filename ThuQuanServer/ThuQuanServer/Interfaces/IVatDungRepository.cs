@@ -13,4 +13,10 @@ public interface IVatDungRepository
     public ICollection<VatDung> GetBook();
 
     public PageResultVatDungBooks<VatDung> GetVatDungBooks(string search, int page, int pageSize);
+
+    public ICollection<VatDung> GetThreeBook(int loaiVatDung);
+
+    public ICollection<VatDung> GetDevice();
+    
+    public PageResultVatDungBooks<VatDung> GetVatDungDevices(string search, int page, int pageSize);
 }

@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { initJsToggle } from "../../../assets/js/header";
 import moreIcon from "@/assets/icons/more.svg";
 import logoIcon from "@/assets/icons/logo.svg";
 import arrowLeftIcon from "@/assets/icons/arrow-left.svg";
 import searchIcon from "@/assets/icons/search.svg";
 import heartIcon from "@/assets/icons/heart.svg";
+import heartRedIcon from "@/assets/icons/heart-red.svg";
 import orderIcon from "@/assets/icons/order.svg";
 import avatarImage from "@/assets/images/avatar.jpg";
 import {
@@ -40,7 +41,7 @@ import {
    handlePasswordChange,
 } from "@/utils/validate";
 import { useDebounce } from "@/hook/useDebounce";
-import { toggleDarkMode } from "@/utils/theme";
+import { applySavedTheme, toggleDarkMode } from "@/utils/theme";
 import { use } from "react";
 import { HeaderContext } from "@/providers/userHeaderProvider";
 
@@ -54,17 +55,23 @@ export default function HeaderUser() {
    const {
       searchValue,
       setSearchValue,
-      likedBooksContext,
-      setLikedBooksContext,
+      likedBookContext,
+      setLikeBookContext,
+      likeDeviceContext,
+      setLikeDeviceContext,
+      vatDungType,
+      setVatDungType,
    } = context;
 
    const navigate = useNavigate();
+   const [isShowAbout, setIsShowAbout] = useState(false);
    const [form] = useForm();
    const passwordRef = useRef(null);
    const [loading, setLoading] = useState(false);
    const [isShowModalLogOut, setIsShowModalLogOut] = useState(false);
    const [isShowModalChangePassword, setIsShowModalChangePassword] =
       useState(false);
+   const [isCheckedTheme, setIsCheckedTheme] = useState(false);
    const [currentPassword, setCurrentPassword] = useState("");
    const [passwordStatus, setPasswordStatus] = useState("");
    const [newPasswordStatus, setNewPasswordStatus] = useState("");
@@ -82,12 +89,20 @@ export default function HeaderUser() {
    const [baseId, setBaseId] = useState(null);
    const [isLoadingUpdateInfo, setIsLoadingUpdateInfo] = useState(false);
    const [searchValueProduct, setSearchValueProduct] = useState("");
+   const [isLiked, setIsLiked] = useState(false);
+   const buttonRef = useRef(null); // Ref để tham chiếu đến nút xem danh sách yêu thích
+   const location = useLocation(); // kiểm tra xem có ấn vào navbar không\
+   const [vatDungId, setVatDungId] = useState(1);
 
    if (
       searchValue === undefined ||
       setSearchValue === undefined ||
-      likedBooksContext === undefined ||
-      setLikedBooksContext === undefined
+      likedBookContext === undefined ||
+      setLikeBookContext === undefined ||
+      likeDeviceContext === undefined ||
+      setLikeDeviceContext === undefined ||
+      vatDungType === undefined ||
+      setVatDungType === undefined
    ) {
       console.log("Context values are missing!");
    }
@@ -342,25 +357,86 @@ export default function HeaderUser() {
       navigate("/login");
    };
 
+   // Khi component load, áp dụng theme và cập nhật state
+   useEffect(() => {
+      applySavedTheme();
+      const savedTheme = localStorage.getItem("theme");
+      setIsCheckedTheme(savedTheme === "dark");
+   }, []);
+
+   // Hàm chuyển theme sáng/tối
+   const handleToggle = (e) => {
+      e.stopPropagation();
+      toggleDarkMode();
+      setIsCheckedTheme((prev) => !prev);
+   };
+
    // Các thành phần của DropDown của Avatar
    const items = [
       {
-         label: <div onClick={handleShowInfoModal}>Thông tin cá nhân</div>,
+         label: (
+            <div
+               onClick={(e) => {
+                  e.stopPropagation();
+                  handleShowInfoModal();
+               }}
+            >
+               Thông tin cá nhân
+            </div>
+         ),
          key: "0",
       },
       {
-         label: <div onClick={handleShowModalChangePassword}>Đổi mật khẩu</div>,
+         label: (
+            <div
+               onClick={(e) => {
+                  e.stopPropagation();
+                  handleShowModalChangePassword();
+               }}
+            >
+               Đổi mật khẩu
+            </div>
+         ),
          key: "1",
       },
       {
-         label: <div onClick={toggleDarkMode}>Giao diện</div>,
+         label: (
+            <>
+               <label
+                  htmlFor="theme"
+                  onClick={(e) => e.stopPropagation()}
+                  className=""
+               >
+                  Giao diện
+               </label>
+               <label onClick={(e) => e.stopPropagation()} className="switch">
+                  <input
+                     id="theme"
+                     name="theme"
+                     checked={isCheckedTheme}
+                     onClick={(e) => handleToggle(e)}
+                     type="checkbox"
+                     readOnly
+                  />
+                  <span className="slider"></span>
+               </label>
+            </>
+         ),
          key: "3",
       },
       {
          type: "divider",
       },
       {
-         label: <div onClick={handleShowModalLogOut}>Đăng xuất</div>,
+         label: (
+            <div
+               onClick={(e) => {
+                  e.stopPropagation(), handleShowModalLogOut();
+               }}
+            >
+               Đăng xuất
+            </div>
+         ),
          key: "4",
       },
    ];
@@ -416,24 +492,98 @@ export default function HeaderUser() {
       navigate("/login");
    };
 
+   // Hàm mở modal about
+   const handleShowAbout = () => {
+      setIsShowAbout(true);
+   };
+
+   // Hàm đóng modal about
+   const handleCloseAbout = () => {
+      setIsShowAbout(false);
+   };
+
+   // Hàm chuyển icon sang màu đỏ khi có sản phẩm yêu thích
+   const handleIconColorChange = () => {
+      setIsLiked(!isLiked);
+   };
+
+   // Hàm trả về màu sắc của icon yêu thích
+   useEffect(() => {
+      const handleClickOutside = (e) => {
+         // Kiểm tra nếu người dùng nhấp ra ngoài dropdown
+         if (buttonRef.current && !buttonRef.current.contains(e.target)) {
+            setIsLiked(false);
+         }
+      };
+
+      // Thêm sự kiện click cho document
+      document.addEventListener("mousedown", handleClickOutside);
+
+      // Cleanup: Xóa trình lắng nghe khi component bị unmount
+      return () => {
+         document.removeEventListener("mousedown", handleClickOutside);
+      };
+   }, []);
+
+   // Hàm lấy id vật dụng khi vào trang khác
+   useEffect(() => {
+      if (location.pathname === "/user") {
+         setVatDungId(1);
+      } else if (location.pathname === "/user/device-manager") {
+         setVatDungId(2);
+      }
+   }, [location.pathname]);
+
    // Các thành phần của DropDown của các sản phẩm yêu thích
-   let likedBooksLocal = JSON.parse(localStorage.getItem("likedBooks")) || {};
+   let likedVatDungLocal =
+      JSON.parse(
+         localStorage.getItem(
+            vatDungId === 1 || vatDungType === 1 ? "likedBooks" : "likedDevices"
+         )
+      ) || {};
 
    // Mỗi khi cập nhật danh sách yêu thích thì cập nhật lại
    useEffect(() => {
-      likedBooksLocal = JSON.parse(localStorage.getItem("likedBooks")) || {};
-   }, [likedBooksContext]);
+      likedVatDungLocal =
+         JSON.parse(
+            localStorage.getItem(vatDungId == 1 ? "likedBooks" : "likedDevices")
+         ) || {};
+   }, [likedBookContext, likeDeviceContext, vatDungId]);
 
-   const favoritesDropdownItems = Object.values(likedBooksLocal).map(
-      (book) => ({
-         key: book.id,
-         label: (
-            <Link to="/itemDetail" state={{ book }}>
-               {book.tenVatDung}
-            </Link>
-         ),
-      })
+   // Cập nhật lại VatDungId khi click vào  item trong danh sách yêu thích thông qua vatDungType Context
+   useEffect(() => {
+      if (vatDungType !== null && vatDungId !== vatDungType) {
+         setVatDungId(vatDungType);
+      }
+   }, [vatDungType]);
+
+   // Lấy danh sách các sản phẩm yêu thích từ localStorage
+   const favoritesDropdownItems = Object.values(likedVatDungLocal).flatMap(
+      (book, index, array) => {
+         const items = [
+            {
+               key: book.id,
+               label: (
+                  <Link to="/itemDetail" state={{ book }}>
+                     {book.tenVatDung}
+                  </Link>
+               ),
+            },
+         ];
+
+         // Thêm divider nếu không phải là phần tử cuối cùng
+         if (index < array.length - 1) {
+            items.push({ type: "divider" });
+         }
+
+         return items;
+      }
    );
+
+   // Lọc các phần tử không phải là divider
+   const nonDividerItemsCount = favoritesDropdownItems.filter(
+      (item) => item.type !== "divider"
+   ).length;
 
    return (
       <>
@@ -443,7 +593,7 @@ export default function HeaderUser() {
             title="Cập nhật thông tin cá nhân"
             open={isShowModalUpdateInfo}
             footer={
-               <div>
+               <div className="flex-modal">
                   <Button
                      color="danger"
                      variant="dashed"
@@ -533,7 +683,7 @@ export default function HeaderUser() {
             title="Thông tin cá nhân"
             open={isShowInfoModal}
             footer={
-               <div>
+               <div className="flex-modal">
                   <Button
                      color="danger"
                      variant="dashed"
@@ -623,13 +773,19 @@ export default function HeaderUser() {
          <Modal
             title="Đổi mật khẩu"
             footer={
-               <div className="flex justify-end gap-2">
-                  <Button onClick={handleCloseModalChangePassword}>Hủy</Button>
+               <div className="flex-modal">
+                  <Button
+                     color="danger"
+                     variant="dashed"
+                     onClick={handleCloseModalChangePassword}
+                  >
+                     Hủy
+                  </Button>
                   <Button
                      onClick={confirmChangePassword}
                      loading={loading}
-                     type="primary"
-                     danger
+                     color="cyan"
+                     variant="solid"
                   >
                      Lưu
                   </Button>
@@ -727,15 +883,153 @@ export default function HeaderUser() {
             onCancel={handleCloseModalLogOut}
             open={isShowModalLogOut}
             footer={
-               <div>
-                  <Button onClick={handleCloseModalLogOut}>Hủy</Button>
-                  <Button onClick={handleLogOut} danger type="primary">
+               <div className="flex-modal">
+                  <Button
+                     color="primary"
+                     variant="dashed"
+                     onClick={handleCloseModalLogOut}
+                  >
+                     Hủy
+                  </Button>
+                  <Button
+                     onClick={handleLogOut}
+                     color="danger"
+                     variant="outlined"
+                  >
                      Đăng xuất
                   </Button>
                </div>
             }
          >
             <p>Bạn có chắc chắn muốn đăng xuất không</p>
+         </Modal>
+
+         {/* Giao diện trang about */}
+         <Modal
+            width={700}
+            closeIcon={false}
+            title=""
+            onCancel={handleCloseAbout}
+            open={isShowAbout}
+            footer={false}
+            className="custom-modal"
+         >
+            <div>
+               {/* Header */}
+               <div className="modal-header">
+                  <h1 className="modal-title">Hỗ Trợ Khách Hàng - Thư quán</h1>
+               </div>
+
+               {/* Navigation */}
+               <div className="modal-nav">
+                  <a href="#faq" className="modal-link">
+                     Câu hỏi thường gặp
+                  </a>
+                  <a href="#shipping" className="modal-link">
+                     Vận chuyển
+                  </a>
+                  <a href="#returns" className="modal-link">
+                     Đổi trả và hoàn tiền
+                  </a>
+                  <a href="#contact" className="modal-link">
+                     Liên hệ chúng tôi
+                  </a>
+               </div>
+            </div>
+
+            {/* FAQ Section */}
+            <section id="faq" className="modal-section">
+               <h2 className="section-title">Câu hỏi thường gặp</h2>
+               <p>
+                  <strong>1. Làm thế nào để đặt hàng?</strong>
+                  <br />
+                  Để đặt hàng, hãy thêm sản phẩm vào giỏ hàng và nhấp vào nút
+                  "Thanh toán".
+               </p>
+               <p>
+                  <strong>
+                     2. Làm thế nào để kiểm tra trạng thái đơn hàng?
+                  </strong>
+                  <br />
+                  Bạn có thể kiểm tra trạng thái đơn hàng trong tài khoản của
+                  bạn hoặc liên hệ với chúng tôi qua trang Liên hệ.
+               </p>
+               <p>
+                  <strong>3. Làm thế nào để thay đổi thông tin cá nhân?</strong>
+                  <br />
+                  Bạn có thể cập nhật thông tin cá nhân trong phần Tài khoản của
+                  bạn.
+               </p>
+            </section>
+
+            {/* Shipping Section */}
+            <section id="shipping" className="modal-section">
+               <h2 className="section-title">Thông tin Vận chuyển</h2>
+               <p>
+                  Chúng tôi cung cấp các tùy chọn vận chuyển nhanh chóng và đáng
+                  tin cậy. Chi phí vận chuyển và thời gian giao hàng cụ thể sẽ
+                  hiển thị trong quá trình thanh toán.
+               </p>
+               <p>
+                  <strong>Phí Vận chuyển:</strong> Phí vận chuyển được tính dựa
+                  trên địa chỉ giao hàng của bạn.
+               </p>
+               <p>
+                  <strong>Thời Gian Giao Hàng:</strong> Thời gian giao hàng ước
+                  tính sẽ được hiển thị trong quá trình thanh toán.
+               </p>
+            </section>
+
+            {/* Returns Section */}
+            <section id="returns" className="modal-section">
+               <h2 className="section-title">
+                  Chính sách Đổi trả và Hoàn tiền
+               </h2>
+               <p>
+                  Chúng tôi chấp nhận đổi trả trong vòng 30 ngày kể từ ngày mua.
+                  Để đổi trả, vui lòng liên hệ với chúng tôi qua trang Liên hệ.
+               </p>
+               <p>
+                  <strong>Điều Kiện Đổi Trả:</strong> Sản phẩm phải còn nguyên
+                  vẹn, chưa sử dụng và có các nhãn mác gốc.
+               </p>
+               <p>
+                  <strong>Hoàn Tiền:</strong> Hoàn tiền sẽ được xử lý trong vòng
+                  7-10 ngày làm việc sau khi nhận được sản phẩm đổi trả.
+               </p>
+            </section>
+
+            {/* Contact Section */}
+            <section id="contact" className="modal-section">
+               <h2 className="section-title">Liên hệ chúng tôi</h2>
+               <p>
+                  Nếu bạn có bất kỳ câu hỏi hoặc cần hỗ trợ, hãy liên hệ với
+                  chúng tôi qua email:
+                  <a href="mailto:support@example.com" className="contact-link">
+                     support@example.com
+                  </a>
+               </p>
+               <p>
+                  Hoặc gọi đến số điện thoại hỗ trợ của chúng tôi:
+                  <strong>(123) 456-7890</strong>.
+               </p>
+               <p>
+                  Chúng tôi cũng có thể được liên hệ qua mạng xã hội:
+                  <a href="#" className="contact-link">
+                     Facebook
+                  </a>
+                  ,{" "}
+                  <a href="#" className="contact-link">
+                     Twitter
+                  </a>
+                  .
+               </p>
+            </section>
+
+            {/* Footer */}
+            <div className="custom-footer">
+               <p>&copy; 2023 Tên Trang Web. Bản quyền thuộc về chúng tôi.</p>
+            </div>
          </Modal>
 
          <header className="header">
@@ -803,15 +1097,33 @@ export default function HeaderUser() {
                               placement="bottomRight"
                               menu={{ items: favoritesDropdownItems }}
                               trigger={["click"]}
+                              onClick={() => {
+                                 if (
+                                    Object.keys(likedVatDungLocal).length === 0
+                                 ) {
+                                    message.info(
+                                       "Chưa có sản phẩm yêu thích nào"
+                                    );
+                                 }
+                              }}
                            >
-                              <button className="navbar-act__btn">
+                              <button
+                                 ref={buttonRef}
+                                 onClick={handleIconColorChange}
+                                 className="top-act__btn"
+                                 style={isLiked ? { paddingLeft: "2px" } : {}}
+                              >
                                  <img
-                                    src={heartIcon}
+                                    src={isLiked ? heartRedIcon : heartIcon}
                                     alt="Tim"
-                                    className="navbar-act__icon icon"
+                                    className={
+                                       isLiked
+                                          ? "top-act__icon icon-red "
+                                          : "top-act__icon icon"
+                                    }
                                  />
-                                 <span className="navbar-act__title">
-                                    {favoritesDropdownItems.length}
+                                 <span className="top-act__title">
+                                    {nonDividerItemsCount}
                                  </span>
                               </button>
                            </Dropdown>
@@ -851,9 +1163,16 @@ export default function HeaderUser() {
                            </NavLink>
                         </li>
                         <li>
-                           <NavLink to="/user/contact" className="navbar__link">
+                           <a
+                              href="#"
+                              onClick={(e) => {
+                                 e.preventDefault();
+                                 handleShowAbout();
+                              }}
+                              className="navbar__link"
+                           >
                               Liên Hệ
-                           </NavLink>
+                           </a>
                         </li>
                      </ul>
                   </nav>
@@ -897,15 +1216,29 @@ export default function HeaderUser() {
                            menu={{ items: favoritesDropdownItems }}
                            trigger={["click"]}
                            height={200}
+                           onClick={() => {
+                              if (Object.keys(likedVatDungLocal).length === 0) {
+                                 message.info("Chưa có sản phẩm yêu thích nào");
+                              }
+                           }}
                         >
-                           <button className="top-act__btn">
+                           <button
+                              ref={buttonRef}
+                              onClick={handleIconColorChange}
+                              className="top-act__btn"
+                              style={isLiked ? { paddingLeft: "2px" } : {}}
+                           >
                               <img
-                                 src={heartIcon}
+                                 src={isLiked ? heartRedIcon : heartIcon}
                                  alt="Tim"
-                                 className="top-act__icon icon"
+                                 className={
+                                    isLiked
+                                       ? "top-act__icon icon-red "
+                                       : "top-act__icon icon"
+                                 }
                               />
                               <span className="top-act__title">
-                                 {favoritesDropdownItems.length}
+                                 {nonDividerItemsCount}
                               </span>
                            </button>
                         </Dropdown>
@@ -928,8 +1261,13 @@ export default function HeaderUser() {
                            menu={{ items }}
                            trigger={["click"]}
                         >
-                           <Avatar className="top-act__avatar">
-                              {getInitials(accountLoggedin?.userName)}
+                           <Avatar
+                              title={getInitials(accountLoggedin?.userName)}
+                              className="top-act__avatar"
+                           >
+                              <p className="format">
+                                 {getInitials(accountLoggedin?.userName)}
+                              </p>
                            </Avatar>
                         </Dropdown>
 

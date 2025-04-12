@@ -105,6 +105,92 @@ public class VatDungRepository : IVatDungRepository
             TotalItems = totalItems
         };
     }
-    
-    
+
+    public ICollection<VatDung> GetThreeBook(int loaiVatDung)
+    {
+        string query = @"
+            SELECT *FROM VatDung
+            Where id_loaivatdung = @loaivatdung
+            AND tinhtrang != @TinhTrangAn
+            ORDER BY id;
+        ";
+        
+        using var connection = _dbContext.GetOpenConnection();
+
+        var allVatDung  = connection.Query<VatDung>(
+            query,
+            new
+            {
+                LoaiVatDung = loaiVatDung,
+                TinhTrangAn = "Ẩn"
+            }
+        ).ToList();
+
+        var result = new List<VatDung>();
+
+        if (allVatDung.Count >= 1)
+        {
+            result.Add(allVatDung.First());
+        }
+
+        if (allVatDung.Count >= 3)
+        {
+            result.Add(allVatDung[allVatDung.Count / 2]);
+        }
+        
+        if(allVatDung.Count >= 2)
+            result.Add(allVatDung.Last());
+        
+        return result;
+    }
+
+    public ICollection<VatDung> GetDevice()
+    {
+        string query = "SELECT * FROM VatDung Where id_loaivatdung = 2 AND tinhtrang !=?";
+        var vatDung = _dbContext.GetData<VatDung>(
+            query,
+            new object[] { "Ẩn" }
+        );
+        
+        return vatDung;
+    }
+
+    public PageResultVatDungBooks<VatDung> GetVatDungDevices(string search, int page, int pageSize)
+    {
+        int offset = (page-1)*pageSize;
+        string hiddenStatus = "Ẩn";
+        string query = @"
+            SELECT * FROM VatDung
+            WHERE (@search IS NULL OR tenvatdung LIKE CONCAT('%',@search, '%'))
+            AND id_loaivatdung = 2
+            AND tinhtrang != @TinhTrangAn
+            ORDER BY id
+            LIMIT @pageSize OFFSET @offset;
+
+            SELECT COUNT(*) FROM VatDung
+            WHERE(@search IS NULL OR tenvatdung LIKE CONCAT('%', @search, '%'))
+            AND id_loaivatdung = 2
+            AND tinhtrang != @TinhTrangAn;
+        ";
+        using var connection = _dbContext.GetOpenConnection();
+        using var multi = connection.QueryMultiple(query, new
+        {
+            search = string.IsNullOrWhiteSpace(search) ? null : search,
+            pageSize,
+            offset,
+            TinhTrangAn = hiddenStatus
+        });
+        
+        var items = multi.Read<VatDung>().ToList();
+        var totalItems = multi.ReadFirst<int>();
+
+        return new PageResultVatDungBooks<VatDung>
+        {
+            Items = items,
+            Page = page,
+            PageSize = pageSize,
+            TotalItems = totalItems
+        };
+    }
+
 }
