@@ -20,6 +20,7 @@ builder.Services.AddSingleton<DbContext>();
 builder.Services.AddSingleton<ITaiKhoanRepository , TaiKhoanRepository>();
 builder.Services.AddSingleton<IPasswordHashService , PasswordHashService>();
 builder.Services.AddSingleton<ILoaiVatDungRepository , LoaiVatDungRepository>();
+builder.Services.AddSingleton<IPhieuDatRepository, PhieuDatRepository>();
 builder.Services.AddSingleton<IVatDungRepository , VatDungRepository>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
 

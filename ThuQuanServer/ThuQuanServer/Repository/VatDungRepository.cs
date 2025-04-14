@@ -24,6 +24,14 @@ public class VatDungRepository : IVatDungRepository
         return vatDung;
     }
 
+    public VatDung VatDungById(int id)
+    {
+        string query = "SELECT * FROM VatDung WHERE id = @id";
+        var result = _dbContext.GetFirstOrDefault<VatDung>(query, new { id });
+        return result;
+    }   
+
+
     public ICollection<VatDung> GetVatDungByProps(object? values)
     {
         var p = values.GetType().GetProperties();
@@ -51,6 +59,13 @@ public class VatDungRepository : IVatDungRepository
     {
         _dbContext.Update<VatDung>(vatDungRequestDto, id);
         return _dbContext.SaveChange();
+    }
+
+    public int updateTinhTranDaDatgById(int id)
+    {
+        string query = "UPDATE VatDung SET tinhtrang = 'Đã đặt' WHERE Id = @Id";
+        var result = _dbContext.Update<VatDung>(new { TinhTrang = "Đã đặt" }, id);
+        return result;
     }
     
     public ICollection<VatDung> GetBook()

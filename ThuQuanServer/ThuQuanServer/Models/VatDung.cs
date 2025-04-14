@@ -9,7 +9,7 @@ public class VatDung
     public string? MoTa { get; set; }
     public int Id_LoaiVatDung { get; set; }
 
-    // ✅ THÊM: thuộc tính ánh xạ từ DB
+    // THÊM: thuộc tính ánh xạ từ DB
     public string? TinhTrang { get; set; }
 
     [NotMapped]
@@ -24,6 +24,7 @@ public class VatDung
             {
                 "Chưa mượn" => TinhTrangVatDung.Chưa_mượn,
                 "Đang mượn" => TinhTrangVatDung.Đang_mượn,
+                "Đã đặt"=>TinhTrangVatDung.Đã_đặt,
                 "Bị hỏng" => TinhTrangVatDung.Bị_hỏng,
                 "Ẩn" => TinhTrangVatDung.Ẩn,
                 _ => throw new Exception($"Giá trị không hợp lệ: {TinhTrang}")

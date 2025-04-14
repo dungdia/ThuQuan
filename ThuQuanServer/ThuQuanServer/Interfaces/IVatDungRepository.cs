@@ -6,9 +6,12 @@ namespace ThuQuanServer.Interfaces;
 public interface IVatDungRepository
 {
     public ICollection<VatDung> GetVatDung();
+    public VatDung VatDungById(int id);
+
     public ICollection<VatDung> GetVatDungByProps(object? values);
     public bool AddVatDung(VatDungRequestDto vatDungRequestDto);
     public bool UpdateVatDung(VatDungRequestDto vatDungRequestDto, int id);
+    public int updateTinhTranDaDatgById(int id);
     
     public ICollection<VatDung> GetBook();
 

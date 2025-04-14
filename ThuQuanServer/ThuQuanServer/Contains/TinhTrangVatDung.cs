@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using Google.Protobuf.WellKnownTypes;
 
 namespace ThuQuanServer.Contains;
 
@@ -8,8 +9,10 @@ public enum TinhTrangVatDung
     Chưa_mượn = 1,
     [EnumMember(Value = "Đang mượn")]
     Đang_mượn = 2,
+    [EnumMember(Value = "Đã đặt")]
+    Đã_đặt=3,
     [EnumMember(Value = "Bị hỏng")]
-    Bị_hỏng = 3,
+    Bị_hỏng = 4,
     [EnumMember(Value = "Ẩn")]
-    Ẩn = 4
+    Ẩn = 5,
 }

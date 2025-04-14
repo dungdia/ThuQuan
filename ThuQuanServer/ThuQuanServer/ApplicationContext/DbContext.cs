@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
+using Dapper;
 using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using Org.BouncyCastle.Asn1.X509.Qualified;
@@ -30,6 +31,24 @@ public class DbContext
         connection.Open();
         return connection;
     }
+    
+    public T GetFirstOrDefault<T>(string query, object parameters = null)
+    {
+        _connection.Open();
+        try
+        {
+            return _connection.QueryFirstOrDefault<T>(query, parameters);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+        finally
+        {
+            _connection.Close();
+        }
+    }
+
 
 
     public ICollection<T> GetData<T>(string query, params object?[] values)
@@ -131,7 +150,7 @@ public class DbContext
         {
             _connection.Close();
         }
-    }
+    }   
     
     public int Add<T>(object? value)
     {
@@ -253,6 +272,33 @@ public class DbContext
         {
             Console.WriteLine(e);
             throw;
+        }
+        finally
+        {
+            _connection.Close();
+        }
+    }
+
+    public int AddLastInsertId(string query, params object?[] values)
+    {
+        _connection.Open();
+        try
+        {
+            var cmd = new MySqlCommand(query, _connection);
+            if (values.Length > 0)
+            {
+                for (int i = 0; i < values.Length; i++)
+                {
+                    cmd.Parameters.AddWithValue($"@{i}", values[i]);
+                }
+            }
+            var result = cmd.ExecuteScalar();
+            return Convert.ToInt32(result);
+            
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
         }
         finally
         {

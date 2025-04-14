@@ -8,6 +8,7 @@ namespace ThuQuanServer.Interfaces;
 public interface ITaiKhoanRepository
 {
     public ICollection<TaiKhoan> GetAccount();
+    public ThanhVien? GetAccountThanhVienByEmailTaiKhoan(object? values);
     public ICollection<TaiKhoan> GetAccountByProps(object? values);
     public ICollection<ThanhVien> GetThanhVien();
     public bool AddThanhVien(TaikhoanInsertDTO taikhoan);

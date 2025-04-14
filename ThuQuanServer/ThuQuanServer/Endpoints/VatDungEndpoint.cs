@@ -18,9 +18,16 @@ public static class VatDungEndpoint
             var result = vatDungRepository.GetVatDung();
             return Results.Ok(result);
         }).WithTags(tagName);
+        
+        // Lấy vật dung qua id
+        app.MapGet("/VatDung/{id:int}", ([FromRoute] int id) =>
+        {
+            var result = vatDungRepository.VatDungById(id);
+            return Results.Ok(result);
+        }).WithTags(tagName);
 
         // Lấy vật dụng theo điều kiện (props)
-        app.MapPost("/VatDung/search", ([FromBody] object props) =>
+        app.MapPost("/VatDung/props", ([FromBody] object props) =>
         {
             var result = vatDungRepository.GetVatDungByProps(props);
             return Results.Ok(result);
@@ -38,6 +45,13 @@ public static class VatDungEndpoint
         {
             var success = vatDungRepository.UpdateVatDung(dto, id);
             return success ? Results.Ok("Cập nhật thành công") : Results.BadRequest("Cập nhật thất bại");
+        }).WithTags(tagName);
+        
+        // Cập nhật trang thái 'Đã xuất phiếu' theo ID
+        app.MapPut("/VatDung/TinhTrang/{id:int}", ([FromRoute]int id) =>
+        {
+            var result = vatDungRepository.updateTinhTranDaDatgById(id);
+            return Results.Ok("Cập nhật thành công");
         }).WithTags(tagName);
 
         // Lấy danh sách vật dụng loại sách (BOOK)
