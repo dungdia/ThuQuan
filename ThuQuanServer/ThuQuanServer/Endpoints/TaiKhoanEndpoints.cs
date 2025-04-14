@@ -37,6 +37,24 @@ public static class TaiKhoanEndpoints
             var taikhoan = taiKhoanRepository.GetAccount();
             return Results.Ok(taikhoan);
         }).WithTags(groupName);
+        
+        // API lấy thành viên bằng email
+        app.MapGet("/GetThanhVienByEmail", ([FromQuery] string email) =>
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return Results.BadRequest("Email không được để trống");
+            }
+
+            var thanhVien = taiKhoanRepository.GetAccountThanhVienByEmailTaiKhoan(new { Email = email });
+
+            if (thanhVien == null)
+            {
+                return Results.NotFound("Không tìm thấy thành viên với email này");
+            }
+
+            return Results.Ok(thanhVien);
+        }).WithTags(groupName);
 
         app.MapGet("/GetTaiKhoanById/{id}", ([FromRoute , Required] int? id) =>
         {

@@ -1,81 +1,101 @@
 @use "../abstracts";
 
 .item__container {
-    margin-top: 50px;
+   margin-top: 150px;
 }
 
 .item {
-    width: 100%;
-    height: 500px;
-    display: flex;
-    background-color: #EDEDED;
+   width: 100%;
+   display: flex;
+   background-color: var(--bg-content-color);
 
-    &__img {
-        width: 35%;
-        // background-color: azure;
-        display: flex;
-        justify-content: center;
+   &__img {
+      width: 35%;
+      // background-color: azure;
+      display: flex;
+      justify-content: center;
 
-        & > img {
-            height: 100%;
-        }
-    }
+      & > img {
+         height: 100%;
+      }
+   }
 
-    &__info {
-        width: 65%;
-        display: flex;
-        flex-direction: column;
-        margin: 20px 40px;
+   &__info {
+      width: 65%;
+      display: flex;
+      flex-direction: column;
+      margin: 20px 40px;
 
-        &__name {
-            width: 100%;
-            font-size: 26px;
-            font-weight: 500;
-            font-style: normal;
-            line-height: 50px;
-            // border-bottom: 0.5px solid black;
-        }
+      &__name {
+         width: 100%;
+         font-size: 26px;
+         font-weight: 500;
+         font-style: normal;
+         line-height: 50px;
+         // border-bottom: 0.5px solid black;
+      }
 
-        &__description {
-            width: 100%;
-            height: 80%;
-            font-size: 20px;
-            line-height: 36px;
-            overflow-y: scroll;
+      &__description {
+         width: 100%;
+         height: 80%;
+         font-size: 20px;
+         line-height: 36px;
+         overflow-y: scroll;
 
-            &::-webkit-scrollbar {
-                height: 4px;
-                width: 4px;
+         &::-webkit-scrollbar {
+            height: 4px;
+            width: 4px;
+         }
+
+         &::-webkit-scrollbar-thumb {
+            background: linear-gradient(
+               180deg,
+               #444,
+               #222
+            ); /* Màu tối với hiệu ứng gradient */
+            border-radius: 10px;
+            transition: all 0.3s ease;
+         }
+
+         &::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(
+               180deg,
+               #666,
+               #333
+            ); /* Màu sáng hơn khi hover */
+         }
+      }
+
+      &__button {
+         width: 100%;
+         margin-top: 2%;
+
+         &__booking {
+            padding: 14px 20px;
+            background-color: #ffb700;
+            font-size: 18px;
+            transition: 0.3s;
+            border-radius: 5px;
+            float: right;
+            margin-right: 20px;
+
+            &--available:hover {
+               background-color: #e09c00;
             }
-            
-            &::-webkit-scrollbar-thumb {
-                background: linear-gradient(180deg, #444, #222); /* Màu tối với hiệu ứng gradient */
-                border-radius: 10px;
-                transition: all 0.3s ease;
-            }
-            
-            &::-webkit-scrollbar-thumb:hover {
-                background: linear-gradient(180deg, #666, #333); /* Màu sáng hơn khi hover */
-            }
-        }
+         }
+         &--borrowed {
+            background: #81f781;
+            color: #fff;
+            cursor: not-allowed;
+            user-select: none;
+         }
 
-        &__button {
-            width: 100%;
-            margin-top: 2%;
-
-            &__booking {
-                padding: 14px 20px;
-                background-color: #FFB700;
-                font-size: 18px;
-                transition: 0.3s;
-                border-radius: 5px;
-                float: right;
-                margin-right: 20px;
-
-                &:hover {
-                    background-color: #E09C00;
-                }
-            }
-        }
-    }
+         &--broken {
+            background: #f78181;
+            color: #fff;
+            cursor: not-allowed;
+            user-select: none;
+         }
+      }
+   }
 }

@@ -18,6 +18,7 @@
       font-style: normal;
       font-weight: 700;
       line-height: 145.455%;
+      margin: 0;
 
       @include abstracts.screen(lg) {
          font-size: 1.8rem;
