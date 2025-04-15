@@ -42,9 +42,9 @@ export default function RenderBody() {
    }, [categoryId]);
 
    // Hàm lấy dữ liệu từ các sách
-   const handleGetDataBook = (book) => {
+   const handleGetDataBook = (vatdung) => {
       // Lấy dữ liệu book rồi qua trang itemDetail
-      navigate("/itemDetail", { state: { book } });
+      navigate("/itemDetail", { state: { vatdung } });
    };
 
    return (

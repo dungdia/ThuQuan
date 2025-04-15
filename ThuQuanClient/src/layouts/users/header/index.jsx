@@ -14,10 +14,13 @@ import {
    Button,
    Dropdown,
    Form,
+   Image,
    Input,
    message,
    Modal,
    Space,
+   Table,
+   Tag,
 } from "antd";
 import Cookies from "js-cookie";
 import {
@@ -61,6 +64,8 @@ export default function HeaderUser() {
       setLikeDeviceContext,
       vatDungType,
       setVatDungType,
+      vatDungCartContext,
+      setVatDungCartContext,
    } = context;
 
    const navigate = useNavigate();
@@ -93,6 +98,15 @@ export default function HeaderUser() {
    const buttonRef = useRef(null); // Ref để tham chiếu đến nút xem danh sách yêu thích
    const location = useLocation(); // kiểm tra xem có ấn vào navbar không\
    const [vatDungId, setVatDungId] = useState(1);
+   const [isShowModalCart, setIsShowModalCart] = useState(false);
+   const [vatDungCart, setVatDungCart] = useState(() => {
+      const listed = localStorage.getItem("listedVatDungs");
+      return listed ? JSON.parse(listed) : {};
+   });
+   const [isShowConfirmDeleteItemCart, setIsShowConfirmDeleteItemCart] =
+      useState(false);
+   const [baseVatDungId, setBaseVatDungId] = useState(null);
+   const [searchTextCart, setSearchTextCart] = useState("");
 
    if (
       searchValue === undefined ||
@@ -102,9 +116,11 @@ export default function HeaderUser() {
       likeDeviceContext === undefined ||
       setLikeDeviceContext === undefined ||
       vatDungType === undefined ||
-      setVatDungType === undefined
+      setVatDungType === undefined ||
+      vatDungCartContext === undefined ||
+      setVatDungCartContext === undefined
    ) {
-      console.log("Context values are missing!");
+      // console.log("Context values are missing!");
    }
 
    // Cập nhật searchValue khi người dùng nhập vào ô tìm kiếm
@@ -189,8 +205,10 @@ export default function HeaderUser() {
 
    // Hàm lấy dữ liệu từ tài khoản bởi email
    const fetchAccount = async () => {
-      const response = await findAccountByEmail(accountLoggedin.email);
-      setAccount(response.data);
+      try {
+         const response = await findAccountByEmail(accountLoggedin.email);
+         setAccount(response.data);
+      } catch (error) {}
    };
 
    // Hàm xử lý cập nhật thông tin
@@ -353,6 +371,7 @@ export default function HeaderUser() {
       Cookies.remove("accessToken");
       // Xóa dữ liệu từ localStorage
       localStorage.removeItem("accountLoggedin");
+      localStorage.removeItem("listedVatDungs");
       // Chuyển hướng và trang đăng nhập
       navigate("/login");
    };
@@ -559,13 +578,41 @@ export default function HeaderUser() {
 
    // Lấy danh sách các sản phẩm yêu thích từ localStorage
    const favoritesDropdownItems = Object.values(likedVatDungLocal).flatMap(
-      (book, index, array) => {
+      (vatdung, index, array) => {
          const items = [
             {
-               key: book.id,
+               key: vatdung.id,
                label: (
-                  <Link to="/itemDetail" state={{ book }}>
-                     {book.tenVatDung}
+                  <Link
+                     title={vatdung.tenVatDung}
+                     to="/itemDetail"
+                     state={{ vatdung }}
+                  >
+                     <div className="list__like">
+                        <img
+                           className="list__like--img"
+                           src={vatdung.hinhAnh}
+                           alt={vatdung.moTa}
+                        />
+                        <div className="list__like--title">
+                           <p className="list__like--title-text-name format format-width">
+                              {vatdung.tenVatDung}
+                           </p>
+                           <p
+                              className={`list__like--title-text-status ${
+                                 vatdung.tinhTrang === "Chưa mượn"
+                                    ? ""
+                                    : vatdung.tinhTrang === "Đang mượn"
+                                    ? "list__like--title-text-status-borrowed"
+                                    : vatdung.tinhTrang === "Đã đặt"
+                                    ? "list__like--title-text-status-booked"
+                                    : "list__like--title-text-status-broken"
+                              }`}
+                           >
+                              {vatdung.tinhTrang}
+                           </p>
+                        </div>
+                     </div>
                   </Link>
                ),
             },
@@ -585,8 +632,226 @@ export default function HeaderUser() {
       (item) => item.type !== "divider"
    ).length;
 
+   // Mỗi khi cập nhật danh sách giỏ hàng thì cập nhật lại
+   useEffect(() => {
+      setVatDungCart(() => {
+         const listed = localStorage.getItem("listedVatDungs");
+         return listed ? JSON.parse(listed) : {};
+      });
+   }, [vatDungCartContext]);
+
+   // Dữ liệu từ bảng của giỏ hàng
+   const columns = [
+      {
+         title: "Tên vật dung",
+         dataIndex: "tenVatDung",
+         key: "tenVatDung",
+         render: (_, vatdung) => (
+            <p title={vatdung.tenVatDung} className="format format-width">
+               {vatdung.tenVatDung}
+            </p>
+         ),
+      },
+      {
+         title: "Mô tả",
+         dataIndex: "moTa",
+         key: "moTa",
+         render: (_, vatdung) => (
+            <p className="format format-width" title={vatdung.moTa}>
+               {vatdung.moTa}
+            </p>
+         ),
+      },
+      {
+         title: "Hình ảnh",
+         dataIndex: "hinhAnh",
+         key: "hinhAnh",
+         render: (_, vatdung) => (
+            <Image
+               width={100}
+               height={100}
+               src={vatdung.hinhAnh}
+               title={vatdung.tenVatDung}
+            />
+         ),
+      },
+      {
+         title: "Thể loại",
+         dataIndex: "id_LoaiVatDung",
+         key: "id_LoaiVatDung",
+      },
+
+      {
+         title: "Hành động",
+         key: "action",
+         render: (_, vatdung) => (
+            <div className="gap-modal">
+               <Button
+                  onClick={() => handleShowDeleteItemCart(vatdung.id)}
+                  color="danger"
+                  variant="outlined"
+               >
+                  Xóa
+               </Button>
+
+               <Button type="primary" ghost>
+                  Đặt
+               </Button>
+            </div>
+         ),
+      },
+   ];
+
+   const data = Object.values(vatDungCart).map((vatdung, index) => ({
+      id: vatdung.id,
+      key: vatdung.id || index, // key là bắt buộc với Table
+      tenVatDung: vatdung.tenVatDung,
+      moTa: vatdung.moTa,
+      hinhAnh: vatdung.hinhAnh,
+      id_LoaiVatDung: vatdung.id_LoaiVatDung === 1 ? "Sách" : "Thiết bị",
+   }));
+
+   const debounceSearchCart = useDebounce(searchTextCart, 800);
+
+   const filteredDataCart = data.filter((item) =>
+      item.tenVatDung.toLowerCase().includes(debounceSearchCart.toLowerCase())
+   );
+
+   // Hàm mở modal giỏ hàng
+   const handleShowModalCart = () => {
+      setIsShowModalCart(true);
+   };
+
+   // Hàm đóng modal giỏ hàng
+   const handleCloseModalCart = () => {
+      setIsShowModalCart(false);
+   };
+
+   // Hàm mở modal xác nhận xóa item giỏ hàng
+   const handleShowDeleteItemCart = (id) => {
+      setIsShowConfirmDeleteItemCart(true);
+
+      // Lấy id item trong cart để xóa
+      setBaseVatDungId(id);
+   };
+
+   // Hàm đóng modal xác nhận xóa item giỏ hàng
+   const handleCloseDeleteItemCart = () => {
+      setIsShowConfirmDeleteItemCart(false);
+
+      // Reset lại id
+      setBaseVatDungId(null);
+   };
+
+   // Hàm xóa item vat dung trong cart
+   const handleDeleteItemVatDungCart = (id) => {
+      const newCart = { ...vatDungCart };
+      delete newCart[id];
+      setVatDungCart(newCart);
+      localStorage.setItem("listedVatDungs", JSON.stringify(newCart));
+
+      // Hiện thông báo xóa thành công
+      message.success("Xóa thành công!");
+      setIsShowConfirmDeleteItemCart(false);
+   };
+
+   // Lấy ra vatdung bằng id lưu trong localStorage
+   const foundVatDung = Object.values(vatDungCart).find(
+      (vatdung) => vatdung.id === baseVatDungId
+   );
+
    return (
       <>
+         {/* Modal xác nhận xóa item trong giỏ hàng */}
+         <Modal
+            title="Xác nhận xóa"
+            open={isShowConfirmDeleteItemCart}
+            onCancel={handleCloseDeleteItemCart}
+            footer={
+               <div className="flex-modal">
+                  <Button
+                     onClick={handleCloseDeleteItemCart}
+                     color="primary"
+                     variant="dashed"
+                  >
+                     Hủy
+                  </Button>
+                  <Button
+                     onClick={() => handleDeleteItemVatDungCart(baseVatDungId)}
+                     color="danger"
+                     variant="dashed"
+                  >
+                     Xóa
+                  </Button>
+               </div>
+            }
+         >
+            {foundVatDung && (
+               <div className="list__cart">
+                  <img
+                     className="list__cart--img"
+                     src={foundVatDung.hinhAnh}
+                     title={foundVatDung.tenVatDung}
+                     alt={foundVatDung.moTa}
+                  />
+                  <span className="list__cart--title">
+                     Bạn thật sự muốn xóa
+                     {foundVatDung.id_LoaiVatDung == 1 ? (
+                        <strong className="list__cart--text">Sách</strong>
+                     ) : (
+                        <strong className="list__cart--text">Thiết bị</strong>
+                     )}
+                     này?
+                  </span>
+               </div>
+            )}
+         </Modal>
+
+         {/* Giao diện giỏ hàng */}
+         <Modal
+            width={1400}
+            open={isShowModalCart}
+            onCancel={handleCloseModalCart}
+            title="Giỏ hàng của bạn"
+            footer={
+               <div className="flex-modal">
+                  <Button
+                     onClick={handleCloseModalCart}
+                     color="danger"
+                     variant="dashed"
+                  >
+                     Đóng
+                  </Button>
+                  <Button color="cyan" variant="solid">
+                     Đặt hàng tất cả
+                  </Button>
+               </div>
+            }
+         >
+            <Input.Search
+               className="input-search"
+               placeholder="Nhập tìm kiếm (tên vật dụng)"
+               allowClear
+               onSearch={(value) => setSearchTextCart(value)}
+               onChange={(e) => setSearchTextCart(e.target.value)}
+            />
+            <Table
+               columns={columns}
+               dataSource={filteredDataCart}
+               pagination={
+                  filteredDataCart.length > 4
+                     ? {
+                          pageSize: 4,
+                          showSizeChanger: false,
+                          showQuickJumper: true,
+                          showTotal: (total, range) =>
+                             `${range[0]}-${range[1]} trong tổng ${total} vật dụng`,
+                       }
+                     : false // Ẩn phân trang
+               }
+            />
+         </Modal>
+
          {/* Giao diện cập nhật thông tin cá nhân */}
          <Modal
             onCancel={handleCloseModalUpdateInfo}
@@ -1084,7 +1349,7 @@ export default function HeaderUser() {
                               <img
                                  src={searchIcon}
                                  alt="Tìm kiếm"
-                                 className="navbar-act__icon icon"
+                                 className="navbar-act__icon icon-hover icon"
                               />
                            </button>
                         </div>
@@ -1119,7 +1384,7 @@ export default function HeaderUser() {
                                     className={
                                        isLiked
                                           ? "top-act__icon icon-red "
-                                          : "top-act__icon icon"
+                                          : "top-act__icon icon-hover icon"
                                     }
                                  />
                                  <span className="top-act__title">
@@ -1134,7 +1399,7 @@ export default function HeaderUser() {
                               <img
                                  src={orderIcon}
                                  alt="Đơn phiếu đặt"
-                                 className="navbar-act__icon icon"
+                                 className="navbar-act__icon icon icon-hover"
                               />
                            </button>
                         </div>
@@ -1202,7 +1467,7 @@ export default function HeaderUser() {
                            <img
                               src={searchIcon}
                               alt="Tìm kiếm"
-                              className="top-act__icon icon"
+                              className="top-act__icon icon icon-hover"
                            />
                            <span className="top-act__title"></span>
                         </div>
@@ -1215,7 +1480,9 @@ export default function HeaderUser() {
                            placement="top"
                            menu={{ items: favoritesDropdownItems }}
                            trigger={["click"]}
-                           height={200}
+                           dropdownRender={(menu) => (
+                              <div className="dropdown-scroll-menu">{menu}</div>
+                           )}
                            onClick={() => {
                               if (Object.keys(likedVatDungLocal).length === 0) {
                                  message.info("Chưa có sản phẩm yêu thích nào");
@@ -1234,7 +1501,7 @@ export default function HeaderUser() {
                                  className={
                                     isLiked
                                        ? "top-act__icon icon-red "
-                                       : "top-act__icon icon"
+                                       : "top-act__icon icon-hover icon"
                                  }
                               />
                               <span className="top-act__title">
@@ -1245,11 +1512,14 @@ export default function HeaderUser() {
 
                         <div className="top-act__separate"></div>
 
-                        <button className="top-act__btn">
+                        <button
+                           onClick={handleShowModalCart}
+                           className="top-act__btn"
+                        >
                            <img
                               src={orderIcon}
                               alt="Đơn phiếu đặt"
-                              className="top-act__icon icon"
+                              className="top-act__icon icon icon-hover"
                            />
                         </button>
                      </div>

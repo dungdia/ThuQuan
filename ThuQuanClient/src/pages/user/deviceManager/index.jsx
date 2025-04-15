@@ -36,7 +36,7 @@ export default function DeviceManager() {
       likeDeviceContext === undefined ||
       setLikeDeviceContext === undefined
    ) {
-      console.log("Context values are missing!");
+      // console.log("Context values are missing!");
    }
 
    const debounceSearch = useDebounce(searchValue, 800);
@@ -50,8 +50,6 @@ export default function DeviceManager() {
             currentPage,
             pageSize
          );
-
-         console.log("response ", response);
 
          // Render tất cả sản phẩm
          setDevices(response.data.items);
@@ -84,9 +82,9 @@ export default function DeviceManager() {
    };
 
    // Hàm lấy dữ liệu từ các thiết bị
-   const handleGetDataDevice = (book) => {
+   const handleGetDataDevice = (vatdung) => {
       // Lấy từ dữ liệu device rồi qua trang itemDetail
-      navigate("/itemDetail", { state: { book } });
+      navigate("/itemDetail", { state: { vatdung } });
    };
 
    // Hàm lấy số ngẫu nhiên
@@ -186,6 +184,8 @@ export default function DeviceManager() {
                                     ? "device-card__price--available"
                                     : device.tinhTrang === "Đang mượn"
                                     ? "device-card__price--borrowed"
+                                    : device.tinhTrang === "Đã đặt"
+                                    ? "device-card__price--booked"
                                     : "device-card__price--broken"
                               }`}
                            >

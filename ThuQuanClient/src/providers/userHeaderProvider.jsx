@@ -18,6 +18,12 @@ function UserHeaderProvider({ children }) {
    // Lấy loại vật dụng
    const [vatDungType, setVatDungType] = useState(null);
 
+   // State để quản lý dữ liệu giỏ hàng
+   const [vatDungCartContext, setVatDungCartContext] = useState(() => {
+      const listed = localStorage.getItem("listedVatDungs");
+      return listed ? JSON.parse(listed) : {};
+   });
+
    return (
       <HeaderContext.Provider
          value={{
@@ -29,6 +35,8 @@ function UserHeaderProvider({ children }) {
             setLikeDeviceContext,
             vatDungType,
             setVatDungType,
+            vatDungCartContext,
+            setVatDungCartContext,
          }}
       >
          {children}

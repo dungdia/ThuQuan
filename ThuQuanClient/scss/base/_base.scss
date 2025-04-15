@@ -51,6 +51,11 @@ select {
    filter: var(--icon-color);
 }
 
+.icon-hover:hover {
+   filter: brightness(0) saturate(100%) invert(45%) sepia(86%) saturate(1174%)
+      hue-rotate(347deg) brightness(102%) contrast(101%);
+}
+
 .icon-red {
    margin-top: 6px;
 }
@@ -65,6 +70,10 @@ select {
    white-space: nowrap; /* Ngăn không cho văn bản xuống dòng */
    overflow: hidden; /* Ẩn văn bản vượt quá chiều rộng */
    text-overflow: ellipsis; /* Hiển thị dấu ba chấm ở cuối */
+}
+
+.format-width {
+   max-width: 150px;
 }
 
 .container {
@@ -97,4 +106,30 @@ select {
    align-items: center;
    justify-content: flex-end;
    gap: 10px;
+}
+
+.title-modal {
+   display: flex;
+   align-items: center;
+   justify-content: start;
+   gap: 4px;
+}
+
+.title-modal-text {
+   color: #e09c00;
+}
+
+.gap-modal {
+   display: flex;
+   gap: 10px;
+}
+
+.input-search {
+   width: 350px;
+   margin: 10px 0;
+}
+
+.dropdown-scroll-menu {
+   max-height: 500px;
+   overflow-y: auto;
 }

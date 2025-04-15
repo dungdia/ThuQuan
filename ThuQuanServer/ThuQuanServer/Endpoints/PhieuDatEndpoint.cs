@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MySqlX.XDevAPI.Common;
 using ThuQuanServer.Contains;
+using ThuQuanServer.Dtos.Request;
 using ThuQuanServer.Interfaces;
 using ThuQuanServer.Models;
 
@@ -15,16 +16,61 @@ public static class PhieuDatEndpoint
         var tagName = "Phieu Dat";
 
         var phieuDatRepository = app.ServiceProvider.GetRequiredService<IPhieuDatRepository>();
+        var taiKhoanRepository = app.ServiceProvider.GetRequiredService<ITaiKhoanRepository>();        
+        var authService = app.ServiceProvider.GetRequiredService<IAuthService>();
         var vatDungRepository = app.ServiceProvider.GetRequiredService<IVatDungRepository>();
         // Lấy tất cả phiếu đặt
         app.MapGet("/PhieuDat", () =>
         {
             var result = phieuDatRepository.GetPhieuDat();
+                return Results.Ok(result);
+        }).WithTags(tagName);
+        
+        // Lấy phiếu đặt từ id thành viên
+        app.MapGet("/GetPhieuDatByToken", (HttpContext context) =>
+            {
+                var Authorization = context.Request.Headers.Authorization.ToString();
+                var token = Authorization.Substring(7, Authorization.Length - 7);
+                var idThanhVien = authService.DecodeJwtAccessToken(token);
+
+                Console.WriteLine($"id {idThanhVien}");
+
+                // Lấy danh sách phiếu đặt
+                var danhSachPhieuDat = phieuDatRepository.GetPhieuDatByIdThanhVien(idThanhVien);
+
+                foreach (var phieuDat in danhSachPhieuDat)
+                {
+                    // Lấy danh sách chi tiết phiếu đặt
+                    var danhSachChiTietPhieuDat = phieuDatRepository.GetChiTietPhieuDatByIdPhieuDat(phieuDat.Id);
+
+                    foreach (var chiTiet in danhSachChiTietPhieuDat)
+                    {
+                        // Lấy VatDung từ IdVatDung
+                        var vatDung = vatDungRepository.VatDungById(chiTiet.Id_VatDung);
+
+                        // Gán VatDung vào ChiTietPhieuDat
+                        chiTiet.VatDung = vatDung;
+                    }
+
+                    // Gán lại danh sách chi tiết phiếu đặt vào đối tượng phiếu đặt
+                    phieuDat.ChiTietPhieuDatList = danhSachChiTietPhieuDat;
+                }
+
+                // Trả về kết quả
+                return Results.Ok(danhSachPhieuDat);
+            }).RequireAuthorization()
+            .WithTags(tagName);
+
+        
+        // Lấy ChiTietPhieuDat từ id phieu dat 
+        app.MapGet("ChiTietPhieuDat", ([FromQuery]int id) =>
+        {
+            var result = phieuDatRepository.GetChiTietPhieuDatByIdPhieuDat(id);
             return Results.Ok(result);
         }).WithTags(tagName);
         
         // API tạo phiếu đặt
-        app.MapPost("/AddPhieuDat", ([FromQuery] string email, [FromQuery] int id_vatDung, ITaiKhoanRepository taiKhoanRepository, IVatDungRepository vatDungRepository, IPhieuDatRepository phieuDatRepository) =>
+        app.MapPost("/AddPhieuDat", ([FromQuery] string email, [FromQuery] int id_vatDung) =>
         {
             //  Lấy thành viên từ email
             var thanhvien = taiKhoanRepository.GetAccountThanhVienByEmailTaiKhoan(new { Email = email });
@@ -72,8 +118,8 @@ public static class PhieuDatEndpoint
             //  Thêm chi tiết phiếu đặt
             var chiTietPhieuDat = new ChiTietPhieuDat
             {
-                IdPhieuDat = newPhieuDatId,
-                IdVatDung = id_vatDung
+                Id_PhieuDat = newPhieuDatId,
+                Id_VatDung = id_vatDung
             };
 
             var addChiTietPhieuDat = phieuDatRepository.AddChiTietPhieuDat(chiTietPhieuDat);
