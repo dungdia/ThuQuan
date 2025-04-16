@@ -11,8 +11,8 @@ public interface IVatDungRepository
     public ICollection<VatDung> GetVatDungByProps(object? values);
     public bool AddVatDung(VatDungRequestDto vatDungRequestDto);
     public bool UpdateVatDung(VatDungRequestDto vatDungRequestDto, int id);
-    public int updateTinhTranDaDatgById(int id);
-    
+    public bool updateListTinhTranDaDa(int[] listId);
+    public ICollection<VatDung> GetVaTDungBooked();
     public ICollection<VatDung> GetBook();
 
     public PageResultVatDungBooks<VatDung> GetVatDungBooks(string search, int page, int pageSize);

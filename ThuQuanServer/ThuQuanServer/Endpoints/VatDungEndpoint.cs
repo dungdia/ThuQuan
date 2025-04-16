@@ -48,11 +48,11 @@ public static class VatDungEndpoint
         }).WithTags(tagName);
         
         // Cập nhật trang thái 'Đã xuất phiếu' theo ID
-        app.MapPut("/VatDung/TinhTrang/{id:int}", ([FromRoute]int id) =>
-        {
-            var result = vatDungRepository.updateTinhTranDaDatgById(id);
-            return Results.Ok("Cập nhật thành công");
-        }).WithTags(tagName);
+        // app.MapPut("/VatDung/TinhTrang/{id:int}", ([FromRoute]int id) =>
+        // {
+        //     var result = vatDungRepository.updateTinhTranDaDatgById(id);
+        //     return Results.Ok("Cập nhật thành công");
+        // }).WithTags(tagName);
 
         // Lấy danh sách vật dụng loại sách (BOOK)
         app.MapGet("/VatDung/books", () =>

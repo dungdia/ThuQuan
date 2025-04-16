@@ -2,7 +2,6 @@
 
 public class ChiTietPhieuDat
 {
-    public int IdPhieuDat { get; set; }
-    public int IdVatDung { get; set; }
-    public string GhiChu { get; set; }
+    public int Id_PhieuDat { get; set; }
+    public int Id_VatDung { get; set; }
 }

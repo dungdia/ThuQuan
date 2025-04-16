@@ -13,20 +13,20 @@ public class PhieuMuon
     // Thêm: thuộc tính ánh xạ từ DB
     public string? TinhTrang {get;set;}
 
-    public TinhTrangPhieuMuon? TinhTrangText
-    {
-        get
-        {
-            if (string.IsNullOrEmpty(TinhTrang))
-                throw new NullReferenceException("TinhTrangText đang null hoặc rỗng");
-            return TinhTrang switch
-            {
-                "Đã xuất phiếu" => TinhTrangPhieuMuon.Đã_xuất_phiếu,
-                "Đã hủy" => TinhTrangPhieuMuon.Đã_hủy,
-                "Ẩn" => TinhTrangPhieuMuon.Ẩn,
-                _ => throw new Exception($"Giá trị không hợp lệ {TinhTrang}")
-            };
-        }
-    }
+    // public TinhTrangPhieuMuon? TinhTrangText
+    // {
+    //     get
+    //     {
+    //         if (string.IsNullOrEmpty(TinhTrang))
+    //             throw new NullReferenceException("TinhTrangText đang null hoặc rỗng");
+    //         return TinhTrang switch
+    //         {
+    //             "Đã xuất phiếu" => TinhTrangPhieuMuon.Đã_xuất_phiếu,
+    //             "Đã hủy" => TinhTrangPhieuMuon.Đã_hủy,
+    //             "Ẩn" => TinhTrangPhieuMuon.Ẩn,
+    //             _ => throw new Exception($"Giá trị không hợp lệ {TinhTrang}")
+    //         };
+    //     }
+    // }
     
 }

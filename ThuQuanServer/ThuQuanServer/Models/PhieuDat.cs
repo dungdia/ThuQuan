@@ -11,20 +11,20 @@ public class PhieuDat
     // THÊM: thuộc tính ánh xạ từ DB
     public string? TinhTrang { get; set; }
 
-    [NotMapped]
-    public TinhTrangPhieuDat TinhTrangText
-    {
-        get
-        {
-            if(string.IsNullOrEmpty(TinhTrang))
-                throw new NullReferenceException("TinhTrangText đang null hoặc rỗng");
-            return TinhTrang switch
-            {
-                "Đã xuất phiếu" => TinhTrangPhieuDat.Đã_xuất_phiếu,
-                "Đã hủy" => TinhTrangPhieuDat.Đã_hủy,
-                "Ẩn" => TinhTrangPhieuDat.Ẩn,
-                _ => throw new Exception($"Giá trị không hợp lệ: {TinhTrang}")
-            };
-        }
-    }
+    // [NotMapped]
+    // public TinhTrangPhieuDat TinhTrangText
+    // {
+    //     get
+    //     {
+    //         if(string.IsNullOrEmpty(TinhTrang))
+    //             throw new NullReferenceException("TinhTrangText đang null hoặc rỗng");
+    //         return TinhTrang switch
+    //         {
+    //             "Đã xuất phiếu" => TinhTrangPhieuDat.Đã_xuất_phiếu,
+    //             "Đã hủy" => TinhTrangPhieuDat.Đã_hủy,
+    //             "Ẩn" => TinhTrangPhieuDat.Ẩn,
+    //             _ => throw new Exception($"Giá trị không hợp lệ: {TinhTrang}")
+    //         };
+    //     }
+    // }
 }

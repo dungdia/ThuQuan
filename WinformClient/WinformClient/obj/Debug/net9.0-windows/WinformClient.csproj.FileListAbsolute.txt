@@ -1,0 +1,8 @@
+D:\Project\cthang\ThuQuan\WinformClient\WinformClient\obj\Debug\net9.0-windows\WinformClient.csproj.AssemblyReference.cache
+D:\Project\cthang\ThuQuan\WinformClient\WinformClient\obj\Debug\net9.0-windows\WindowsFormsApp1.AdminPanelForm.resources
+D:\Project\cthang\ThuQuan\WinformClient\WinformClient\obj\Debug\net9.0-windows\WinformClient.csproj.GenerateResource.cache
+D:\Project\cthang\ThuQuan\WinformClient\WinformClient\obj\Debug\net9.0-windows\WinformClient.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\cthang\ThuQuan\WinformClient\WinformClient\obj\Debug\net9.0-windows\WinformClient.AssemblyInfoInputs.cache
+D:\Project\cthang\ThuQuan\WinformClient\WinformClient\obj\Debug\net9.0-windows\WinformClient.AssemblyInfo.cs
+D:\Project\cthang\ThuQuan\WinformClient\WinformClient\obj\Debug\net9.0-windows\WinformClient.csproj.CoreCompileInputs.cache
+D:\Project\cthang\ThuQuan\WinformClient\WinformClient\obj\Debug\net9.0-windows\WinformClient.sourcelink.json

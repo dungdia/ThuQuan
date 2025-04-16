@@ -10,6 +10,7 @@ using Dapper;
 using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using Org.BouncyCastle.Asn1.X509.Qualified;
+using Object = Mysqlx.Expr.Object;
 
 namespace ThuQuanServer.ApplicationContext;
 
@@ -96,7 +97,7 @@ public class DbContext
                 for (var i = 0; i < values.Length; ++i)
                 {
                     cmd.Parameters.AddWithValue($"@{i}", values[i]);
-                    Console.WriteLine(values[i]);
+                    // Console.WriteLine(values[i]);
                 }
             }
             
@@ -169,7 +170,7 @@ public class DbContext
         {
             if(p.GetValue(value)?.GetType() == typeof(DateTime))
             {
-                return ((DateTime?)p.GetValue(value))?.ToString("yyyy-MM-dd");
+                return ((DateTime?)p.GetValue(value))?.ToString("yyyy-MM-dd hh:mm:ss");
             }
             return p.GetValue(value);
         }).ToArray();
@@ -197,6 +198,57 @@ public class DbContext
         return result;
     }
 
+    public int AddList<T>(List<T> value)
+    {
+        var tableName = typeof(T).Name;
+        var props = value.First()?.GetType().GetProperties();
+        if (props == null)
+            return 0;
+        
+        
+        var colNames = string.Join(", ",props.Select(p => $"`{p.Name}`"));
+        var placeHolder = "";
+        for (int i = 0; i < value.Count; ++i)
+        {
+            var item = string.Join(", ",props.Select(_ => "?"));
+            placeHolder += $"({item})";
+            if(i != value.Count - 1)
+                placeHolder += ", ";
+        }
+        var query = $"INSERT INTO {tableName} ({colNames}) VALUES {placeHolder}";
+        Console.WriteLine(query); 
+        var values = new List<object>();
+        foreach (var item in value)
+        {
+            var currentInsertItem = props.Select(p =>
+            {
+                if (p.GetValue(item)?.GetType() == typeof(DateTime))
+                {
+                    return ((DateTime?)p.GetValue(item))?.ToString("yyyy-MM-dd hh:mm:ss");
+                }
+                
+                return p.GetValue(item);
+            });
+            values.AddRange(currentInsertItem);
+        }
+        _connection.Open();
+        try
+        {
+            _transaction = _connection.BeginTransaction();
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        finally
+        {
+            _connection.Close();
+        }
+        
+        var result = ExecuteNonQuery(query, values.ToArray());
+        return result;
+    }
+
     public int Update<T>(object? value, int id)
     {
         var tableName = typeof(T).Name;
@@ -215,12 +267,12 @@ public class DbContext
             
             if(p.GetValue(value)?.GetType() == typeof(DateTime))
             {
-                return ((DateTime?)p.GetValue(value))?.ToString("yyyy-MM-dd");
+                return ((DateTime?)p.GetValue(value))?.ToString("yyyy-MM-dd hh:mm:ss");
             }
             return p.GetValue(value);
         }).Append(id).ToArray();
 
-        Console.WriteLine(string.Join("\n", values));
+        // Console.WriteLine(string.Join("\n", values));
         // return 0;
         
         _connection.Open();
