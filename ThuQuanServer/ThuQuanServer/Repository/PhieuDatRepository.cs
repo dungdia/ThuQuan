@@ -19,6 +19,19 @@ public class PhieuDatRepository : IPhieuDatRepository
         return phieuDat;
     }
 
+    public ICollection<PhieuDat> GetPhieuDatByIdThanhVien(int idThanhVien)
+    {
+        string query = "SELECT * FROM PhieuDat WHERE id_thanhvien = @0";
+        return _dbContext.GetData<PhieuDat>(query, idThanhVien);
+    }
+
+    public ICollection<ChiTietPhieuDat> GetChiTietPhieuDatByIdPhieuDat(int idPhieuDat)
+    {
+        string query = "SELECT * FROM ChiTietPhieuDat WHERE id_phieudat = @0";
+        return _dbContext.GetData<ChiTietPhieuDat>(query, idPhieuDat);
+    }
+
+    
     public ICollection<PhieuDat> GetPhieuDatByProps(object? values)
     {
         throw new NotImplementedException();
@@ -64,8 +77,8 @@ public class PhieuDatRepository : IPhieuDatRepository
         string query = "INSERT INTO ChiTietPhieuDat(id_phieudat, id_vatdung) VALUES (?, ?)";
         var result = _dbContext.ExecuteNonQuery(query, new object[]
         {
-            chiTietPhieuDat.IdPhieuDat,
-            chiTietPhieuDat.IdVatDung
+            chiTietPhieuDat.Id_PhieuDat,
+            chiTietPhieuDat.Id_VatDung
         });
         return result > 0;
     }

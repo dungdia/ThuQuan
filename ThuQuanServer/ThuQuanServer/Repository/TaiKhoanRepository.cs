@@ -79,6 +79,13 @@ public class TaiKhoanRepository : ITaiKhoanRepository
         var thanhVien = _dbContext.GetData<ThanhVien>(query);
         return thanhVien;
     }
+    
+    public ThanhVien GetThanhVienById(int id)
+    {
+        string query = "SELECT * FROM ThanhVien WHERE Id_taikhoan = ?";
+        var thanhVien = _dbContext.GetData<ThanhVien>(query, id).FirstOrDefault();
+        return thanhVien;
+    }
 
     public bool AddThanhVien(TaikhoanInsertDTO taikhoan)
     {
@@ -114,6 +121,13 @@ public class TaiKhoanRepository : ITaiKhoanRepository
         
         return _dbContext.SaveChange(); 
     }
+
+    public bool CheckTaiKhoanExist(string email)
+    {
+        string query = "SELECT * FROM TaiKhoan WHERE Email = ?";
+        var taiKhoan = _dbContext.GetData<TaiKhoan>(query, email);
+        return taiKhoan.Count > 0;
+    }
     
     public bool UpdateThanhVien(ThanhVienUpdateResponseDTO thanhvien, int idThanhVien)
     {
@@ -125,5 +139,24 @@ public class TaiKhoanRepository : ITaiKhoanRepository
     {
         _dbContext.Update<TaiKhoan>(taikhoan, idTaiKhoan);
         return _dbContext.SaveChange();
+    }
+
+    public TaiKhoan ChangePassword(string email, string newPassword)
+    {
+        var query = "SELECT * From TaiKhoan WHERE email=?";   
+        var taikhoan = _dbContext.GetData<TaiKhoan>(query,email).FirstOrDefault();
+
+        if (taikhoan == null)
+        {
+            throw new Exception("Tài khoản không tồn tại");
+        }
+        
+        string hasPassword = BCrypt.Net.BCrypt.HashPassword(newPassword);
+        
+        var updateQuery = "UPDATE TaiKhoan SET Password =? WHERE email =?";
+        _dbContext.ExecuteNonQuery(updateQuery, hasPassword,email);
+        
+        taikhoan.Password = hasPassword;
+        return taikhoan;
     }
 }

@@ -75,7 +75,7 @@ public class VatDungRepository : IVatDungRepository
     
         var vatDung = _dbContext.GetData<VatDung>(
             query,
-            new object[] {"Ẩn"}
+            "Ẩn"
         );
 
         return vatDung;
