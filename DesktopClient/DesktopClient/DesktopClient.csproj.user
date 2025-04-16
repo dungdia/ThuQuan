@@ -7,8 +7,14 @@
     <Compile Update="MainFrame.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="UI\HomeForm.cs">
-      <SubType>Form</SubType>
+    <Compile Update="UI\CustomControls\CRUDButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\Panels\ItemPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\Panels\MemberPanel.cs">
+      <SubType>UserControl</SubType>
     </Compile>
   </ItemGroup>
 </Project>

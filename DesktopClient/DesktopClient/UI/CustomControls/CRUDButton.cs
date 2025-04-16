@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DesktopClient.UI
+namespace DesktopClient.UI.CustomControls
 {
-    public partial class HomeForm : Form
+    public partial class CRUDButton : UserControl
     {
-        public HomeForm()
+        public CRUDButton()
         {
             InitializeComponent();
         }

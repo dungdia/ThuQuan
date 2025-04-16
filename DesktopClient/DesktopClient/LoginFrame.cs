@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DesktopClient.Models;
+using RestSharp;
+using DesktopClient.APIs;
 
 namespace DesktopClient
 {
@@ -24,10 +27,7 @@ namespace DesktopClient
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MainFrame mainFrame = new MainFrame();
-            this.Hide();
-            mainFrame.ShowDialog();
-            this.Close();
+
         }
 
         private void label2_Click(object sender, EventArgs e)
