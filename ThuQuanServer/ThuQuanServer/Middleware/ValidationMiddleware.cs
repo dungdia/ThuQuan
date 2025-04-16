@@ -57,7 +57,7 @@ public class ValidationMiddleware
     private static async Task ReturnBadRequest(HttpContext context, string message)
     {
         context.Response.StatusCode = StatusCodes.Status400BadRequest;
-        await context.Response.WriteAsJsonAsync(new { Error = message });
+        await context.Response.WriteAsJsonAsync(message);
     }
 
     private static async Task ReturnBadRequest(HttpContext context, List<ValidationResult> errors)
@@ -67,7 +67,7 @@ public class ValidationMiddleware
             e => e.MemberNames.FirstOrDefault() ?? "General",
             e => e.ErrorMessage
         );
-        await context.Response.WriteAsJsonAsync(new { Errors = errorDict });
+        await context.Response.WriteAsJsonAsync(errorDict);
     }
 }
 

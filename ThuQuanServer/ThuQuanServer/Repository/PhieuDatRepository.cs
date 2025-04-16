@@ -1,4 +1,5 @@
 using ThuQuanServer.ApplicationContext;
+using ThuQuanServer.Dtos.Request;
 using ThuQuanServer.Interfaces;
 using ThuQuanServer.Models;
 
@@ -36,27 +37,30 @@ public class PhieuDatRepository : IPhieuDatRepository
     {
         throw new NotImplementedException();
     }
-    
 
 
-    public bool AddPhieuDat(PhieuDat phieuDat)
+
+    public bool AddPhieuDat(PhieuDat phieuDat, int[] vatDungIds)
     {
         // Thiết lập TrangThai mặc định là "Đã xuất phiếu"
-        phieuDat.TinhTrang = "Đã xuất phiếu";
-
-        // Truy vấn INSERT vào bảng PhieuDat
-        string query = "INSERT INTO PhieuDat (Id_ThanhVien, NgayDat, tinhtrang) VALUES (?, ?, ?)";
-
-        // Thực thi truy vấn
-        var result = _dbContext.ExecuteNonQuery(query, new object[]
+        _dbContext.Add<PhieuDat>(phieuDat);
+        var addPhieuDatResult = _dbContext.SaveChange();
+        if (!addPhieuDatResult)
+            return false;
+        var phieuDatId = _dbContext.GetLastInsertId();
+        var chiTietPhieuDatList = new List<ChiTietPhieuDat>();
+        foreach (var vatDungId in vatDungIds)
         {
-            phieuDat.Id_ThanhVien,
-            phieuDat.NgayDat,
-            phieuDat.TinhTrang
-        });
+            var chiTietPhieuDat = new ChiTietPhieuDat()
+            {
+                Id_PhieuDat = phieuDatId,
+                Id_VatDung = vatDungId
+            };
+            chiTietPhieuDatList.Add(chiTietPhieuDat);
+        }
 
-        // Trả về true nếu thêm thành công, ngược lại false
-        return result > 0;
+        _dbContext.AddList(chiTietPhieuDatList);
+        return _dbContext.SaveChange();
     }
     
     public int AddPhieuDatReturnId(PhieuDat phieuDat)

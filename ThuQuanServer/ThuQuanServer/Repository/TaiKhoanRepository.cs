@@ -47,10 +47,7 @@ public class TaiKhoanRepository : ITaiKhoanRepository
         // Trả về đối tượng đầu tiên hoặc null nếu không có
         return _dbContext.GetData<ThanhVien>(query, propValues).FirstOrDefault();
     }
-
-
-   
-
+    
     public ICollection<TaiKhoan> GetAccountByProps(object? values)
     {
         var p = values.GetType().GetProperties();

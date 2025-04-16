@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MySqlX.XDevAPI.Common;
+using ThuQuanServer.ApplicationContext;
 using ThuQuanServer.Contains;
 using ThuQuanServer.Dtos.Request;
 using ThuQuanServer.Interfaces;
@@ -19,6 +21,8 @@ public static class PhieuDatEndpoint
         var taiKhoanRepository = app.ServiceProvider.GetRequiredService<ITaiKhoanRepository>();        
         var authService = app.ServiceProvider.GetRequiredService<IAuthService>();
         var vatDungRepository = app.ServiceProvider.GetRequiredService<IVatDungRepository>();
+        var authService = app.ServiceProvider.GetRequiredService<IAuthService>();
+        var _dbcontext = app.ServiceProvider.GetRequiredService<DbContext>();
         // Lấy tất cả phiếu đặt
         app.MapGet("/PhieuDat", () =>
         {
@@ -68,80 +72,68 @@ public static class PhieuDatEndpoint
             var result = phieuDatRepository.GetChiTietPhieuDatByIdPhieuDat(id);
             return Results.Ok(result);
         }).WithTags(tagName);
-        
-        // API tạo phiếu đặt
-        app.MapPost("/AddPhieuDat", ([FromQuery] string email, [FromQuery] int id_vatDung) =>
+
+
+        app.MapPost("/AddPhieuDat", [Authorize] (HttpContext httpContext,AddPhieuDatRequestDto addPhieuDatRequestDto) =>
+
         {
-            //  Lấy thành viên từ email
-            var thanhvien = taiKhoanRepository.GetAccountThanhVienByEmailTaiKhoan(new { Email = email });
-            if (thanhvien == null)
-            {
-                return Results.BadRequest("Lỗi không đặt hàng bởi thành viên này");
-            }
-
-            //  Kiểm tra trạng thái vật dụng
-            var vatDung = vatDungRepository.VatDungById(id_vatDung);
-            if (vatDung == null || vatDung.TinhTrang == "Ẩn")
-            {
-                return Results.BadRequest("Vật dụng không tồn tại");
-            }
-
-            var trangThaiKhongChoDat = new[] { "Đang mượn", "Bị hỏng", "Đã đặt","Đã mượn" };
-            if (trangThaiKhongChoDat.Contains(vatDung.TinhTrang))
-            {
-                return Results.BadRequest($"Vật dụng không thể đặt vì đang ở trạng thái: {vatDung.TinhTrang}");
-            }
-
-            var updateTrangThaiVatDung = vatDungRepository.updateTinhTranDaDatgById(id_vatDung);
-            if (updateTrangThaiVatDung <=0)
-                return Results.BadRequest("Lỗi cập nhật trạng thái vật dụng");
+            //Lấy access token từ request header
+            var authorization = httpContext.Request.Headers.Authorization.ToString();
+            var token = authorization.Substring(7);
             
-          
+            //Sử dụng service để decode accesss token lấy id rồi tìm thành viến với id dó
+            var taiKhaiId = authService.DecodeJwtAccessToken(token);
+            var thanhvien = taiKhoanRepository.GetAccountByProps(new {Id = taiKhaiId}).FirstOrDefault();
+            
+            if (thanhvien == null)
+                return Results.NotFound("Không tìm thấy thành viên");
+            
+            var vatDung = vatDungRepository.GetVatDung().Where(p => addPhieuDatRequestDto.listId.Contains(p.Id)).ToList();
+            
+            if (vatDung.Count() != addPhieuDatRequestDto.listId.Length)
+                return Results.BadRequest("Vật dụng không tồn tại");
+            
+            var vatDungDaDat = vatDung.Where(p => p.TinhTrang != "Chưa mượn").ToList();  
+            
+            if (vatDungDaDat.Count > 0)
+            {
+                var firstVatDung = vatDungDaDat.First();
+                if (firstVatDung.TinhTrang == "Ẩn")
+                    return Results.BadRequest($"Vật dụng không tồn tại");
+                return Results.BadRequest($"Vật dụng { firstVatDung.TenVatDung }, Id={ firstVatDung.Id } { firstVatDung.TinhTrang }");
+            }
 
-            //  Tạo phiếu đặt
-            var phieuDat = new PhieuDat
+            var newPhieuDat = new PhieuDat()
             {
                 Id_ThanhVien = thanhvien.Id,
                 NgayDat = DateTime.Now,
                 TinhTrang = "Đã xuất phiếu"
             };
+            
+            var resultPhieuDat = phieuDatRepository.AddPhieuDat(newPhieuDat, addPhieuDatRequestDto.listId);
+            if(!resultPhieuDat)
+                return Results.UnprocessableEntity("Thêm phiếu đặt không thành công");
+            var resultVatDung = vatDungRepository.updateListTinhTranDaDa(addPhieuDatRequestDto.listId);
+            if (!resultVatDung)
+                return Results.UnprocessableEntity("Đã xảy ra lỗi lúc thêm phiếu đặt");
+            
+            return Results.Ok("Đặt thành công");
+        }).WithMetadata(typeof(AddPhieuDatRequestDto)).WithTags(tagName);
 
-            var newPhieuDatId = phieuDatRepository.AddPhieuDatReturnId(phieuDat);
-            if (newPhieuDatId <= 0)
-            {
-                return Results.Problem("Tạo phiếu đặt thất bại.");
-            }
 
-            //  Gán lại ID mới tạo vào đối tượng để trả kết quả
-            phieuDat.Id = newPhieuDatId;
+        app.MapPut("/HuyPhieuDat", [Authorize](int idPhieuDat) =>
 
-            //  Thêm chi tiết phiếu đặt
-            var chiTietPhieuDat = new ChiTietPhieuDat
-            {
-                Id_PhieuDat = newPhieuDatId,
-                Id_VatDung = id_vatDung
-            };
-
-            var addChiTietPhieuDat = phieuDatRepository.AddChiTietPhieuDat(chiTietPhieuDat);
-            if (!addChiTietPhieuDat)
-            {
-                return Results.Problem("Tạo chi tiết phiếu đặt thất bại.");
-            }
-
-            //  Thành công
-            return Results.Ok(new
-            {
-                PhieuDat = phieuDat,
-                ChiTietPhieuDat = chiTietPhieuDat
-            });
+          return Result.Ok("test");
         }).WithTags(tagName);
 
         
         app.MapPut("/UpdatePhieuDat", () =>
+
         {
-            return Results.Ok();
+            var phieuDat = phieuDatRepository.GetPhieuDatByProps(new { Id = idPhieuDat }).FirstOrDefault();
+            if (phieuDat == null)
+                return Results.BadRequest("Không tìm thấy phiếu đặt");
+            return Results.Ok("HI");
         }).WithTags(tagName);
-        
-        
     }
 }

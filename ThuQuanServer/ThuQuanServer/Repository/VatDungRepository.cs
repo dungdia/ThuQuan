@@ -61,11 +61,19 @@ public class VatDungRepository : IVatDungRepository
         return _dbContext.SaveChange();
     }
 
-    public int updateTinhTranDaDatgById(int id)
+    public bool updateListTinhTranDaDa(int[] listId)
     {
-        string query = "UPDATE VatDung SET tinhtrang = 'Đã đặt' WHERE Id = @Id";
-        var result = _dbContext.Update<VatDung>(new { TinhTrang = "Đã đặt" }, id);
-        return result;
+        foreach (var id in listId)
+            _dbContext.Update<VatDung>(new { TinhTrang = "Đã đặt" }, id);
+        return _dbContext.SaveChange();
+    }
+    
+    public ICollection<VatDung> GetVaTDungBooked()
+    {
+        string query = "SELECT * FROM VaTDung WHERE TinhTrang != ?";
+        
+        var vatDung = _dbContext.GetData<VatDung>(query,"Chưa mượn");
+        return vatDung;
     }
     
     public ICollection<VatDung> GetBook()
@@ -80,7 +88,7 @@ public class VatDungRepository : IVatDungRepository
 
         return vatDung;
     }
-
+    
     public PageResultVatDungBooks<VatDung> GetVatDungBooks(string search, int page, int pageSize)
     {
         int offset = (page - 1) * pageSize;
