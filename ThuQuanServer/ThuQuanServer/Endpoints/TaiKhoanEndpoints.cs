@@ -247,105 +247,141 @@ public static class TaiKhoanEndpoints
             return o;
         }).WithTags(groupName);
         
-  
         
-       // API cập nhật thông tin người dùng
-            app.MapPut("/update-info-user", ([FromBody] UpdateThanhVienRequestDto updateThanhVienRequestDto) =>
+        // API Kiểm tra tải khoản có tồn tại không
+        app.MapGet("/CheckTaiKhoan", ([FromQuery] string email) =>
+        {
+            var taikhoan = taiKhoanRepository.CheckTaiKhoanExist(email);
+            if (!taikhoan )
             {
-                // Regex cho các trường
-                string usernameHotenPattern = @"^.{3,100}$";
-                string sdtPattern = @"^\d{10,11}$";
-                string emailPattern = @"^[^\s@]+@[^\s@]+\.[^\s@]+$";
+                return Results.BadRequest("Tài khoản không tồn tại");
+            }
+            return Results.Ok("Tài khoản tồn tại");
+        }).WithTags(groupName);
+  
+        // API lấy thành viên qua id-tai khoan
+        app.MapGet("/get-thanh-vien-by-id", ([FromQuery] int id) =>
+            {
+                var thanhVien = taiKhoanRepository.GetThanhVienById(id);
 
-                // Không được để trống các trường
-                if (string.IsNullOrEmpty(updateThanhVienRequestDto.UserName) ||
-                    string.IsNullOrEmpty(updateThanhVienRequestDto.Hoten) ||
-                    string.IsNullOrEmpty(updateThanhVienRequestDto.Email) ||
-                    string.IsNullOrEmpty(updateThanhVienRequestDto.sdt))
-                {
-                    return Results.BadRequest("Điền thông tin đầy đủ");
-                }
-
-                // Validate username và họ tên
-                if (!Regex.IsMatch(updateThanhVienRequestDto.UserName, usernameHotenPattern) ||
-                    !Regex.IsMatch(updateThanhVienRequestDto.Hoten, usernameHotenPattern))
-                {
-                    return Results.BadRequest("Tên đăng nhập và họ tên phải từ 3 đến 100 ký tự");
-                }
-
-                // Validate sdt
-                if (!Regex.IsMatch(updateThanhVienRequestDto.sdt, sdtPattern))
-                {
-                    return Results.BadRequest("Số điện thoại phải từ 10 đến 11 số");
-                }
-
-                // Validate Email
-                if (!Regex.IsMatch(updateThanhVienRequestDto.Email, emailPattern))
-                {
-                    return Results.BadRequest("Email không đúng định dạng");
-                }
-
-                var tk = taiKhoanRepository.GetAccountByProps(new { Id = updateThanhVienRequestDto.Id }).FirstOrDefault();
-                if (tk == null)
-                {
-                    return Results.BadRequest("Tài khoản không tồn tại");
-                }
-
-                // Kiểm tra Email đã tồn tại chưa
-                var existingEmail = taiKhoanRepository.GetAccountByProps(new { Email = updateThanhVienRequestDto.Email }).FirstOrDefault();
-                if (existingEmail != null && existingEmail.Id != tk.Id)
-                {
-                    return Results.BadRequest("Email đã tồn tại");
-                }
-
-                // Kiểm tra số điện thoại đã tồn tại chưa
-                var existingPhoneNumber = taiKhoanRepository.GetThanhVien().FirstOrDefault(tv => tv.SoDienThoai == updateThanhVienRequestDto.sdt);
-                if (existingPhoneNumber != null && existingPhoneNumber.Id != tk.Id)
-                {
-                    return Results.BadRequest("Số điện thoại đã tồn tại");
-                }
-
-                // Update TaiKhoan
-                var taiKhoanUpdate = new TaiKhoanUpdateResponseDTO()
-                {
-                    Id = tk.Id,
-                    UserName = updateThanhVienRequestDto.UserName,
-                    Email = updateThanhVienRequestDto.Email,
-                    Password = tk.Password, // Keep the existing password
-                    VaiTro = tk.VaiTro,
-                    NgayThamGia = tk.NgayThamGia
-                };
-
-                if (!taiKhoanRepository.UpdateTaiKhoan(taiKhoanUpdate, tk.Id))
-                {
-                    return Results.BadRequest("Cập nhật thông tin tài khoản không thành công");
-                }
-
-                // Update ThanhVien
-                var thanhVienUpdate = new ThanhVienUpdateResponseDTO()
-                {
-                    Id = tk.Id,
-                    HoTen = updateThanhVienRequestDto.Hoten,
-                    SoDienThoai = updateThanhVienRequestDto.sdt,
-                    TinhTrang = 1 // Assuming TinhTrang is always set to 1
-                };
-
-                if (!taiKhoanRepository.UpdateThanhVien(thanhVienUpdate, tk.Id))
-                {
-                    return Results.BadRequest("Cập nhật thông tin người dùng không thành công");
-                }
-
-                return Results.Ok(new ApiResponse
-                {
-                    Success = true,
-                    Message = $"Cập nhật thông tin người dùng {tk.Id} thành công",
-                    Data = updateThanhVienRequestDto
-                });
-            }).WithMetadata(typeof(UpdateThanhVienRequestDto)).WithOpenApi(o =>
+                return Results.Ok(thanhVien);
+            })
+            .WithOpenApi(o =>
             {
                 o.Security = new List<OpenApiSecurityRequirement>();
                 return o;
-            }).WithTags(groupName);
+            })
+            .WithTags(groupName);
+
+        
+    // API cập nhật thông tin người dùng
+        app.MapPut("/update-info-user", ([FromBody] UpdateThanhVienRequestDto updateThanhVienRequestDto) =>
+        {
+            // Regex cho các trường
+            string usernameHotenPattern = @"^.{3,100}$";
+            string sdtPattern = @"^\d{10,11}$";
+            string emailPattern = @"^[^\s@]+@[^\s@]+\.[^\s@]+$";
+
+            // Không được để trống các trường
+            if (string.IsNullOrEmpty(updateThanhVienRequestDto.UserName) ||
+                string.IsNullOrEmpty(updateThanhVienRequestDto.Hoten) ||
+                string.IsNullOrEmpty(updateThanhVienRequestDto.Email) ||
+                string.IsNullOrEmpty(updateThanhVienRequestDto.sdt))
+            {
+                return Results.BadRequest("Điền thông tin đầy đủ");
+            }
+
+            // Validate username và họ tên
+            if (!Regex.IsMatch(updateThanhVienRequestDto.UserName, usernameHotenPattern) ||
+                !Regex.IsMatch(updateThanhVienRequestDto.Hoten, usernameHotenPattern))
+            {
+                return Results.BadRequest("Tên đăng nhập và họ tên phải từ 3 đến 100 ký tự");
+            }
+
+            // Validate sdt
+            if (!Regex.IsMatch(updateThanhVienRequestDto.sdt, sdtPattern))
+            {
+                return Results.BadRequest("Số điện thoại phải từ 10 đến 11 số");
+            }
+
+            // Validate Email
+            if (!Regex.IsMatch(updateThanhVienRequestDto.Email, emailPattern))
+            {
+                return Results.BadRequest("Email không đúng định dạng");
+            }
+
+            var tk = taiKhoanRepository.GetAccountByProps(new { Id = updateThanhVienRequestDto.Id }).FirstOrDefault();
+            if (tk == null)
+            {
+                return Results.BadRequest("Tài khoản không tồn tại");
+            }
+
+            var thanhVien = taiKhoanRepository.GetThanhVienById(tk.Id);
+            if (thanhVien == null)
+            {
+                return Results.BadRequest("Người dùng không tồn tại");
+            }
+
+            // Kiểm tra Email đã tồn tại chưa
+            var existingEmail = taiKhoanRepository.GetAccountByProps(new { Email = updateThanhVienRequestDto.Email }).FirstOrDefault();
+            if (existingEmail != null && existingEmail.Id != tk.Id)
+            {
+                return Results.BadRequest("Email đã tồn tại");
+            }
+
+            // Kiểm tra số điện thoại đã tồn tại chưa
+            var existingPhoneNumber = taiKhoanRepository.GetThanhVien()
+                .FirstOrDefault(tv => tv.SoDienThoai == updateThanhVienRequestDto.sdt);
+            if (existingPhoneNumber != null && existingPhoneNumber.Id != thanhVien.Id)
+            {
+                return Results.BadRequest("Số điện thoại đã tồn tại");
+            }
+
+            // Update TaiKhoan
+            var taiKhoanUpdate = new TaiKhoanUpdateResponseDTO()
+            {
+                Id = tk.Id,
+                UserName = updateThanhVienRequestDto.UserName,
+                Email = updateThanhVienRequestDto.Email,
+                Password = tk.Password, // Keep the existing password
+                VaiTro = tk.VaiTro,
+                NgayThamGia = tk.NgayThamGia
+            };
+
+            if (!taiKhoanRepository.UpdateTaiKhoan(taiKhoanUpdate, tk.Id))
+            {
+                return Results.BadRequest("Cập nhật thông tin tài khoản không thành công");
+            }
+
+            // Update ThanhVien
+            var thanhVienUpdate = new ThanhVienUpdateResponseDTO()
+            {
+                Id = thanhVien.Id,
+                HoTen = updateThanhVienRequestDto.Hoten,
+                SoDienThoai = updateThanhVienRequestDto.sdt,
+                TinhTrang = 1 // Assuming TinhTrang is always set to 1
+            };
+
+            if (!taiKhoanRepository.UpdateThanhVien(thanhVienUpdate, thanhVien.Id))
+            {
+                return Results.BadRequest("Cập nhật thông tin người dùng không thành công");
+            }
+
+            return Results.Ok(new ApiResponse
+            {
+                Success = true,
+                Message = $"Cập nhật thông tin người dùng {tk.Id} thành công",
+                Data = updateThanhVienRequestDto
+            });
+        })
+        .WithMetadata(typeof(UpdateThanhVienRequestDto))
+        .WithOpenApi(o =>
+        {
+            o.Security = new List<OpenApiSecurityRequirement>();
+            return o;
+        })
+        .WithTags(groupName);
+
         
         // API lấy tài khoản qua Email
         app.MapGet("/GetTaiKhoanByEmail/{email}", ([FromRoute, Required] string email) =>
@@ -358,5 +394,11 @@ public static class TaiKhoanEndpoints
             return Results.Ok(taikhoan);
         }).WithTags(groupName);
         
+        // API đổi mật khẩu
+        app.MapPost("/forgot-password", ([FromQuery] string email, [FromQuery] string newPassword) =>
+        {
+            var result = taiKhoanRepository.ChangePassword(email, newPassword);
+            return Results.Ok(result);
+        }).WithTags(groupName);
     }
 }

@@ -66,6 +66,8 @@ export default function HeaderUser() {
       setVatDungType,
       vatDungCartContext,
       setVatDungCartContext,
+      handlers,
+      setHandlers,
    } = context;
 
    const navigate = useNavigate();
@@ -118,7 +120,9 @@ export default function HeaderUser() {
       vatDungType === undefined ||
       setVatDungType === undefined ||
       vatDungCartContext === undefined ||
-      setVatDungCartContext === undefined
+      setVatDungCartContext === undefined ||
+      handlers === undefined ||
+      setHandlers === undefined
    ) {
       // console.log("Context values are missing!");
    }
@@ -170,6 +174,12 @@ export default function HeaderUser() {
       e.preventDefault();
    };
 
+   useEffect(() => {
+      if (account?.id) {
+         setBaseId(account.id);
+      }
+   }, [account]);
+
    // Hàm mở modal cập nhật thông tin cá nhân
    const handleShowModalUpdateInfo = () => {
       setIsShowModalUpdateInfo(true);
@@ -188,6 +198,17 @@ export default function HeaderUser() {
          }
       }, 100);
    };
+
+   // Hàm này có tác dụng để thêm hàm handleShowModalUpdateInfo vào context và gọi nó khi cần thiết
+   useEffect(() => {
+      if (context?.setHandlers) {
+         context.setHandlers((prev) => ({
+            ...prev,
+            handleShowModalUpdateInfo,
+            fetchAccount, // thêm ở đây
+         }));
+      }
+   }, []);
 
    // Hàm đóng modal cập nhật thông tin cá nhân
    const handleCloseModalUpdateInfo = () => {
@@ -748,6 +769,7 @@ export default function HeaderUser() {
       const newCart = { ...vatDungCart };
       delete newCart[id];
       setVatDungCart(newCart);
+      setVatDungCartContext(newCart);
       localStorage.setItem("listedVatDungs", JSON.stringify(newCart));
 
       // Hiện thông báo xóa thành công

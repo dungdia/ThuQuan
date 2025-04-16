@@ -7,9 +7,15 @@ import { Button, Image, message, Modal } from "antd";
 import { HeaderContext } from "@/providers/userHeaderProvider";
 
 export default function ItemDetail() {
-   const { vatDungType, setVatDungType } = useContext(HeaderContext);
+   const { vatDungType, setVatDungType, handlers, setHandlers } =
+      useContext(HeaderContext);
 
-   if (vatDungType === undefined || setVatDungType === undefined) {
+   if (
+      vatDungType === undefined ||
+      setVatDungType === undefined ||
+      handlers === undefined ||
+      setHandlers === undefined
+   ) {
       console.log("Context values are missing!");
    }
 
@@ -17,7 +23,6 @@ export default function ItemDetail() {
    // Lấy giá trị từ bookmanager location (truyền từ trang trước đó)
    const location = useLocation();
    const { vatdung } = location.state || {};
-   console.log("vat dung", vatdung);
 
    const [isShowModalCart, setIsShowModalCart] = useState(false);
    const [listCart, setListCart] = useState(() => {
@@ -41,8 +46,44 @@ export default function ItemDetail() {
       setIsShowModalCart(true);
    };
 
-   const confirmAddCart = (vatdung) => {
+   // hàm chạy mỗi khi listedVatDungs trên localStorage thay đổi
+   useEffect(() => {
+      setListCart(vatDungCartContext);
+      localStorage.setItem(
+         "listedVatDungs",
+         JSON.stringify(vatDungCartContext)
+      );
+   }, [vatDungCartContext]);
+
+   const confirmAddCart = async (vatdung) => {
+      const accountLoggedin = JSON.parse(
+         localStorage.getItem("accountLoggedin")
+      );
+
+      if (
+         accountLoggedin.email === undefined ||
+         accountLoggedin.email === null ||
+         accountLoggedin.email === "" ||
+         accountLoggedin.hoten === undefined ||
+         accountLoggedin.hoten === null ||
+         accountLoggedin.hoten === "" ||
+         accountLoggedin.sdt === undefined ||
+         accountLoggedin.sdt === null ||
+         accountLoggedin.sdt === "" ||
+         accountLoggedin.userName === undefined ||
+         accountLoggedin.userName === null ||
+         accountLoggedin.userName === ""
+      ) {
+         message.info("Vui lòng điện đủ thông tin trước khi đặt hàng");
+         // Kiểm tra xem handleShowModalUpdateInfo có tồn tại trong handlers không
+         if (handlers?.handleShowModalUpdateInfo) {
+            await handlers.fetchAccount();
+            handlers.handleShowModalUpdateInfo(); // Mở modal cập nhật thông tin
+         }
+         return;
+      }
       const newCart = { ...listCart };
+
       // Kiểm tra xem sách đã được thích hay chưa
       // Nếu đã thích thì bỏ thích, ngược lại thì thêm vào danh sách thích
       if (newCart[vatdung.id]) {
@@ -58,6 +99,7 @@ export default function ItemDetail() {
       setVatDungCartContext(newCart);
       localStorage.setItem("listedVatDungs", JSON.stringify(newCart));
    };
+   console.log("listCart", listCart);
 
    // Hàm đóng modal thêm vào giỏ hàng
    const handleCloseModalCart = () => {
@@ -88,7 +130,7 @@ export default function ItemDetail() {
             title={
                <div className="title-modal">
                   Thêm{" "}
-                  <strong className="title-modal-text">
+                  <strong className="title-modal-text format format-width">
                      {vatdung.tenVatDung}
                   </strong>{" "}
                   vào giỏ hàng

@@ -21,6 +21,7 @@ builder.Services.AddSingleton<ITaiKhoanRepository , TaiKhoanRepository>();
 builder.Services.AddSingleton<IPasswordHashService , PasswordHashService>();
 builder.Services.AddSingleton<ILoaiVatDungRepository , LoaiVatDungRepository>();
 builder.Services.AddSingleton<IPhieuDatRepository, PhieuDatRepository>();
+builder.Services.AddSingleton<ISendOTPRepository, SendOTPRepository>();
 builder.Services.AddSingleton<IVatDungRepository , VatDungRepository>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
 
@@ -115,6 +116,7 @@ app.MapPhieuTraEndpoints();
 app.MapVatDungEndpoints();
 app.MapLoaiVatDungEndpoint();
 app.MapSecurityEndpoints();
+app.MapSendOTPEndpoints();
 
 app.Run();
 
