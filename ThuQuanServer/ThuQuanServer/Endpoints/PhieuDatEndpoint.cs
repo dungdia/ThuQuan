@@ -18,7 +18,8 @@ public static class PhieuDatEndpoint
         var tagName = "Phieu Dat";
 
         var phieuDatRepository = app.ServiceProvider.GetRequiredService<IPhieuDatRepository>();
-        var taiKhoanRepository = app.ServiceProvider.GetRequiredService<ITaiKhoanRepository>();
+        var taiKhoanRepository = app.ServiceProvider.GetRequiredService<ITaiKhoanRepository>();        
+        var authService = app.ServiceProvider.GetRequiredService<IAuthService>();
         var vatDungRepository = app.ServiceProvider.GetRequiredService<IVatDungRepository>();
         var authService = app.ServiceProvider.GetRequiredService<IAuthService>();
         var _dbcontext = app.ServiceProvider.GetRequiredService<DbContext>();
@@ -26,10 +27,55 @@ public static class PhieuDatEndpoint
         app.MapGet("/PhieuDat", () =>
         {
             var result = phieuDatRepository.GetPhieuDat();
+                return Results.Ok(result);
+        }).WithTags(tagName);
+        
+        // Lấy phiếu đặt từ id thành viên
+        app.MapGet("/GetPhieuDatByToken", (HttpContext context) =>
+            {
+                var Authorization = context.Request.Headers.Authorization.ToString();
+                var token = Authorization.Substring(7, Authorization.Length - 7);
+                var idThanhVien = authService.DecodeJwtAccessToken(token);
+
+                Console.WriteLine($"id {idThanhVien}");
+
+                // Lấy danh sách phiếu đặt
+                var danhSachPhieuDat = phieuDatRepository.GetPhieuDatByIdThanhVien(idThanhVien);
+
+                foreach (var phieuDat in danhSachPhieuDat)
+                {
+                    // Lấy danh sách chi tiết phiếu đặt
+                    var danhSachChiTietPhieuDat = phieuDatRepository.GetChiTietPhieuDatByIdPhieuDat(phieuDat.Id);
+
+                    foreach (var chiTiet in danhSachChiTietPhieuDat)
+                    {
+                        // Lấy VatDung từ IdVatDung
+                        var vatDung = vatDungRepository.VatDungById(chiTiet.Id_VatDung);
+
+                        // Gán VatDung vào ChiTietPhieuDat
+                        chiTiet.VatDung = vatDung;
+                    }
+
+                    // Gán lại danh sách chi tiết phiếu đặt vào đối tượng phiếu đặt
+                    phieuDat.ChiTietPhieuDatList = danhSachChiTietPhieuDat;
+                }
+
+                // Trả về kết quả
+                return Results.Ok(danhSachPhieuDat);
+            }).RequireAuthorization()
+            .WithTags(tagName);
+
+        
+        // Lấy ChiTietPhieuDat từ id phieu dat 
+        app.MapGet("ChiTietPhieuDat", ([FromQuery]int id) =>
+        {
+            var result = phieuDatRepository.GetChiTietPhieuDatByIdPhieuDat(id);
             return Results.Ok(result);
         }).WithTags(tagName);
 
+
         app.MapPost("/AddPhieuDat", [Authorize] (HttpContext httpContext,AddPhieuDatRequestDto addPhieuDatRequestDto) =>
+
         {
             //Lấy access token từ request header
             var authorization = httpContext.Request.Headers.Authorization.ToString();
@@ -74,7 +120,15 @@ public static class PhieuDatEndpoint
             return Results.Ok("Đặt thành công");
         }).WithMetadata(typeof(AddPhieuDatRequestDto)).WithTags(tagName);
 
+
         app.MapPut("/HuyPhieuDat", [Authorize](int idPhieuDat) =>
+
+          return Result.Ok("test");
+        }).WithTags(tagName);
+
+        
+        app.MapPut("/UpdatePhieuDat", () =>
+
         {
             var phieuDat = phieuDatRepository.GetPhieuDatByProps(new { Id = idPhieuDat }).FirstOrDefault();
             if (phieuDat == null)

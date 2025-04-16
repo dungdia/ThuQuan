@@ -90,6 +90,13 @@
             user-select: none;
          }
 
+         &--booked {
+            background: #9797e4;
+            color: #fff;
+            cursor: not-allowed;
+            user-select: none;
+         }
+
          &--broken {
             background: #f78181;
             color: #fff;
@@ -98,4 +105,31 @@
          }
       }
    }
+}
+
+.list__cart {
+   margin-top: 10px;
+   display: flex;
+   align-items: center;
+   justify-content: start  ;
+   gap: 10px;
+
+   &--img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+   }
+
+   &--title {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 1.6rem;
+   }
+
+   &--text {
+      color: #e09c00;
+   }
+
+
 }

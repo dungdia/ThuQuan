@@ -8,6 +8,10 @@ public class PhieuDat
     public int Id { get; set; }
     public int Id_ThanhVien {get; set;}
     public DateTime NgayDat { get; set; }
+    
+    // Thêm thuộc tính ChiTietPhieuDatList
+    public ICollection<ChiTietPhieuDat> ChiTietPhieuDatList { get; set; } = new List<ChiTietPhieuDat>();
+    
     // THÊM: thuộc tính ánh xạ từ DB
     public string? TinhTrang { get; set; }
 

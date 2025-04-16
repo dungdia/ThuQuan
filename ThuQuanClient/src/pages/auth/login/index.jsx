@@ -2,16 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import logoIcon from "@/assets/icons/logo.svg";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Button, Form, Input, message, Modal } from "antd";
-import { LockKeyhole, UserPen, UserRound } from "lucide-react";
+import { Codesandbox, LockKeyhole, UserPen, UserRound } from "lucide-react";
 import introRegister from "@/assets/images/auth/intro.png";
 import introArrowIcon from "@/assets/icons/intro-arrow.svg";
 import { initJsToggle } from "@/assets/js/header";
 import Cookies from "js-cookie";
 import { HttpStatusCode } from "axios";
-import { login } from "@/services/auth/login";
+import { getOTP, getOTPAndNewPassword, login } from "@/services/auth/login";
 import { decryptData, encryption, encryptPassword } from "@/utils/cryptoJS";
 import bcrypt from "bcryptjs";
 import { handleEmailChange, handlePasswordChange } from "@/utils/validate";
+import { changePassword } from "@/services/user/header";
 
 // Cú pháp lưu cookie và lấy cookie
 
@@ -29,6 +30,16 @@ export default function Register() {
    const [loading, setLoading] = useState(false);
    const [passStatus, setPassStatus] = useState("");
    const [emailStatus, setEmailStatus] = useState("");
+   const [isShowOTP, setIsShowOTP] = useState(false);
+   const [valueEmailForgotPass, setValueEmailForgotPass] = useState("");
+   const [isOTPLoading, setIsOTPLoading] = useState(false);
+   const [optValue, setOptValue] = useState("");
+   const [formForgotPassword] = Form.useForm(); // Form cho chức năng mật khẩu
+   const otpRef = useRef(null);
+   const [emailOTPStatus, setEmailOTPStatus] = useState("");
+   const [passOTPStatus, setPassOTPStatus] = useState("");
+   const [rePassOTPStatus, setRePassOTPStatus] = useState("");
+   const [currentPassword, setCurrentPassword] = useState("");
 
    // Tự focus vào email khi vào trang login và tự động điền giá trị nếu trong localStorage đã có savedAccount khi nhấn "Nhớ tài khoản"
    useEffect(() => {
@@ -153,10 +164,11 @@ export default function Register() {
       }
    }, [valueEmail, valuePass]);
 
-   // Hàm mở quên mật khẩu
+   // Hàm mở quên mật khẩu rồi tự focus vào ô email
    const handleForgotPassword = () => {
       setIsShowForgotPassword(true);
       formEmail.resetFields();
+      setEmailOTPStatus("");
       setTimeout(() => {
          if (emailRefForgotPass.current) {
             emailRefForgotPass.current.focus();
@@ -168,6 +180,115 @@ export default function Register() {
    const handleCloseForgotPassword = () => {
       setIsShowForgotPassword(false);
       formEmail.resetFields();
+      setEmailOTPStatus("");
+   };
+
+   // Hàm gửi email quên mật khẩu
+   const handleGetOTPFormEmail = async () => {
+      try {
+         const values = await formEmail.validateFields();
+         const { email } = values;
+         setValueEmailForgotPass(email);
+
+         setIsLoadingForgotPass(true);
+         const response = await getOTP(email);
+         setOptValue(response.data.otp);
+         handleOpenOPT();
+         message.success("Gửi mã OTP thành công!");
+      } catch (error) {
+         if (error?.status === HttpStatusCode.BadRequest) {
+            message.error("Email không hợp lệ hoặc không tồn tại!");
+         } else {
+            message.error("Có sự cố xảy ra. Vui lòng thử lại sau!");
+         }
+      } finally {
+         setIsLoadingForgotPass(false);
+      }
+   };
+
+   // Hàm mở modal OPT và lấy mk
+   const handleOpenOPT = () => {
+      setIsShowOTP(true);
+      formForgotPassword.resetFields();
+      handleCloseForgotPassword();
+      setEmailOTPStatus("");
+      setPassOTPStatus("");
+      setRePassOTPStatus("");
+      setTimeout(() => {
+         if (otpRef.current) {
+            otpRef.current.focus();
+         }
+      }, 100);
+   };
+
+   // Tự focus vào input OTP
+   useEffect(() => {
+      if (otpRef.current) {
+         otpRef.current.focus();
+      }
+   }, []);
+
+   // Hàm đóng mã OPT và lấy mk
+   const handlCloseOPT = () => {
+      setIsShowOTP(false);
+      setEmailOTPStatus("");
+      setPassOTPStatus("");
+      setRePassOTPStatus("");
+      formForgotPassword.resetFields();
+   };
+
+   // Hàm xác nhận mã OTP và lấy mật khẩu
+   const handleConfirmOTP = async () => {
+      try {
+         setIsOTPLoading(true);
+         const values = await formForgotPassword.validateFields();
+         const { opt, newPassword, rePassword } = values;
+         // So sánh mã OTP đã gửi với mã OTP nhập vào
+         if (opt !== optValue) {
+            message.error("Mã OTP không đúng!");
+            return;
+         }
+         // So sánh mật khẩu mới và viết lại mật khẩu
+         if (newPassword !== rePassword) {
+            message.error("Mật khẩu không khớp!");
+            return;
+         }
+
+         const response = await getOTPAndNewPassword(
+            valueEmailForgotPass,
+            newPassword
+         );
+
+         if (response) {
+            // Nếu đổi mật khẩu thành công
+            message.success("Đổi mật khẩu thành công!");
+            handlCloseOPT();
+            setPassOTPStatus("");
+            setRePassOTPStatus("");
+            setValueEmailForgotPass("");
+         } else {
+            message.error("Có sự cố xảy ra. Vui lòng thử lại sau!");
+         }
+      } catch (error) {
+         message.error("Có sự cố xảy ra. Vui lòng thử lại sau!");
+      } finally {
+         setIsOTPLoading(false);
+      }
+   };
+
+   const handleRePassword = (e) => {
+      const rePassword = e.target.value;
+      setCurrentPassword(rePassword);
+      const password = formForgotPassword.getFieldValue("newPassword");
+      console.log("password ", password);
+
+      if (!rePassword) {
+         setRePassOTPStatus("");
+      } else if (rePassword === password) {
+         setRePassOTPStatus("success");
+      } else {
+         setRePassOTPStatus("error");
+      }
    };
 
    // Hàm đóng mở chuyển trạng thái transition
@@ -180,20 +301,118 @@ export default function Register() {
       navigate("/register");
    };
 
-   const goBackToHome = () => {
-      navigate("/user");
-   };
-
    return (
       <>
+         {/* Giao diện xác nhận mã OTP */}
+         <Modal
+            open={isShowOTP}
+            onCancel={handlCloseOPT}
+            footer={
+               <div className="flex-modal">
+                  <Button
+                     onClick={handlCloseOPT}
+                     color="danger"
+                     variant="dashed"
+                  >
+                     Đóng
+                  </Button>
+                  <Button
+                     loading={isOTPLoading}
+                     onClick={handleConfirmOTP}
+                     color="primary"
+                     variant="dashed"
+                  >
+                     Xác nhận
+                  </Button>
+               </div>
+            }
+         >
+            <Form
+               form={formForgotPassword}
+               requiredMark={false}
+               layout="vertical"
+               autoComplete="off"
+            >
+               <Form.Item
+                  label={<div className="">Mã OTP</div>}
+                  name="opt"
+                  rules={[
+                     {
+                        required: true,
+                        message: "Mã OPT không được bỏ trống",
+                     },
+                  ]}
+               >
+                  <Input prefix={<Codesandbox />} ref={otpRef} />
+               </Form.Item>
+               <Form.Item
+                  hasFeedback
+                  validateStatus={passOTPStatus}
+                  label={<div className="">Mật khẩu mới</div>}
+                  name="newPassword"
+                  rules={[
+                     {
+                        required: true,
+                        message: "Password không được bỏ trống",
+                     },
+                     {
+                        pattern: /^[A-Za-z0-9]{6,}$/,
+                        message:
+                           "Password phải từ 6 ký tự trở lên, không lấy kí tự đặc biệt",
+                     },
+                  ]}
+               >
+                  <Input.Password
+                     prefix={<LockKeyhole />}
+                     onChange={(e) => handlePasswordChange(e, setPassOTPStatus)}
+                     placeholder="Nhập password mới"
+                  />
+               </Form.Item>
+               <Form.Item
+                  hasFeedback
+                  validateStatus={rePassOTPStatus}
+                  label={<div className="">Viết lại mật khẩu</div>}
+                  name="rePassword"
+                  rules={[
+                     {
+                        required: true,
+                        message: "Viết lại password",
+                     },
+                     {
+                        pattern: /^[A-Za-z0-9]{6,}$/,
+                        message: "Password phải từ 6 ký tự trở lên",
+                     },
+                  ]}
+               >
+                  <Input.Password
+                     prefix={<LockKeyhole />}
+                     value={currentPassword}
+                     onChange={handleRePassword}
+                     placeholder="Nhập lại password"
+                  />
+               </Form.Item>
+            </Form>
+         </Modal>
+
          {/* Giao diện quên mật khẩu */}
          <Modal
             open={isShowForgotPassword}
             onCancel={handleCloseForgotPassword}
             footer={
-               <div className="flex justify-end gap-2">
-                  <Button onClick={handleCloseForgotPassword}>Đóng</Button>
-                  <Button type="primary" loading={isLoadingForgotPass}>
+               <div className="flex-modal">
+                  <Button
+                     color="danger"
+                     variant="solid"
+                     onClick={handleCloseForgotPassword}
+                  >
+                     Đóng
+                  </Button>
+                  <Button
+                     onClick={handleGetOTPFormEmail}
+                     color="primary"
+                     variant="solid"
+                     loading={isLoadingForgotPass}
+                  >
                      Gửi
                   </Button>
                </div>
@@ -206,6 +425,8 @@ export default function Register() {
                autoComplete="off"
             >
                <Form.Item
+                  hasFeedback
+                  validateStatus={emailOTPStatus}
                   label={<div className="font-bold">Email</div>}
                   name="email"
                   rules={[
@@ -220,6 +441,8 @@ export default function Register() {
                   ]}
                >
                   <Input
+                     prefix={<UserRound />}
+                     onChange={(e) => handleEmailChange(e, setEmailOTPStatus)}
                      placeholder="Nhập Email"
                      autoComplete="email"
                      ref={emailRefForgotPass}

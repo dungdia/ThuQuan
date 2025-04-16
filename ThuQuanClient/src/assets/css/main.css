@@ -185,6 +185,10 @@ select {
   filter: var(--icon-color);
 }
 
+.icon-hover:hover {
+  filter: brightness(0) saturate(100%) invert(45%) sepia(86%) saturate(1174%) hue-rotate(347deg) brightness(102%) contrast(101%);
+}
+
 .icon-red {
   margin-top: 6px;
 }
@@ -199,6 +203,10 @@ select {
   white-space: nowrap; /* Ngăn không cho văn bản xuống dòng */
   overflow: hidden; /* Ẩn văn bản vượt quá chiều rộng */
   text-overflow: ellipsis; /* Hiển thị dấu ba chấm ở cuối */
+}
+
+.format-width {
+  max-width: 150px;
 }
 
 @media (max-width: 575.98px) {
@@ -231,6 +239,32 @@ select {
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
+}
+
+.title-modal {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 4px;
+}
+
+.title-modal-text {
+  color: #e09c00;
+}
+
+.gap-modal {
+  display: flex;
+  gap: 10px;
+}
+
+.input-search {
+  width: 350px;
+  margin: 10px 0;
+}
+
+.dropdown-scroll-menu {
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .row > *, .container-fluid, .container {
@@ -1760,6 +1794,42 @@ html {
   }
 }
 
+.list__like {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+}
+.list__like--img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+}
+.list__like--title {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}
+.list__like--title-text-name {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+.list__like--title-text-status {
+  font-size: 1.5rem;
+  color: #ffb700;
+}
+.list__like--title-text-status-borrowed {
+  color: #81f781 !important;
+}
+.list__like--title-text-status-booked {
+  color: #9c9ce4 !important;
+}
+.list__like--title-text-status-broken {
+  color: #f78181 !important;
+}
+
 .footer {
   margin-top: 40px;
   padding: 50px 0;
@@ -2306,6 +2376,9 @@ html {
 .book-card__price--borrowed {
   color: #81f781;
 }
+.book-card__price--booked {
+  color: #9c9ce4;
+}
 .book-card__price--broken {
   color: #f78181;
 }
@@ -2373,6 +2446,9 @@ html {
 }
 .device-card__price--borrowed {
   color: #81f781;
+}
+.device-card__price--booked {
+  color: #9c9ce4;
 }
 .device-card__price--broken {
   color: #f78181;
@@ -2516,6 +2592,49 @@ html {
   font-size: 1.6rem;
   border-top: 1px solid #ddd;
   border-radius: 0 0 20px 20px;
+}
+
+.booking__history {
+  margin-top: 150px;
+}
+
+.list__detail {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+}
+.list__detail--img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+.list__detail--title {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}
+.list__detail--title-text-name {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+.list__detail--title-text-desc {
+  font-size: 1.5rem;
+}
+.list__detail--title-text-status {
+  font-size: 1.5rem;
+  color: #ffb700;
+}
+.list__detail--title-text-status-borrowed {
+  color: #81f781 !important;
+}
+.list__detail--title-text-status-booked {
+  color: #9c9ce4 !important;
+}
+.list__detail--title-text-status-broken {
+  color: #f78181 !important;
 }
 
 .home__container {
@@ -2955,11 +3074,39 @@ html {
   cursor: not-allowed;
   user-select: none;
 }
+.item__info__button--booked {
+  background: #9797e4;
+  color: #fff;
+  cursor: not-allowed;
+  user-select: none;
+}
 .item__info__button--broken {
   background: #f78181;
   color: #fff;
   cursor: not-allowed;
   user-select: none;
+}
+
+.list__cart {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+}
+.list__cart--img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+.list__cart--title {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 1.6rem;
+}
+.list__cart--text {
+  color: #e09c00;
 }
 
 /*# sourceMappingURL=main.css.map */

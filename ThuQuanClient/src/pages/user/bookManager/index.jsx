@@ -81,9 +81,9 @@ export default function BookManager() {
    };
 
    // Hàm lấy dữ liệu từ các sách
-   const handleGetDataBook = (book) => {
+   const handleGetDataBook = (vatdung) => {
       // Lấy dữ liệu book rồi qua trang itemDetail
-      navigate("/itemDetail", { state: { book } });
+      navigate("/itemDetail", { state: { vatdung } });
    };
 
    // Hàm lấy ngẫu nhiên rating
@@ -182,6 +182,8 @@ export default function BookManager() {
                                     ? "book-card__price--available"
                                     : book.tinhTrang === "Đang mượn"
                                     ? "book-card__price--borrowed"
+                                    : book.tinhTrang === "Đã đặt"
+                                    ? "book-card__price--booked"
                                     : "book-card__price--broken"
                               }`}
                            >
