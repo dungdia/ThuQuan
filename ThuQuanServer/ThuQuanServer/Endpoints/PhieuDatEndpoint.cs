@@ -6,6 +6,7 @@ using MySqlX.XDevAPI.Common;
 using ThuQuanServer.ApplicationContext;
 using ThuQuanServer.Contains;
 using ThuQuanServer.Dtos.Request;
+using ThuQuanServer.Dtos.Response;
 using ThuQuanServer.Interfaces;
 using ThuQuanServer.Models;
 
@@ -21,7 +22,6 @@ public static class PhieuDatEndpoint
         var taiKhoanRepository = app.ServiceProvider.GetRequiredService<ITaiKhoanRepository>();        
         var authService = app.ServiceProvider.GetRequiredService<IAuthService>();
         var vatDungRepository = app.ServiceProvider.GetRequiredService<IVatDungRepository>();
-        var authService = app.ServiceProvider.GetRequiredService<IAuthService>();
         var _dbcontext = app.ServiceProvider.GetRequiredService<DbContext>();
         // Lấy tất cả phiếu đặt
         app.MapGet("/PhieuDat", () =>
@@ -41,27 +41,45 @@ public static class PhieuDatEndpoint
 
                 // Lấy danh sách phiếu đặt
                 var danhSachPhieuDat = phieuDatRepository.GetPhieuDatByIdThanhVien(idThanhVien);
-
+                var phieuDatResponse = new List<PhieuDatResponseDto>();
+                
                 foreach (var phieuDat in danhSachPhieuDat)
                 {
+
+                    var current_phieudat = new PhieuDatResponseDto()
+                    {
+                        Id = phieuDat.Id,
+                        NgayDat = phieuDat.NgayDat,
+                        Id_ThanhVien = phieuDat.Id_ThanhVien,
+                        TinhTrang = phieuDat.TinhTrang,
+                    };
                     // Lấy danh sách chi tiết phiếu đặt
                     var danhSachChiTietPhieuDat = phieuDatRepository.GetChiTietPhieuDatByIdPhieuDat(phieuDat.Id);
-
+                    var listChiTietPhieuDat = new List<ChiTietPhieuDatResponseDto>();
                     foreach (var chiTiet in danhSachChiTietPhieuDat)
                     {
+                        
                         // Lấy VatDung từ IdVatDung
                         var vatDung = vatDungRepository.VatDungById(chiTiet.Id_VatDung);
 
-                        // Gán VatDung vào ChiTietPhieuDat
-                        chiTiet.VatDung = vatDung;
+                        // // Gán VatDung vào ChiTietPhieuDat
+                        // chiTiet.VatDung = vatDung;
+                        var current_chiTiet = new ChiTietPhieuDatResponseDto()
+                        {
+                            Id_PhieuDat = chiTiet.Id_PhieuDat,
+                            Id_VatDung = chiTiet.Id_VatDung,
+                            VatDung = vatDung,
+                        };
+                        listChiTietPhieuDat.Add(current_chiTiet);
                     }
 
                     // Gán lại danh sách chi tiết phiếu đặt vào đối tượng phiếu đặt
-                    phieuDat.ChiTietPhieuDatList = danhSachChiTietPhieuDat;
+                    current_phieudat.ChiTietPhieuDatList = listChiTietPhieuDat;
+                    phieuDatResponse.Add(current_phieudat);
                 }
 
                 // Trả về kết quả
-                return Results.Ok(danhSachPhieuDat);
+                return Results.Ok(phieuDatResponse);
             }).RequireAuthorization()
             .WithTags(tagName);
 
@@ -119,21 +137,6 @@ public static class PhieuDatEndpoint
             
             return Results.Ok("Đặt thành công");
         }).WithMetadata(typeof(AddPhieuDatRequestDto)).WithTags(tagName);
-
-
-        app.MapPut("/HuyPhieuDat", [Authorize](int idPhieuDat) =>
-
-          return Result.Ok("test");
-        }).WithTags(tagName);
-
         
-        app.MapPut("/UpdatePhieuDat", () =>
-
-        {
-            var phieuDat = phieuDatRepository.GetPhieuDatByProps(new { Id = idPhieuDat }).FirstOrDefault();
-            if (phieuDat == null)
-                return Results.BadRequest("Không tìm thấy phiếu đặt");
-            return Results.Ok("HI");
-        }).WithTags(tagName);
     }
 }
