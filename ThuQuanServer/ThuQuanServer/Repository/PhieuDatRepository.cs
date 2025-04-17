@@ -37,9 +37,7 @@ public class PhieuDatRepository : IPhieuDatRepository
     {
         throw new NotImplementedException();
     }
-
-
-
+    
     public bool AddPhieuDat(PhieuDat phieuDat, int[] vatDungIds)
     {
         // Thiết lập TrangThai mặc định là "Đã xuất phiếu"

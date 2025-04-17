@@ -61,10 +61,28 @@ public class VatDungRepository : IVatDungRepository
         return _dbContext.SaveChange();
     }
 
-    public bool updateListTinhTranDaDa(int[] listId)
+    public bool updateListTinhTrangDaDat(int[] listId)
     {
         foreach (var id in listId)
             _dbContext.Update<VatDung>(new { TinhTrang = "Đã đặt" }, id);
+        return _dbContext.SaveChange();
+    }
+
+    public bool updateListTinhTrangChuaMuon(int[] listId)
+    {
+        foreach (var id in listId)
+        {
+            _dbContext.Update<VatDung>(new { TinhTrang = "Chưa mượn" }, id);
+        }
+        return _dbContext.SaveChange();
+    }
+    
+    public bool updateListTinhTrangBiHong(int[] listId)
+    {
+        foreach (var id in listId)
+        {
+            _dbContext.Update<VatDung>(new { TinhTrang = "Bị hỏng" }, id);
+        }
         return _dbContext.SaveChange();
     }
     

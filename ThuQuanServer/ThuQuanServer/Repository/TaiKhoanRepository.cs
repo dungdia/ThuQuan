@@ -83,6 +83,13 @@ public class TaiKhoanRepository : ITaiKhoanRepository
         var thanhVien = _dbContext.GetData<ThanhVien>(query, id).FirstOrDefault();
         return thanhVien;
     }
+    
+    public NhanVien GetNhanVienById(int id)
+    {
+        string query = "SELECT * FROM NhanVien WHERE id_taikhoan = ?";
+        var nhanVien = _dbContext.GetData<NhanVien>(query, id).FirstOrDefault();
+        return nhanVien;
+    }
 
     public bool AddThanhVien(TaikhoanInsertDTO taikhoan)
     {

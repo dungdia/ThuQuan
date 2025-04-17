@@ -7,6 +7,7 @@ public class PhieuTra
 {
     public int Id { get; set; }
     public int Id_ThanhVien {get;set;}
+    public int Id_NhanVien {get;set;}
     public DateTime NgayTra { get; set; }
     // Thêm: thuộc tính ánh xạ từ DB
     public string TinhTrang { get; set; }
