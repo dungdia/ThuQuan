@@ -101,10 +101,11 @@ public static class PhieuDatEndpoint
             
             //Sử dụng service để decode accesss token lấy id rồi tìm thành viến với id dó
             var taiKhaiId = authService.DecodeJwtAccessToken(token);
-            var thanhvien = taiKhoanRepository.GetAccountByProps(new {Id = taiKhaiId}).FirstOrDefault();
+            var thanhvien = taiKhoanRepository.GetThanhVienById(taiKhaiId);
             
             if (thanhvien == null)
                 return Results.NotFound("Không tìm thấy thành viên");
+            
             
             var vatDung = vatDungRepository.GetVatDung().Where(p => addPhieuDatRequestDto.listId.Contains(p.Id)).ToList();
             
