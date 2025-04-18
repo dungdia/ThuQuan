@@ -7,7 +7,7 @@
 }
 
 * {
-   transition: background-color 0.5s ease, color 0.5s ease;
+   transition: background 0.3s ease, background-color 0.3s ease, color 0.3s ease;
    scroll-behavior: smooth;
 }
 
@@ -16,6 +16,7 @@ html {
 }
 
 body {
+   height: max-content !important;
    font-size: 1.6rem;
    font-family: Gordita, sans-serif;
    color: var(--text-color);
@@ -76,6 +77,10 @@ select {
    max-width: 150px;
 }
 
+.format-width-2 {
+   max-width: 250px;
+}
+
 .container {
    @include abstracts.screen(sm) {
       padding-left: 20px !important;
@@ -86,7 +91,7 @@ select {
 .select-none {
    user-select: none;
    pointer-events: none;
-   color: #f87171;
+   color: var(--select-none-color);
    font-weight: 400;
 }
 
@@ -132,4 +137,77 @@ select {
 .dropdown-scroll-menu {
    max-height: 500px;
    overflow-y: auto;
+}
+
+// Input ANTD
+.ant-input-outlined:focus-within {
+   background-color: var(--auth-content-input-bg) !important;
+}
+
+.form-input-text {
+   color: var(--text-color) !important;
+}
+
+.form-info-text {
+   color: #52c41a !important;
+}
+
+.ant-input,
+.ant-input-outlined {
+   background-color: var(--auth-content-input-bg) !important;
+   color: var(--text-color);
+}
+
+.ant-input-outlined ::placeholder {
+   color: var(--auth-content-text-placeholder-color) !important;
+}
+
+.anticon.ant-input-password-icon {
+   color: var(--text-color) !important;
+}
+
+// Dropdown ANTD
+.ant-dropdown-menu,
+.ant-dropdown-arrow::before {
+   background-color: var(--auth-content-bg) !important;
+}
+.dropdown__item {
+   color: var(--text-color) !important;
+}
+
+// Modal ANTD
+.ant-modal-content {
+   background-color: var(--auth-content-bg) !important;
+}
+
+.ant-modal-title {
+   background-color: var(--auth-content-bg) !important;
+   color: var(--text-color) !important;
+}
+
+.ant-modal-close-icon {
+   filter: var(--icon-close-modal-filter);
+}
+
+// Form ANTD
+.form-label-text {
+   color: var(--text-color) !important;
+}
+
+// Table ANTD
+.ant-table {
+   background-color: var(--auth-content-bg) !important;
+   color: var(--text-color) !important;
+}
+
+.ant-table-cell {
+   background-color: var(--auth-content-bg) !important;
+   color: var(--text-color) !important;
+}
+
+.ant-pagination-total-text,
+.ant-pagination-options-quick-jumper,
+.anticon.anticon-right,
+.anticon.anticon-left {
+   color: var(--text-color) !important;
 }

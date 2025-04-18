@@ -35,12 +35,12 @@ public static class PhieuDatEndpoint
             {
                 var Authorization = context.Request.Headers.Authorization.ToString();
                 var token = Authorization.Substring(7, Authorization.Length - 7);
-                var idThanhVien = authService.DecodeJwtAccessToken(token);
-
-                Console.WriteLine($"id {idThanhVien}");
+                var idTaiKhoan = authService.DecodeJwtAccessToken(token);
+                var idThanhVien = taiKhoanRepository.GetThanhVienById(idTaiKhoan);
+                Console.WriteLine($"id {idTaiKhoan}");
 
                 // Lấy danh sách phiếu đặt
-                var danhSachPhieuDat = phieuDatRepository.GetPhieuDatByIdThanhVien(idThanhVien);
+                var danhSachPhieuDat = phieuDatRepository.GetPhieuDatByIdThanhVien(idThanhVien.Id);
                 var phieuDatResponse = new List<PhieuDatResponseDto>();
                 
                 foreach (var phieuDat in danhSachPhieuDat)
@@ -125,7 +125,7 @@ public static class PhieuDatEndpoint
             var newPhieuDat = new PhieuDat()
             {
                 Id_ThanhVien = thanhvien.Id,
-                NgayDat = DateTime.Now,
+                NgayDat = addPhieuDatRequestDto.NgayDat,
                 TinhTrang = "Đã xuất phiếu"
             };
             

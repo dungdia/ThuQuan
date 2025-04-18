@@ -526,10 +526,10 @@ export default function Register() {
                         <Input
                            ref={emailRef}
                            prefix={
-                              <UserRound className="auth__form-login-icon icon" />
+                              <UserRound className="auth__form-login-icon " />
                            }
                            placeholder="Email"
-                           className="auth__content-input"
+                           className="auth__content-input ant-input-outlined"
                            autoComplete="email"
                            value={valueEmail}
                            onChange={(e) =>
@@ -561,10 +561,10 @@ export default function Register() {
                      >
                         <Input.Password
                            prefix={
-                              <LockKeyhole className="auth__form-login-icon icon" />
+                              <LockKeyhole className="auth__form-login-icon" />
                            }
                            placeholder="Mật khẩu"
-                           className="auth__content-input"
+                           className="auth__content-input ant-input-outlined"
                            value={valuePass}
                            onChange={(e) =>
                               handlePasswordChange(e, setPassStatus)

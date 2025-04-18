@@ -156,4 +156,12 @@ public class TaiKhoanRepository : ITaiKhoanRepository
         taikhoan.Password = hasPassword;
         return taikhoan;
     }
+
+    public ICollection<TaiKhoan> GetTaiKhoanByEmail(string email)
+    {
+        string query = "SELECT * FROM TaiKhoan WHERE Email = ?";
+        var taiKhoan = _dbContext.GetData<TaiKhoan>(query, email);
+        return taiKhoan;
+    }
+  
 }

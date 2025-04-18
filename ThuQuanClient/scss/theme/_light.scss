@@ -5,8 +5,10 @@ html {
    --text-color: #1a162e;
    --icon-color: brightness(0) saturate(100%) invert(7%) sepia(16%)
       saturate(3169%) hue-rotate(216deg) brightness(96%) contrast(95%);
-
+   --icon-close-modal-filter: brightness(0) saturate(100%) invert(7%) sepia(32%)
+      saturate(900%) hue-rotate(184deg) brightness(96%) contrast(90%);
    --body-bg: #f6f6f6;
+   --select-none-color: #f87171;
 
    // Header
    --header-bg-color: #eee;
@@ -29,7 +31,7 @@ html {
 
    // home-heading-name
    --text-name-color: #1ebfc1;
-
+   --text-desc-color: #1a162e;
    // Buttons
    --filter-btn-color: #6c6c72;
    --filter-btn-bg: #fff;
@@ -44,10 +46,12 @@ html {
    // Book
    --book-card-bg: #fff;
    --book-card-shadow: rgba(237, 237, 246, 0.2);
+   --book-card-desc-color: #9e9da8;
 
    // device
    --device-card-bg: #fff;
    --device-card-shadow: rgba(237, 237, 246, 0.2);
+   --device-card-desc-color: #9e9da8;
 
    // Footer
    --footer-bg-color: #eee;
@@ -63,7 +67,8 @@ html {
    --auth-heading-color: #1a162e;
    --auth-intro-text-color: #1a162e;
    --auth-content-label-color: #1a162e;
-   --auth-form-icon-color: 000;
+   --auth-content-text-color: #1a162e;
+   --auth-form-icon-color: #000;
    --auth-content-input-bg: #fff;
    --auth-content-text-placeholder-color: #d2d1d6;
 
