@@ -25,6 +25,8 @@ builder.Services.AddSingleton<ISendOTPRepository, SendOTPRepository>();
 builder.Services.AddSingleton<IVatDungRepository , VatDungRepository>();
 builder.Services.AddSingleton<IPhieuTraRepository, PhieuTraRepository>();
 builder.Services.AddSingleton<INhanVienRepository, NhanVienRepository>();
+builder.Services.AddSingleton<ILichSuRepository, LichSuRepository>();
+builder.Services.AddSingleton<IPhieuMuonRepository, PhieuMuonRepository>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
 
 builder.Services.AddAuthorization();
@@ -119,6 +121,7 @@ app.MapVatDungEndpoints();
 app.MapLoaiVatDungEndpoint();
 app.MapSecurityEndpoints();
 app.MapSendOTPEndpoints();
+app.MapLichSuEndpoints();
 
 app.Run();
 
