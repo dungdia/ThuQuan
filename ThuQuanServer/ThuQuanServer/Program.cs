@@ -23,6 +23,7 @@ builder.Services.AddSingleton<ILoaiVatDungRepository , LoaiVatDungRepository>();
 builder.Services.AddSingleton<IPhieuDatRepository, PhieuDatRepository>();
 builder.Services.AddSingleton<ISendOTPRepository, SendOTPRepository>();
 builder.Services.AddSingleton<IVatDungRepository , VatDungRepository>();
+builder.Services.AddSingleton<IPhieuTraRepository, PhieuTraRepository>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
 
 builder.Services.AddAuthorization();
