@@ -122,7 +122,8 @@
    &__content-input {
       padding: 12px;
       font-size: 2rem;
-      background: var(--auth-content-input-bg);
+      background: var(--auth-content-input-bg) !important;
+      color: var(--auth-content-text-color);
       border: 1px solid #b9babe;
 
       & input::placeholder {
@@ -130,6 +131,12 @@
          font-weight: 500;
          line-height: 150%; /* */
          color: var(--auth-content-text-placeholder-color);
+      }
+
+      & input:focus,
+      &:hover {
+         color: var(--auth-content-text-color) !important;
+         background: var(--auth-content-input-bg) !important;
       }
    }
 
@@ -187,7 +194,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #FFB700;
+      background-color: #ffb700;
       width: 100%;
       margin-top: 20px;
       height: 40px;
@@ -195,7 +202,7 @@
       border-radius: 5px;
       &:hover {
          // text-decoration: underline;
-         background-color: #E6A200 !important;
+         background-color: #e6a200 !important;
       }
 
       & > a {

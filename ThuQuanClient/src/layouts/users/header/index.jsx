@@ -12,6 +12,7 @@ import avatarImage from "@/assets/images/avatar.jpg";
 import {
    Avatar,
    Button,
+   DatePicker,
    Dropdown,
    Form,
    Image,
@@ -25,6 +26,7 @@ import {
 import Cookies from "js-cookie";
 import {
    Factory,
+   LockKeyhole,
    Mail,
    Phone,
    UserRoundCheck,
@@ -32,6 +34,7 @@ import {
 } from "lucide-react";
 import { useForm } from "antd/es/form/Form";
 import {
+   AddPhieuDat,
    changePassword,
    checkCurrentPassword,
    findAccountByEmail,
@@ -47,6 +50,7 @@ import { useDebounce } from "@/hook/useDebounce";
 import { applySavedTheme, toggleDarkMode } from "@/utils/theme";
 import { use } from "react";
 import { HeaderContext } from "@/providers/userHeaderProvider";
+import moment from "moment";
 
 export default function HeaderUser() {
    const context = useContext(HeaderContext);
@@ -109,6 +113,15 @@ export default function HeaderUser() {
       useState(false);
    const [baseVatDungId, setBaseVatDungId] = useState(null);
    const [searchTextCart, setSearchTextCart] = useState("");
+   const [isShowModalConfirmBooked, setIsShowModalConfirmBooked] =
+      useState(false);
+   const [baseIdItemBooked, setBaseIdItemBooked] = useState(null);
+   const [formCart] = Form.useForm();
+   const [isLoadingConfirmBooked, setIsLoadingConfirmBooked] = useState(false);
+   const [formAllCart] = Form.useForm();
+   const [loadingConfirmAllBooked, setLoadingConfirmAllBooked] =
+      useState(false);
+   const [isShowConfirmAllBooked, setIsShowConfirmAllBooked] = useState(false);
 
    if (
       searchValue === undefined ||
@@ -229,7 +242,9 @@ export default function HeaderUser() {
       try {
          const response = await findAccountByEmail(accountLoggedin.email);
          setAccount(response.data);
-      } catch (error) {}
+      } catch (error) {
+         console.log("Error fetching account: ", error);
+      }
    };
 
    // Hàm xử lý cập nhật thông tin
@@ -393,6 +408,8 @@ export default function HeaderUser() {
       // Xóa dữ liệu từ localStorage
       localStorage.removeItem("accountLoggedin");
       localStorage.removeItem("listedVatDungs");
+      localStorage.removeItem("likedBooks");
+      localStorage.removeItem("likedDevices");
       // Chuyển hướng và trang đăng nhập
       navigate("/login");
    };
@@ -416,6 +433,7 @@ export default function HeaderUser() {
       {
          label: (
             <div
+               className="dropdown__item"
                onClick={(e) => {
                   e.stopPropagation();
                   handleShowInfoModal();
@@ -429,6 +447,7 @@ export default function HeaderUser() {
       {
          label: (
             <div
+               className="dropdown__item"
                onClick={(e) => {
                   e.stopPropagation();
                   handleShowModalChangePassword();
@@ -445,7 +464,7 @@ export default function HeaderUser() {
                <label
                   htmlFor="theme"
                   onClick={(e) => e.stopPropagation()}
-                  className=""
+                  className="dropdown__item"
                >
                   Giao diện
                </label>
@@ -470,6 +489,7 @@ export default function HeaderUser() {
       {
          label: (
             <div
+               className="dropdown__item"
                onClick={(e) => {
                   e.stopPropagation(), handleShowModalLogOut();
                }}
@@ -521,16 +541,6 @@ export default function HeaderUser() {
    useEffect(() => {
       initJsToggle();
    }, []);
-
-   // Chuyển qua trang đăng ký tài khoản
-   const handleNextPageResgiter = () => {
-      navigate("/register");
-   };
-
-   // Chuyển qua trang đăng nhập tài khoản
-   const handleNextPageLogin = () => {
-      navigate("/login");
-   };
 
    // Hàm mở modal about
    const handleShowAbout = () => {
@@ -715,7 +725,11 @@ export default function HeaderUser() {
                   Xóa
                </Button>
 
-               <Button type="primary" ghost>
+               <Button
+                  onClick={() => handleShowConfirmBooked(vatdung.id)}
+                  type="primary"
+                  ghost
+               >
                   Đặt
                </Button>
             </div>
@@ -782,8 +796,188 @@ export default function HeaderUser() {
       (vatdung) => vatdung.id === baseVatDungId
    );
 
+   // hàm mở modal đặt vat dung trong cart
+   const handleShowConfirmBooked = (id) => {
+      setIsShowModalConfirmBooked(true);
+
+      // Lấy id item muốn đặt
+      setBaseIdItemBooked(id);
+      // Lấy id vật dụng để có nội dung vật dụng
+      setBaseVatDungId(id);
+   };
+
+   const handleCloseConfirmBooked = () => {
+      setIsShowModalConfirmBooked(false);
+
+      // ResetId muốn đặt
+      setBaseIdItemBooked(null);
+      setBaseVatDungId(id);
+   };
+
+   // Hàm xác nhận đặt 1 item trong cart
+   const confirmOneItemCart = async () => {
+      try {
+         setIsLoadingConfirmBooked(true);
+         const id = baseIdItemBooked;
+         const values = await formCart.validateFields(); // lấy ngày đặt
+
+         // Gửi 1 item
+         const dataToSubmit = {
+            ngayDat: values.NgayDat,
+            listId: [id],
+         };
+
+         const response = await AddPhieuDat(dataToSubmit);
+         console.log("response ", response);
+
+         if (response) {
+            message.success("Đặt thành công!");
+            // Cập nhật lại danh sách vật dụng trong giỏ hàng
+            const newCart = { ...vatDungCart };
+            delete newCart[id];
+            setVatDungCart(newCart);
+            setVatDungCartContext(newCart);
+            localStorage.setItem("listedVatDungs", JSON.stringify(newCart));
+
+            setIsShowModalConfirmBooked(false);
+            // Reset lại id muốn đặt
+            setBaseIdItemBooked(null);
+            formCart.resetFields(); // reset ngày đặt
+         }
+      } catch (error) {
+         console.error(error);
+         if (error?.response?.status === HttpStatusCode.BadRequest) {
+            message.error(error?.response?.data);
+         } else {
+            message.error("Đặt thất bại, vui lòng thử lại!");
+         }
+      } finally {
+         setIsLoadingConfirmBooked(false);
+      }
+   };
+
+   // Hàm mở modal xác nhận đặt tất cả item trong cart
+   const handleShowConfirmAllBooked = () => {
+      setIsShowConfirmAllBooked(true);
+   };
+
+   // Hàm đóng modal xác nhận đặt tất cả item trong cart
+   const handleCloseConfirmAllBooked = () => {
+      setIsShowConfirmAllBooked(false);
+   };
+
+   // Hàm xác nhận đặt tất cả item trong cart
+   // Hàm xác nhận đặt tất cả item trong cart
+   const confirmAllItemCart = async () => {
+      try {
+         setLoadingConfirmAllBooked(true);
+
+         // Lấy ngày đặt từ form
+         const values = await formAllCart.getFieldsValue();
+         const { NgayDat } = values;
+
+         // Kiểm tra ngày đặt có tồn tại không
+         if (!NgayDat) {
+            return message.warning("Vui lòng chọn ngày đặt!");
+         }
+
+         // Lấy tất cả id vật dụng trong giỏ hàng
+         const allIds = Object.keys(vatDungCart).map((id) => parseInt(id));
+
+         if (allIds.length === 0) {
+            return message.warning("Không có vật dụng nào trong giỏ hàng!");
+         }
+
+         const dataToSubmit = {
+            ngayDat: NgayDat,
+            listId: allIds,
+         };
+
+         const response = await AddPhieuDat(dataToSubmit);
+         console.log("response all", response);
+
+         if (response) {
+            message.success("Đặt tất cả vật dụng thành công!");
+
+            // Reset lại giỏ hàng
+            setVatDungCart({});
+            setVatDungCartContext({});
+            localStorage.removeItem("listedVatDungs");
+
+            // Đóng modal giỏ hàng
+            setIsShowConfirmAllBooked(false);
+            formAllCart.resetFields(); // reset ngày đặt
+         }
+      } catch (error) {
+         console.error("error ", error);
+         if (error?.response?.status === HttpStatusCode.BadRequest) {
+            message.error(error?.response?.data);
+         } else {
+            message.error("Đặt thất bại, vui lòng thử lại!");
+         }
+      } finally {
+         setLoadingConfirmAllBooked(false);
+      }
+   };
+
    return (
       <>
+         {/* Giao diện đặt 1 item trong cart */}
+         <Modal
+            title={
+               <div
+                  className="format format-width-2"
+                  title={foundVatDung?.tenVatDung}
+               >
+                  Xác nhận đặt{" "}
+                  {foundVatDung ? (
+                     <strong className="">{foundVatDung?.tenVatDung}</strong>
+                  ) : (
+                     ""
+                  )}
+               </div>
+            }
+            onCancel={handleCloseConfirmBooked}
+            open={isShowModalConfirmBooked}
+            footer={
+               <div className="flex-modal">
+                  <Button
+                     onClick={handleCloseConfirmBooked}
+                     color="danger"
+                     variant="outlined"
+                  >
+                     Hủy
+                  </Button>
+                  <Button
+                     onClick={confirmOneItemCart}
+                     loading={isLoadingConfirmBooked}
+                     color="cyan"
+                     variant="outlined"
+                  >
+                     Xác nhận
+                  </Button>
+               </div>
+            }
+         >
+            <Form form={formCart}>
+               <Form.Item
+                  label={<div className="form-label-text">Ngày đặt</div>}
+                  name="NgayDat"
+                  rules={[
+                     { required: true, message: "Vui lòng chọn ngày đặt" },
+                  ]}
+               >
+                  <DatePicker
+                     format="YYYY-MM-DD HH:mm:ss"
+                     showTime
+                     disabledDate={(current) =>
+                        current && current < moment().startOf("day")
+                     } // Disable ngày quá khứ
+                  />
+               </Form.Item>
+            </Form>
+         </Modal>
+
          {/* Modal xác nhận xóa item trong giỏ hàng */}
          <Modal
             title="Xác nhận xóa"
@@ -829,6 +1023,50 @@ export default function HeaderUser() {
             )}
          </Modal>
 
+         {/* Giao diện đặt Tất cả item trong cart */}
+         <Modal
+            title="Xác nhận đặt tất cả"
+            onCancel={handleCloseConfirmAllBooked}
+            open={isShowConfirmAllBooked}
+            footer={
+               <div className="flex-modal">
+                  <Button
+                     onClick={handleCloseConfirmAllBooked}
+                     color="danger"
+                     variant="outlined"
+                  >
+                     Hủy
+                  </Button>
+                  <Button
+                     onClick={confirmAllItemCart}
+                     loading={loadingConfirmAllBooked}
+                     color="cyan"
+                     variant="outlined"
+                  >
+                     Xác nhận
+                  </Button>
+               </div>
+            }
+         >
+            <Form form={formAllCart}>
+               <Form.Item
+                  label={<div className="form-label-text">Ngày đặt</div>}
+                  name="NgayDat"
+                  rules={[
+                     { required: true, message: "Vui lòng chọn ngày đặt" },
+                  ]}
+               >
+                  <DatePicker
+                     format="YYYY-MM-DD HH:mm:ss"
+                     showTime
+                     disabledDate={(current) =>
+                        current && current < moment().startOf("day")
+                     } // Disable ngày quá khứ
+                  />
+               </Form.Item>
+            </Form>
+         </Modal>
+
          {/* Giao diện giỏ hàng */}
          <Modal
             width={1400}
@@ -844,8 +1082,12 @@ export default function HeaderUser() {
                   >
                      Đóng
                   </Button>
-                  <Button color="cyan" variant="solid">
-                     Đặt hàng tất cả
+                  <Button
+                     onClick={handleShowConfirmAllBooked}
+                     color="cyan"
+                     variant="solid"
+                  >
+                     Đặt tất cả
                   </Button>
                </div>
             }
@@ -913,14 +1155,13 @@ export default function HeaderUser() {
                         ? "success"
                         : "error"
                   }
-                  label={<div>Tên người dùng</div>}
+                  label={<div className="form-label-text">Tên người dùng</div>}
                   name="userName"
                >
                   <Input
                      ref={userNameRef}
-                     prefix={
-                        <UserRoundCheck className="size-5 text-slate-600" />
-                     }
+                     prefix={<UserRoundCheck />}
+                     className="form-input-text"
                   />
                </Form.Item>
                <Form.Item
@@ -930,11 +1171,12 @@ export default function HeaderUser() {
                         ? "success"
                         : "error"
                   }
-                  label={<div>Họ và tên</div>}
+                  label={<div className="form-label-text">Họ và tên</div>}
                   name="hoten"
                >
                   <Input
-                     prefix={<UserRoundPen className="size-5 text-slate-600" />}
+                     prefix={<UserRoundPen />}
+                     className="form-input-text"
                   />
                </Form.Item>
                <Form.Item
@@ -944,10 +1186,10 @@ export default function HeaderUser() {
                         ? "success"
                         : "error"
                   }
-                  label={<div>Email</div>}
+                  label={<div className="form-label-text">Email</div>}
                   name="email"
                >
-                  <Input prefix={<Mail className="size-5 text-slate-600" />} />
+                  <Input prefix={<Mail />} className="form-input-text" />
                </Form.Item>
                <Form.Item
                   hasFeedback
@@ -956,10 +1198,10 @@ export default function HeaderUser() {
                         ? "success"
                         : "error"
                   }
-                  label={<div>Số điện thoại</div>}
+                  label={<div className="form-label-text">Số điện thoại</div>}
                   name="sdt"
                >
-                  <Input prefix={<Phone className="size-5 text-slate-600" />} />
+                  <Input prefix={<Phone />} className="form-input-text" />
                </Form.Item>
             </Form>
          </Modal>
@@ -998,14 +1240,21 @@ export default function HeaderUser() {
                         ? "success"
                         : "error"
                   }
-                  label={<div onClick={handlePreventFocus}>Tên người dùng</div>}
+                  label={
+                     <div
+                        className="form-label-text"
+                        onClick={handlePreventFocus}
+                     >
+                        Tên người dùng
+                     </div>
+                  }
                   name="userName"
                >
                   <Input
                      prefix={
                         <UserRoundCheck className="size-5 text-slate-600" />
                      }
-                     className="select-none"
+                     className="select-none form-info-text"
                   />
                </Form.Item>
                <Form.Item
@@ -1015,12 +1264,19 @@ export default function HeaderUser() {
                         ? "success"
                         : "error"
                   }
-                  label={<div onClick={handlePreventFocus}>Họ và tên</div>}
+                  label={
+                     <div
+                        className="form-label-text"
+                        onClick={handlePreventFocus}
+                     >
+                        Họ và tên
+                     </div>
+                  }
                   name="hoten"
                >
                   <Input
-                     prefix={<UserRoundPen className="size-5 text-slate-600" />}
-                     className="select-none"
+                     prefix={<UserRoundPen />}
+                     className="select-none form-info-text"
                   />
                </Form.Item>
                <Form.Item
@@ -1030,12 +1286,19 @@ export default function HeaderUser() {
                         ? "success"
                         : "error"
                   }
-                  label={<div onClick={handlePreventFocus}>Email</div>}
+                  label={
+                     <div
+                        className="form-label-text"
+                        onClick={handlePreventFocus}
+                     >
+                        Email
+                     </div>
+                  }
                   name="email"
                >
                   <Input
-                     prefix={<Mail className="size-5 text-slate-600" />}
-                     className="select-none"
+                     prefix={<Mail />}
+                     className="select-none form-info-text"
                   />
                </Form.Item>
                <Form.Item
@@ -1045,12 +1308,19 @@ export default function HeaderUser() {
                         ? "success"
                         : "error"
                   }
-                  label={<div onClick={handlePreventFocus}>Số điện thoại</div>}
+                  label={
+                     <div
+                        className="form-label-text"
+                        onClick={handlePreventFocus}
+                     >
+                        Số điện thoại
+                     </div>
+                  }
                   name="sdt"
                >
                   <Input
-                     prefix={<Phone className="size-5 text-slate-600" />}
-                     className="select-none font-normal text-red-400"
+                     prefix={<Phone />}
+                     className="select-none form-info-text"
                   />
                </Form.Item>
             </Form>
@@ -1090,7 +1360,7 @@ export default function HeaderUser() {
                <Form.Item
                   hasFeedback
                   validateStatus={passwordStatus}
-                  label="Mật khẩu"
+                  label={<div className="form-label-text">Mật khẩu</div>}
                   name="Password"
                   rules={[
                      {
@@ -1105,13 +1375,15 @@ export default function HeaderUser() {
                >
                   <Input.Password
                      ref={passwordRef}
+                     prefix={<LockKeyhole />}
                      onChange={handlePasswordChange}
+                     className="form-input-text"
                   />
                </Form.Item>
                <Form.Item
                   hasFeedback
                   validateStatus={newPasswordStatus}
-                  label="Mật khẩu mới"
+                  label={<div className="form-label-text">Mật khẩu mới</div>}
                   name="NewPassword"
                   rules={[
                      {
@@ -1125,18 +1397,24 @@ export default function HeaderUser() {
                   ]}
                >
                   <Input.Password
+                     prefix={<LockKeyhole />}
                      onChange={(e) =>
                         handleNewPasswordChange(
                            e.target.value,
                            setNewPasswordStatus
                         )
                      }
+                     className="form-input-text"
                   />
                </Form.Item>
                <Form.Item
                   hasFeedback
                   validateStatus={confirmPasswordStatus}
-                  label="Xác nhận mật khẩu mới"
+                  label={
+                     <div className="form-label-text">
+                        Xác nhận mật khẩu mới
+                     </div>
+                  }
                   name="ConfirmNewPassword"
                   rules={[
                      {
@@ -1151,6 +1429,7 @@ export default function HeaderUser() {
                   ]}
                >
                   <Input.Password
+                     prefix={<LockKeyhole />}
                      onChange={(e) =>
                         handleConfirmPassword(
                            e.target.value,
@@ -1158,6 +1437,7 @@ export default function HeaderUser() {
                            setConfirmPasswordStatus
                         )
                      }
+                     className="form-input-text"
                   />
                </Form.Item>
             </Form>
@@ -1188,7 +1468,9 @@ export default function HeaderUser() {
                </div>
             }
          >
-            <p>Bạn có chắc chắn muốn đăng xuất không</p>
+            <p className="form-label-text">
+               Bạn có chắc chắn muốn đăng xuất không
+            </p>
          </Modal>
 
          {/* Giao diện trang about */}

@@ -141,7 +141,7 @@ table {
 }
 
 * {
-  transition: background-color 0.5s ease, color 0.5s ease;
+  transition: background 0.3s ease, background-color 0.3s ease, color 0.3s ease;
   scroll-behavior: smooth;
 }
 
@@ -150,6 +150,7 @@ html {
 }
 
 body {
+  height: max-content !important;
   font-size: 1.6rem;
   font-family: Gordita, sans-serif;
   color: var(--text-color);
@@ -209,6 +210,10 @@ select {
   max-width: 150px;
 }
 
+.format-width-2 {
+  max-width: 250px;
+}
+
 @media (max-width: 575.98px) {
   .container {
     padding-left: 20px !important;
@@ -219,7 +224,7 @@ select {
 .select-none {
   user-select: none;
   pointer-events: none;
-  color: #f87171;
+  color: var(--select-none-color);
   font-weight: 400;
 }
 
@@ -265,6 +270,75 @@ select {
 .dropdown-scroll-menu {
   max-height: 500px;
   overflow-y: auto;
+}
+
+.ant-input-outlined:focus-within {
+  background-color: var(--auth-content-input-bg) !important;
+}
+
+.form-input-text {
+  color: var(--text-color) !important;
+}
+
+.form-info-text {
+  color: #52c41a !important;
+}
+
+.ant-input,
+.ant-input-outlined {
+  background-color: var(--auth-content-input-bg) !important;
+  color: var(--text-color);
+}
+
+.ant-input-outlined ::placeholder {
+  color: var(--auth-content-text-placeholder-color) !important;
+}
+
+.anticon.ant-input-password-icon {
+  color: var(--text-color) !important;
+}
+
+.ant-dropdown-menu,
+.ant-dropdown-arrow::before {
+  background-color: var(--auth-content-bg) !important;
+}
+
+.dropdown__item {
+  color: var(--text-color) !important;
+}
+
+.ant-modal-content {
+  background-color: var(--auth-content-bg) !important;
+}
+
+.ant-modal-title {
+  background-color: var(--auth-content-bg) !important;
+  color: var(--text-color) !important;
+}
+
+.ant-modal-close-icon {
+  filter: var(--icon-close-modal-filter);
+}
+
+.form-label-text {
+  color: var(--text-color) !important;
+}
+
+.ant-table {
+  background-color: var(--auth-content-bg) !important;
+  color: var(--text-color) !important;
+}
+
+.ant-table-cell {
+  background-color: var(--auth-content-bg) !important;
+  color: var(--text-color) !important;
+}
+
+.ant-pagination-total-text,
+.ant-pagination-options-quick-jumper,
+.anticon.anticon-right,
+.anticon.anticon-left {
+  color: var(--text-color) !important;
 }
 
 .row > *, .container-fluid, .container {
@@ -1392,7 +1466,10 @@ html.dark {
   --text-color: #fff;
   --icon-color: brightness(0) saturate(100%) invert(100%) sepia(0%)
      saturate(2%) hue-rotate(35deg) brightness(107%) contrast(101%);
+  --icon-close-modal-filter: brightness(0) saturate(100%) invert(99%) sepia(3%)
+     saturate(521%) hue-rotate(344deg) brightness(119%) contrast(100%);
   --body-bg: #292e39;
+  --select-none-color: #52c41a;
   --header-bg-color: #171c28;
   --text-hover-header-color: #fff;
   --after-hover-color: #f6f6f6;
@@ -1405,6 +1482,7 @@ html.dark {
   --cate-item-thumb-bg: #292e39;
   --cate-item-title-color: #fff;
   --text-name-color: #fff;
+  --text-desc-color: #1ebfc1;
   --filter-btn-color: #fff;
   --filter-btn-bg: #171c28;
   --like-btn-shadow: 0 4px 12px 0 rgba(255, 182, 193, 0.09),
@@ -1418,8 +1496,10 @@ html.dark {
      /* #171c28 pha */ 0 4px 12px 24px rgba(41, 46, 57, 0.15); /* #292e39 pha */
   --book-card-bg: #171c28;
   --book-card-shadow: rgba(0, 0, 0, 0.2);
+  --book-card-desc-color: #1ebfc1;
   --device-card-bg: #171c28;
   --device-card-shadow: rgba(0, 0, 0, 0.2);
+  --device-card-desc-color: #1ebfc1;
   --footer-bg-color: #171c28;
   --footer-text-color: #9e9da6;
   --auth-bg-color: #171c28;
@@ -1429,6 +1509,7 @@ html.dark {
   --auth-intro-text-color: #b9babe;
   --auth-form-icon-color: #b9babe;
   --auth-content-label-color: #d2d1d6;
+  --auth-content-text-color: #d2d1d6;
   --auth-content-input-bg: #292e39;
   --auth-content-text-placeholder-color: #b9babe;
   --bg-content-color: #292e39;
@@ -1439,7 +1520,10 @@ html {
   --text-color: #1a162e;
   --icon-color: brightness(0) saturate(100%) invert(7%) sepia(16%)
      saturate(3169%) hue-rotate(216deg) brightness(96%) contrast(95%);
+  --icon-close-modal-filter: brightness(0) saturate(100%) invert(7%) sepia(32%)
+     saturate(900%) hue-rotate(184deg) brightness(96%) contrast(90%);
   --body-bg: #f6f6f6;
+  --select-none-color: #f87171;
   --header-bg-color: #eee;
   --text-hover-header-color: #1ebfc1;
   --after-hover-color: #1ebfc1;
@@ -1452,6 +1536,7 @@ html {
   --cate-item-thumb-bg: #fff;
   --cate-item-title-color: #000;
   --text-name-color: #1ebfc1;
+  --text-desc-color: #1a162e;
   --filter-btn-color: #6c6c72;
   --filter-btn-bg: #fff;
   --like-btn-shadow: 0 4px 12px 0 rgba(255, 182, 193, 0.2),
@@ -1463,8 +1548,10 @@ html {
      /* Tím nhạt */ 0 4px 12px 18px rgba(255, 204, 229, 0.2); /* Hồng tím nhạt */
   --book-card-bg: #fff;
   --book-card-shadow: rgba(237, 237, 246, 0.2);
+  --book-card-desc-color: #9e9da8;
   --device-card-bg: #fff;
   --device-card-shadow: rgba(237, 237, 246, 0.2);
+  --device-card-desc-color: #9e9da8;
   --footer-bg-color: #eee;
   --footer-text-color: #6e6d74;
   --auth-bg-color: #fafafd;
@@ -1473,7 +1560,8 @@ html {
   --auth-heading-color: #1a162e;
   --auth-intro-text-color: #1a162e;
   --auth-content-label-color: #1a162e;
-  --auth-form-icon-color: 000;
+  --auth-content-text-color: #1a162e;
+  --auth-form-icon-color: #000;
   --auth-content-input-bg: #fff;
   --auth-content-text-placeholder-color: #d2d1d6;
   --bg-content-color: #ededed;
@@ -2303,11 +2391,11 @@ html {
   height: 0;
 }
 .switch input:checked + .slider {
-  background-color: #522ba7;
+  background-color: #1ebfc1;
 }
 .switch input:checked + .slider:before {
   transform: translateX(100%);
-  box-shadow: inset 10px -3px 0px 10px #fff000;
+  box-shadow: inset 10px -3px 0px 10px #ffd000;
 }
 .switch .slider {
   --background: #28096b;
@@ -2384,7 +2472,7 @@ html {
 }
 .book-card__author {
   margin: 16px 0;
-  color: #9e9da8;
+  color: var(--book-card-desc-color);
   font-size: 1.5rem;
   font-weight: 400;
   line-height: 146.667%; /* 146.667% */
@@ -2455,7 +2543,7 @@ html {
 }
 .device-card__author {
   margin: 16px 0;
-  color: #9e9da8;
+  color: var(--device-card-desc-color);
   font-size: 1.5rem;
   font-weight: 400;
   line-height: 146.667%; /* 146.667% */
@@ -2619,9 +2707,11 @@ html {
 .list__detail--title-text-name {
   font-weight: bold;
   font-size: 1.5rem;
+  color: var(--text-name-color);
 }
 .list__detail--title-text-desc {
   font-size: 1.5rem;
+  color: var(--text-desc-color);
 }
 .list__detail--title-text-status {
   font-size: 1.5rem;
@@ -2786,7 +2876,8 @@ html {
 .auth__content-input {
   padding: 12px;
   font-size: 2rem;
-  background: var(--auth-content-input-bg);
+  background: var(--auth-content-input-bg) !important;
+  color: var(--auth-content-text-color);
   border: 1px solid #b9babe;
 }
 .auth__content-input input::placeholder {
@@ -2794,6 +2885,10 @@ html {
   font-weight: 500;
   line-height: 150%; /* */
   color: var(--auth-content-text-placeholder-color);
+}
+.auth__content-input input:focus, .auth__content-input:hover {
+  color: var(--auth-content-text-color) !important;
+  background: var(--auth-content-input-bg) !important;
 }
 .auth__form-lable-input {
   font-size: 1.8rem;
@@ -2811,7 +2906,7 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #FFB700;
+  background-color: #ffb700;
   width: 100%;
   margin-top: 20px;
   height: 40px;
@@ -2819,7 +2914,7 @@ html {
   border-radius: 5px;
 }
 .auth__form-btn-back-login:hover {
-  background-color: #E6A200 !important;
+  background-color: #e6a200 !important;
 }
 .auth__form-btn-back-login > a {
   color: #000000 !important;
@@ -2933,7 +3028,8 @@ html {
 .auth__content-input {
   padding: 12px;
   font-size: 2rem;
-  background: var(--auth-content-input-bg);
+  background: var(--auth-content-input-bg) !important;
+  color: var(--auth-content-text-color);
   border: 1px solid #b9babe;
 }
 .auth__content-input input::placeholder {
@@ -2941,6 +3037,10 @@ html {
   font-weight: 500;
   line-height: 150%; /* */
   color: var(--auth-content-text-placeholder-color);
+}
+.auth__content-input input:focus, .auth__content-input:hover {
+  color: var(--auth-content-text-color) !important;
+  background: var(--auth-content-input-bg) !important;
 }
 .auth__form-login-lable-input {
   font-size: 1.8rem;
@@ -2988,7 +3088,7 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #FFB700;
+  background-color: #ffb700;
   width: 100%;
   margin-top: 20px;
   height: 40px;
@@ -2996,7 +3096,7 @@ html {
   border-radius: 5px;
 }
 .auth__form-btn-back-register:hover {
-  background-color: #E6A200 !important;
+  background-color: #e6a200 !important;
 }
 .auth__form-btn-back-register > a {
   color: #000000 !important;

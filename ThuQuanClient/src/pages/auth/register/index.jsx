@@ -144,13 +144,17 @@ export default function Register() {
                               required: true,
                               message: "Tên không được để trống",
                            },
+                           {
+                              pattern: /^.{3,}$/,
+                              message: "Tên phải có ít nhất 3 ký tự",
+                           },
                         ]}
                      >
                         <Input
                            ref={nameRef}
-                           prefix={<UserPen className="auth__form-icon icon" />}
+                           prefix={<UserPen className="auth__form-icon" />}
                            placeholder="Nhập tên"
-                           className="auth__content-input"
+                           className="auth__content-input ant-input-outlined"
                            onChange={(e) => handleNameChange(e, setNameStatus)}
                         />
                      </Form.Item>
@@ -174,11 +178,9 @@ export default function Register() {
                         ]}
                      >
                         <Input
-                           prefix={
-                              <UserRound className="auth__form-icon icon" />
-                           }
+                           prefix={<UserRound className="auth__form-icon" />}
                            placeholder="Email"
-                           className="auth__content-input"
+                           className="auth__content-input ant-input-outlined"
                            autoComplete="email"
                            onChange={(e) =>
                               handleEmailChange(e, setEmailStatus)
@@ -208,11 +210,9 @@ export default function Register() {
                         ]}
                      >
                         <Input.Password
-                           prefix={
-                              <LockKeyhole className="auth__form-icon icon" />
-                           }
+                           prefix={<LockKeyhole className="auth__form-icon" />}
                            placeholder="Mật khẩu"
-                           className="auth__content-input"
+                           className="auth__content-input ant-input-outlined"
                            onChange={(e) =>
                               handlePasswordChange(e, setPassStatus)
                            }
@@ -241,11 +241,9 @@ export default function Register() {
                         ]}
                      >
                         <Input.Password
-                           prefix={
-                              <LockKeyhole className="auth__form-icon icon" />
-                           }
+                           prefix={<LockKeyhole className="auth__form-icon" />}
                            placeholder="Mật khẩu"
-                           className="auth__content-input"
+                           className="auth__content-input ant-input-outlined"
                            onChange={(e) =>
                               handleConfirmPassword(
                                  e.target.value,

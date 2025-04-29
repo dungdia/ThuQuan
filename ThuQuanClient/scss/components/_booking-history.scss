@@ -24,10 +24,12 @@
       &-text-name {
          font-weight: bold;
          font-size: 1.5rem;
+         color: var(--text-name-color);
       }
 
       &-text-desc {
          font-size: 1.5rem;
+         color: var(--text-desc-color);
       }
 
       &-text-status {

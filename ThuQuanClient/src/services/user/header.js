@@ -1,6 +1,7 @@
 import apiClient from "@/api/instance";
 import { message } from "antd";
 import { HttpStatusCode } from "axios";
+import Cookies from "js-cookie";
 
 const changePassword = async (formData) => {
    const response = await apiClient.put("change-password", formData);
@@ -33,7 +34,7 @@ const checkCurrentPassword = async (formData) => {
 };
 
 const findAccountByEmail = async (email) => {
-   const response = await apiClient.get(`GetTaiKhoanByEmail/${email}`);
+   const response = await apiClient.get(`GetTaiKhoanByEmail?email=${email}`);
    return response;
 };
 
@@ -44,9 +45,21 @@ const UpdateInfoUser = async (form) => {
    return response;
 };
 
+const AddPhieuDat = async (form) => {
+   const token = Cookies.get("accessToken");
+
+   const response = await apiClient.post("AddPhieuDat", form, {
+      headers: {
+         Authorization: `Bearer ${token}`,
+      },
+   });
+   return response;
+};
+
 export {
    changePassword,
    checkCurrentPassword,
    findAccountByEmail,
    UpdateInfoUser,
+   AddPhieuDat,
 };
