@@ -16,7 +16,7 @@ public static class PhieuTraEndpoint
         var tagName = "Phieu Tra";
         var phieuTraRepository = app.ServiceProvider.GetRequiredService<IPhieuTraRepository>();
         var _dbContext = app.ServiceProvider.GetRequiredService<DbContext>();
-        var authService = app.ServiceProvider.GetRequiredService<AuthService>();
+        var authService = app.ServiceProvider.GetRequiredService<IAuthService>();
         var vatDungRepository = app.ServiceProvider.GetRequiredService<IVatDungRepository>();
         var taiKhoanRepository = app.ServiceProvider.GetRequiredService<ITaiKhoanRepository>();
         
@@ -130,44 +130,44 @@ public static class PhieuTraEndpoint
             return Results.Ok(result);
         }).WithTags(tagName);
         
-        app.MapPut("/addPhieuTra", (HttpContext context,AddPhieuTraRequestDto addPhieuTraRequestDto, ThanhVien thanhVien) =>
-        {
-            var Authorization = context.Request.Headers.Authorization.ToString();
-            var token = Authorization.Substring(7, Authorization.Length - 7);
-            var idTaiKhoan = authService.DecodeJwtAccessToken(token);
-            var nhanVien = taiKhoanRepository.GetNhanVienById(idTaiKhoan);
-
-            if (thanhVien == null)
-                return Results.NotFound("Không tìm thấy thành viên!");
-
-            var vatDung = vatDungRepository.GetVatDung().Where(p => addPhieuTraRequestDto.listIds.Contains(p.Id))
-                .ToList();
-
-            if (vatDung.Count != addPhieuTraRequestDto.listIds.Length)
-                return Results.BadRequest("Vật dụng không tồn tại");
-            
-            // var vatDungDangMuon = vatDung.Where(p => p.TinhTrang == "Đang mượn").ToList();
-            //
-            // if (vatDungDangMuon.Count != addPhieuTraRequestDto.listIds.Length)
-            // {
-            //     return Results.BadRequest("Vật dụng không thuộc phiếu đặt hoặc chưa được mượn");
-            // }
-
-            var newPhieuTra = new PhieuTra()
-            {
-                Id_NhanVien = nhanVien.Id,
-                Id_ThanhVien = thanhVien.Id,
-                NgayTra = DateTime.Now,
-                TinhTrang = "Đã xuất phiếu"
-            };
-
-            var resultPhieuDat = phieuTraRepository.AddPhieuTra(newPhieuTra, addPhieuTraRequestDto.listIds);
-            if (!resultPhieuDat)
-                return Results.UnprocessableEntity("Tạo phiếu trả không thành công!");
-            // var resultVatDung = vatDungRepository.updateListTinhTrangDaDat(addPhieuTraRequestDto.listIds);
-            // if (!resultVatDung)
-            //     return Results.UnprocessableEntity("Đã xảy ra lỗi lúc tạo phiếu trả");
-            return Results.Ok("Tạo phiếu trả thành công");
-        }).WithMetadata(typeof(AddPhieuTraRequestDto)).WithTags(tagName);
+        // app.MapPut("/addPhieuTra", (HttpContext context,AddPhieuTraRequestDto addPhieuTraRequestDto, ThanhVien thanhVien) =>
+        // {
+        //     var Authorization = context.Request.Headers.Authorization.ToString();
+        //     var token = Authorization.Substring(7, Authorization.Length - 7);
+        //     var idTaiKhoan = authService.DecodeJwtAccessToken(token);
+        //     var nhanVien = taiKhoanRepository.GetNhanVienById(idTaiKhoan);
+        //
+        //     if (thanhVien == null)
+        //         return Results.NotFound("Không tìm thấy thành viên!");
+        //
+        //     var vatDung = vatDungRepository.GetVatDung().Where(p => addPhieuTraRequestDto.listIds.Contains(p.Id))
+        //         .ToList();
+        //
+        //     if (vatDung.Count != addPhieuTraRequestDto.listIds.Length)
+        //         return Results.BadRequest("Vật dụng không tồn tại");
+        //     
+        //     // var vatDungDangMuon = vatDung.Where(p => p.TinhTrang == "Đang mượn").ToList();
+        //     //
+        //     // if (vatDungDangMuon.Count != addPhieuTraRequestDto.listIds.Length)
+        //     // {
+        //     //     return Results.BadRequest("Vật dụng không thuộc phiếu đặt hoặc chưa được mượn");
+        //     // }
+        //
+        //     var newPhieuTra = new PhieuTra()
+        //     {
+        //         Id_NhanVien = nhanVien.Id,
+        //         Id_ThanhVien = thanhVien.Id,
+        //         NgayTra = DateTime.Now,
+        //         TinhTrang = "Đã xuất phiếu"
+        //     };
+        //
+        //     var resultPhieuDat = phieuTraRepository.AddPhieuTra(newPhieuTra, addPhieuTraRequestDto.listIds);
+        //     if (!resultPhieuDat)
+        //         return Results.UnprocessableEntity("Tạo phiếu trả không thành công!");
+        //     // var resultVatDung = vatDungRepository.updateListTinhTrangDaDat(addPhieuTraRequestDto.listIds);
+        //     // if (!resultVatDung)
+        //     //     return Results.UnprocessableEntity("Đã xảy ra lỗi lúc tạo phiếu trả");
+        //     return Results.Ok("Tạo phiếu trả thành công");
+        // }).WithMetadata(typeof(AddPhieuTraRequestDto)).WithTags(tagName);
     }
 }
