@@ -24,7 +24,6 @@ function UserHeaderProvider({ children }) {
       return listed ? JSON.parse(listed) : {};
    });
 
-   console.log("vatDungCartContext: ", vatDungCartContext);
    
 
    // Thêm handlers để lưu các hàm như handleShowModalUpdateInfo

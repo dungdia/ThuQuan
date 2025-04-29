@@ -384,9 +384,9 @@ public static class TaiKhoanEndpoints
 
         
         // API lấy tài khoản qua Email
-        app.MapGet("/GetTaiKhoanByEmail/{email}", ([FromRoute, Required] string email) =>
+        app.MapGet("/GetTaiKhoanByEmail", ([FromQuery, Required] string email) =>
         {
-            var taikhoan = taiKhoanRepository.GetAccountByProps(new { Email = email }).FirstOrDefault();
+            var taikhoan = taiKhoanRepository.GetTaiKhoanByEmail(email).FirstOrDefault();
             if (taikhoan == null)
             {
                 return Results.BadRequest("Không tìm thấy tài khoản với email này");

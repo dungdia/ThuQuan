@@ -20,4 +20,5 @@ public interface ITaiKhoanRepository
     public bool UpdateThanhVien(ThanhVienUpdateResponseDTO thanhvien, int idThanhVien);
     public bool UpdateTaiKhoan(TaiKhoanUpdateResponseDTO taikhoan, int idTaiKhoan);
     public TaiKhoan ChangePassword(string email, string newPassword);
+    public ICollection<TaiKhoan> GetTaiKhoanByEmail(string email);
 }

@@ -81,9 +81,9 @@ export default function BookingHistory() {
    const data = useMemo(() => {
       return (
          dataItem?.flatMap((item, index) =>
-            item.chiTietPhieuDatList.map((detail) => ({
+            item.chiTietPhieuDatList.map((detail, index) => ({
                id: item.id,
-               key: item.id || index,
+               key: `${item.id}-${index}`,
                HoTen: accountLoggedin?.hoten || "Chưa cập nhật",
                sdt: accountLoggedin?.sdt || "Chưa cập nhật",
                NgayDat: new Date(item.ngayDat).toLocaleDateString("vi-VN"),
@@ -115,10 +115,12 @@ export default function BookingHistory() {
          setIsLoading(true);
          if (!accessToken) return; // Nếu không có accessToken thì không fetch
 
-         const response = await getAllDataBookingHistory(accessToken);
+         const response = await getAllDataBookingHistory();
          setDataIten(response.data || []);
          message.success("Tải dữ liệu thành công!!");
       } catch (error) {
+         console.log("Error: ", error);
+         
       } finally {
          setIsLoading(false);
       }
@@ -137,7 +139,6 @@ export default function BookingHistory() {
       setBaseId(id);
    };
 
-   console.log("Baseid ", baseId);
 
    // Hàm đóng modal xem chi tiết phiếu đặt
    const handleCloseModalDetail = (id) => {
@@ -151,7 +152,6 @@ export default function BookingHistory() {
    const foundVatDung = dataItem?.find((item) => item.id === baseId)
       ?.chiTietPhieuDatList?.[0]?.vatDung;
 
-   console.log(foundVatDung);
 
    // Hàm đặt lại vật dụng qua trang itemDetail
    const handleBookedAgain = (vatdung) => {
@@ -242,9 +242,9 @@ export default function BookingHistory() {
                   columns={columns}
                   dataSource={filteredData}
                   pagination={
-                     filteredData.length > 8
+                     filteredData.length > 5
                         ? {
-                             pageSize: 8,
+                             pageSize: 5,
                              showQuickJumper: true,
                              showSizeChanger: false,
                              showTotal: (total, range) =>

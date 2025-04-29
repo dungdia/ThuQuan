@@ -7,7 +7,7 @@ const getAllDataBookingHistory = async () => {
    }
    const response = await apiClient.get("GetPhieuDatByToken", {
       headers: {
-         Authorization: `Bearer ${token}`, 
+         Authorization: `Bearer ${token}`,
       },
    });
    return response;
