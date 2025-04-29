@@ -19,16 +19,58 @@ public static class SecurityEndpoint
         var _dbcontext = app.ServiceProvider.GetRequiredService<DbContext>();
         var authService = app.ServiceProvider.GetRequiredService<IAuthService>();
         var taikhoanRepository = app.ServiceProvider.GetRequiredService<ITaiKhoanRepository>();
+        var nhanvienRepository = app.ServiceProvider.GetRequiredService<INhanVienRepository>();
         var passwordHashService = app.ServiceProvider.GetRequiredService<IPasswordHashService>();
         var groupName = "Xac thuc";
 
+        app.MapPost("/adminlogin", ([FromBody] LoginRequestDto LoginRequestDto) =>
+        {
+            var taikhoan = taikhoanRepository.GetAccountByProps(new { Email = LoginRequestDto.Email });
+            if (taikhoan.Count == 0)
+            {
+                return Results.NotFound("Không tìm thấy tài khoản");
+            }
+
+            var tk = taikhoan.First();
+
+            if (tk.VaiTro != 1)
+            {
+                return Results.NotFound("Không tìm tấy tài khoản");
+            }
+            
+            if (tk.TinhTrang == "Đã bị khoá")
+            {
+                return Results.BadRequest("Tài khoản đã bị khoá");
+            }
+
+            if (!passwordHashService.VerifyPassword(LoginRequestDto.Password, tk.Password))
+            {
+                return Results.BadRequest("Mật khẩu không chính xác");
+            }
+
+            var nhanvien = nhanvienRepository.GetNhanVienByProps(new { Id_TaiKhoan= tk.Id }).FirstOrDefault();
+
+            if (nhanvien == null)
+            {
+                return Results.NotFound("Không tìm thấy nhân viên"); 
+            }
+
+            var accesstoken = authService.GenerateJwtAccessToken(tk);
+            
+            return Results.Ok(new
+            {
+                accesstoken=accesstoken,
+                tenNhanVien=nhanvien.HoTen
+            });
+        }).WithMetadata(typeof(LoginRequestDto)).WithTags(groupName);
+        
         app.MapPost("/userlogin", ([FromBody] LoginRequestDto loginRequestDto) =>
         {
 
             var taikhoan = taikhoanRepository.GetAccountByProps(new { Email = loginRequestDto.Email });
             if (taikhoan.Count == 0)
             {
-                return Results.BadRequest("Không tìm thấy người dùng");
+                return Results.NotFound("Không tìm thấy người dùng");
             }
 
             var tk = taikhoan.First();
