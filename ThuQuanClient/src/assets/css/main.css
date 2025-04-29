@@ -224,7 +224,7 @@ select {
 .select-none {
   user-select: none;
   pointer-events: none;
-  color: var(--select-none-color);
+  color: var(--select-none-color) !important;
   font-weight: 400;
 }
 
@@ -281,7 +281,7 @@ select {
 }
 
 .form-info-text {
-  color: #52c41a !important;
+  color: #52c41a;
 }
 
 .ant-input,
@@ -1482,6 +1482,7 @@ html.dark {
   --cate-item-thumb-bg: #292e39;
   --cate-item-title-color: #fff;
   --text-name-color: #fff;
+  --text-name-color-title: #81f781;
   --text-desc-color: #1ebfc1;
   --filter-btn-color: #fff;
   --filter-btn-bg: #171c28;
@@ -1536,6 +1537,7 @@ html {
   --cate-item-thumb-bg: #fff;
   --cate-item-title-color: #000;
   --text-name-color: #1ebfc1;
+  --text-name-color-title: #1ebfc1;
   --text-desc-color: #1a162e;
   --filter-btn-color: #6c6c72;
   --filter-btn-bg: #fff;
@@ -1902,6 +1904,7 @@ html {
 }
 .list__like--title-text-name {
   font-weight: bold;
+  color: var(--text-color);
   font-size: 1.5rem;
 }
 .list__like--title-text-status {
@@ -2747,7 +2750,7 @@ html {
   }
 }
 .home__heading-name {
-  color: var(--text-name-color);
+  color: var(--text-name-color-title);
 }
 .home__cate {
   --grid-gutter-x: 51px;
