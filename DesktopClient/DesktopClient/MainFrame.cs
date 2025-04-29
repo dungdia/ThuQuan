@@ -24,7 +24,7 @@ namespace DesktopClient
             MemberPanel = new MemberPanel();
             MemberPanel.Dock = DockStyle.Fill;
             this.Controls.Add(MemberPanel);
-            userNameLabel.Text = _adminLoginDTO.tenNhanVien;
+            // userNameLabel.Text = _adminLoginDTO.tenNhanVien;
         }
 
         private void MainFrame_Load(object sender, EventArgs e)
@@ -39,8 +39,18 @@ namespace DesktopClient
             {
                 _loginFrame.resetState();
                 _loginFrame.Show();
-                Close();
+                Dispose();
             }
+        }
+
+        private void MainFrame_FormClosed(object sender, FormClosedEventArgs e)
+        {
+           _loginFrame.Dispose();
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

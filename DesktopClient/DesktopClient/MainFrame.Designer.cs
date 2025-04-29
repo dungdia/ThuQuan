@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainFrame));
             flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             panel1 = new System.Windows.Forms.Panel();
             label2 = new System.Windows.Forms.Label();
@@ -107,7 +108,7 @@
             flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new System.Drawing.Size(150, 681);
+            flowLayoutPanel1.Size = new System.Drawing.Size(172, 681);
             flowLayoutPanel1.TabIndex = 0;
             // 
             // panel1
@@ -118,7 +119,7 @@
             panel1.Location = new System.Drawing.Point(0, 0);
             panel1.Margin = new System.Windows.Forms.Padding(0);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(150, 150);
+            panel1.Size = new System.Drawing.Size(172, 150);
             panel1.TabIndex = 1;
             // 
             // label2
@@ -126,7 +127,7 @@
             label2.AutoSize = true;
             label2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)0));
             label2.ForeColor = System.Drawing.Color.Green;
-            label2.Location = new System.Drawing.Point(35, 119);
+            label2.Location = new System.Drawing.Point(42, 116);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(90, 23);
             label2.TabIndex = 2;
@@ -137,7 +138,7 @@
             userNameLabel.AutoSize = true;
             userNameLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)0));
             userNameLabel.ForeColor = System.Drawing.Color.Black;
-            userNameLabel.Location = new System.Drawing.Point(7, 88);
+            userNameLabel.Location = new System.Drawing.Point(8, 88);
             userNameLabel.Name = "userNameLabel";
             userNameLabel.Size = new System.Drawing.Size(161, 28);
             userNameLabel.TabIndex = 1;
@@ -145,7 +146,8 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new System.Drawing.Point(35, 8);
+            pictureBox1.Image = ((System.Drawing.Image)resources.GetObject("pictureBox1.Image"));
+            pictureBox1.Location = new System.Drawing.Point(48, 9);
             pictureBox1.Margin = new System.Windows.Forms.Padding(0);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new System.Drawing.Size(80, 80);
@@ -157,10 +159,11 @@
             panel4.BackColor = System.Drawing.SystemColors.ControlLight;
             panel4.Controls.Add(label3);
             panel4.Controls.Add(pictureBox2);
+            panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             panel4.Location = new System.Drawing.Point(0, 150);
             panel4.Margin = new System.Windows.Forms.Padding(0);
             panel4.Name = "panel4";
-            panel4.Size = new System.Drawing.Size(150, 44);
+            panel4.Size = new System.Drawing.Size(172, 44);
             panel4.TabIndex = 2;
             // 
             // label3
@@ -178,6 +181,8 @@
             // 
             // pictureBox2
             // 
+            pictureBox2.Image = ((System.Drawing.Image)resources.GetObject("pictureBox2.Image"));
+            pictureBox2.InitialImage = ((System.Drawing.Image)resources.GetObject("pictureBox2.InitialImage"));
             pictureBox2.Location = new System.Drawing.Point(3, 3);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new System.Drawing.Size(36, 36);
@@ -190,10 +195,11 @@
             panel8.BackColor = System.Drawing.SystemColors.ControlLight;
             panel8.Controls.Add(label7);
             panel8.Controls.Add(pictureBox6);
+            panel8.Dock = System.Windows.Forms.DockStyle.Fill;
             panel8.Location = new System.Drawing.Point(0, 194);
             panel8.Margin = new System.Windows.Forms.Padding(0);
             panel8.Name = "panel8";
-            panel8.Size = new System.Drawing.Size(150, 44);
+            panel8.Size = new System.Drawing.Size(172, 44);
             panel8.TabIndex = 6;
             // 
             // label7
@@ -211,6 +217,7 @@
             // 
             // pictureBox6
             // 
+            pictureBox6.Image = ((System.Drawing.Image)resources.GetObject("pictureBox6.Image"));
             pictureBox6.Location = new System.Drawing.Point(3, 3);
             pictureBox6.Name = "pictureBox6";
             pictureBox6.Size = new System.Drawing.Size(36, 36);
@@ -223,10 +230,11 @@
             panel10.BackColor = System.Drawing.SystemColors.ControlLight;
             panel10.Controls.Add(label9);
             panel10.Controls.Add(pictureBox8);
+            panel10.Dock = System.Windows.Forms.DockStyle.Fill;
             panel10.Location = new System.Drawing.Point(0, 238);
             panel10.Margin = new System.Windows.Forms.Padding(0);
             panel10.Name = "panel10";
-            panel10.Size = new System.Drawing.Size(150, 44);
+            panel10.Size = new System.Drawing.Size(172, 44);
             panel10.TabIndex = 8;
             // 
             // label9
@@ -244,6 +252,7 @@
             // 
             // pictureBox8
             // 
+            pictureBox8.Image = ((System.Drawing.Image)resources.GetObject("pictureBox8.Image"));
             pictureBox8.Location = new System.Drawing.Point(3, 3);
             pictureBox8.Name = "pictureBox8";
             pictureBox8.Size = new System.Drawing.Size(36, 36);
@@ -256,10 +265,11 @@
             panel9.BackColor = System.Drawing.SystemColors.ControlLight;
             panel9.Controls.Add(label8);
             panel9.Controls.Add(pictureBox7);
+            panel9.Dock = System.Windows.Forms.DockStyle.Fill;
             panel9.Location = new System.Drawing.Point(0, 282);
             panel9.Margin = new System.Windows.Forms.Padding(0);
             panel9.Name = "panel9";
-            panel9.Size = new System.Drawing.Size(150, 44);
+            panel9.Size = new System.Drawing.Size(172, 44);
             panel9.TabIndex = 7;
             // 
             // label8
@@ -277,6 +287,7 @@
             // 
             // pictureBox7
             // 
+            pictureBox7.Image = ((System.Drawing.Image)resources.GetObject("pictureBox7.Image"));
             pictureBox7.Location = new System.Drawing.Point(3, 3);
             pictureBox7.Name = "pictureBox7";
             pictureBox7.Size = new System.Drawing.Size(36, 36);
@@ -289,10 +300,11 @@
             panel11.BackColor = System.Drawing.SystemColors.ControlLight;
             panel11.Controls.Add(label10);
             panel11.Controls.Add(pictureBox9);
+            panel11.Dock = System.Windows.Forms.DockStyle.Fill;
             panel11.Location = new System.Drawing.Point(0, 326);
             panel11.Margin = new System.Windows.Forms.Padding(0);
             panel11.Name = "panel11";
-            panel11.Size = new System.Drawing.Size(150, 44);
+            panel11.Size = new System.Drawing.Size(172, 44);
             panel11.TabIndex = 9;
             // 
             // label10
@@ -310,6 +322,7 @@
             // 
             // pictureBox9
             // 
+            pictureBox9.Image = ((System.Drawing.Image)resources.GetObject("pictureBox9.Image"));
             pictureBox9.Location = new System.Drawing.Point(3, 3);
             pictureBox9.Name = "pictureBox9";
             pictureBox9.Size = new System.Drawing.Size(36, 36);
@@ -322,10 +335,11 @@
             panel6.BackColor = System.Drawing.SystemColors.ControlLight;
             panel6.Controls.Add(label5);
             panel6.Controls.Add(pictureBox4);
+            panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             panel6.Location = new System.Drawing.Point(0, 370);
             panel6.Margin = new System.Windows.Forms.Padding(0);
             panel6.Name = "panel6";
-            panel6.Size = new System.Drawing.Size(150, 44);
+            panel6.Size = new System.Drawing.Size(172, 44);
             panel6.TabIndex = 4;
             // 
             // label5
@@ -343,6 +357,7 @@
             // 
             // pictureBox4
             // 
+            pictureBox4.Image = ((System.Drawing.Image)resources.GetObject("pictureBox4.Image"));
             pictureBox4.Location = new System.Drawing.Point(3, 3);
             pictureBox4.Name = "pictureBox4";
             pictureBox4.Size = new System.Drawing.Size(36, 36);
@@ -355,10 +370,11 @@
             panel5.BackColor = System.Drawing.SystemColors.ControlLight;
             panel5.Controls.Add(label4);
             panel5.Controls.Add(pictureBox3);
+            panel5.Dock = System.Windows.Forms.DockStyle.Fill;
             panel5.Location = new System.Drawing.Point(0, 414);
             panel5.Margin = new System.Windows.Forms.Padding(0);
             panel5.Name = "panel5";
-            panel5.Size = new System.Drawing.Size(150, 44);
+            panel5.Size = new System.Drawing.Size(172, 44);
             panel5.TabIndex = 3;
             // 
             // label4
@@ -376,6 +392,7 @@
             // 
             // pictureBox3
             // 
+            pictureBox3.Image = ((System.Drawing.Image)resources.GetObject("pictureBox3.Image"));
             pictureBox3.Location = new System.Drawing.Point(3, 3);
             pictureBox3.Name = "pictureBox3";
             pictureBox3.Size = new System.Drawing.Size(36, 36);
@@ -388,10 +405,11 @@
             panel7.BackColor = System.Drawing.SystemColors.ControlLight;
             panel7.Controls.Add(label6);
             panel7.Controls.Add(pictureBox5);
+            panel7.Dock = System.Windows.Forms.DockStyle.Fill;
             panel7.Location = new System.Drawing.Point(0, 458);
             panel7.Margin = new System.Windows.Forms.Padding(0);
             panel7.Name = "panel7";
-            panel7.Size = new System.Drawing.Size(150, 44);
+            panel7.Size = new System.Drawing.Size(172, 44);
             panel7.TabIndex = 5;
             // 
             // label6
@@ -409,6 +427,7 @@
             // 
             // pictureBox5
             // 
+            pictureBox5.Image = ((System.Drawing.Image)resources.GetObject("pictureBox5.Image"));
             pictureBox5.Location = new System.Drawing.Point(3, 3);
             pictureBox5.Name = "pictureBox5";
             pictureBox5.Size = new System.Drawing.Size(36, 36);
@@ -442,6 +461,7 @@
             // 
             // pictureBox10
             // 
+            pictureBox10.Image = ((System.Drawing.Image)resources.GetObject("pictureBox10.Image"));
             pictureBox10.Location = new System.Drawing.Point(3, 3);
             pictureBox10.Name = "pictureBox10";
             pictureBox10.Size = new System.Drawing.Size(36, 36);
@@ -454,10 +474,10 @@
             panel2.Controls.Add(panel3);
             panel2.Controls.Add(flowLayoutPanel1);
             panel2.Dock = System.Windows.Forms.DockStyle.Right;
-            panel2.Location = new System.Drawing.Point(1114, 0);
+            panel2.Location = new System.Drawing.Point(1092, 0);
             panel2.Margin = new System.Windows.Forms.Padding(0);
             panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(150, 681);
+            panel2.Size = new System.Drawing.Size(172, 681);
             panel2.TabIndex = 1;
             // 
             // panel3
@@ -467,7 +487,7 @@
             panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
             panel3.Location = new System.Drawing.Point(0, 637);
             panel3.Name = "panel3";
-            panel3.Size = new System.Drawing.Size(150, 44);
+            panel3.Size = new System.Drawing.Size(172, 44);
             panel3.TabIndex = 0;
             // 
             // logoutBtn
@@ -480,7 +500,7 @@
             logoutBtn.Location = new System.Drawing.Point(0, 0);
             logoutBtn.Margin = new System.Windows.Forms.Padding(0);
             logoutBtn.Name = "logoutBtn";
-            logoutBtn.Size = new System.Drawing.Size(150, 44);
+            logoutBtn.Size = new System.Drawing.Size(172, 44);
             logoutBtn.TabIndex = 8;
             logoutBtn.Text = "Đăng xuất";
             logoutBtn.UseVisualStyleBackColor = true;
@@ -495,6 +515,7 @@
             Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "Form1";
+            FormClosed += MainFrame_FormClosed;
             Load += MainFrame_Load;
             flowLayoutPanel1.ResumeLayout(false);
             panel1.ResumeLayout(false);
@@ -535,40 +556,40 @@
 
         #endregion
 
-        private FlowLayoutPanel flowLayoutPanel1;
-        private Panel panel1;
-        private PictureBox pictureBox1;
-        private Label userNameLabel;
-        private Label label2;
-        private Panel panel2;
-        private Panel panel3;
-        private Button logoutBtn;
-        private Panel panel4;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label userNameLabel;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Button logoutBtn;
+        private System.Windows.Forms.Panel panel4;
         private Label label3;
-        private PictureBox pictureBox2;
-        private Panel panel5;
-        private Label label4;
-        private PictureBox pictureBox3;
-        private Panel panel6;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.Panel panel6;
         private Label label5;
-        private PictureBox pictureBox4;
-        private Panel panel7;
+        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.Panel panel7;
         private Label label6;
-        private PictureBox pictureBox5;
-        private Panel panel8;
+        private System.Windows.Forms.PictureBox pictureBox5;
+        private System.Windows.Forms.Panel panel8;
         private Label label7;
-        private PictureBox pictureBox6;
-        private Panel panel9;
+        private System.Windows.Forms.PictureBox pictureBox6;
+        private System.Windows.Forms.Panel panel9;
         private Label label8;
-        private PictureBox pictureBox7;
-        private Panel panel10;
+        private System.Windows.Forms.PictureBox pictureBox7;
+        private System.Windows.Forms.Panel panel10;
         private Label label9;
-        private PictureBox pictureBox8;
-        private Panel panel11;
+        private System.Windows.Forms.PictureBox pictureBox8;
+        private System.Windows.Forms.Panel panel11;
         private Label label10;
-        private PictureBox pictureBox9;
+        private System.Windows.Forms.PictureBox pictureBox9;
         private Panel panel12;
-        private Label label11;
-        private PictureBox pictureBox10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.PictureBox pictureBox10;
     }
 }

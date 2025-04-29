@@ -50,9 +50,9 @@
             button1.Cursor = System.Windows.Forms.Cursors.Hand;
             button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             button1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)0));
-            button1.Location = new System.Drawing.Point(165, 325);
+            button1.Location = new System.Drawing.Point(147, 310);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(120, 42);
+            button1.Size = new System.Drawing.Size(144, 42);
             button1.TabIndex = 2;
             button1.Text = "Đăng nhập";
             button1.UseVisualStyleBackColor = false;
