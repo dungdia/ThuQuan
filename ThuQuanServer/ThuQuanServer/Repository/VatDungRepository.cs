@@ -30,8 +30,7 @@ public class VatDungRepository : IVatDungRepository
         var result = _dbContext.GetFirstOrDefault<VatDung>(query, new { id });
         return result;
     }   
-
-
+    
     public ICollection<VatDung> GetVatDungByProps(object? values)
     {
         var p = values.GetType().GetProperties();
@@ -61,10 +60,22 @@ public class VatDungRepository : IVatDungRepository
         return _dbContext.SaveChange();
     }
 
-    public bool updateListTinhTranDaDa(int[] listId)
+    public bool updateListTinhTrangDaDat(int[] listId)
     {
         foreach (var id in listId)
             _dbContext.Update<VatDung>(new { TinhTrang = "Đã đặt" }, id);
+        return _dbContext.SaveChange();
+    }
+
+    public bool updateTinhTrangChuaMuon(int id)
+    {
+            _dbContext.Update<VatDung>(new { TinhTrang = "Chưa mượn" }, id);
+        return _dbContext.SaveChange();
+    }
+    
+    public bool updateTinhTrangBiHong(int id)
+    {
+            _dbContext.Update<VatDung>(new { TinhTrang = "Bị hỏng" }, id);
         return _dbContext.SaveChange();
     }
     

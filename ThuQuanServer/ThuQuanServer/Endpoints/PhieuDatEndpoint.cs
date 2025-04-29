@@ -36,6 +36,7 @@ public static class PhieuDatEndpoint
                 var Authorization = context.Request.Headers.Authorization.ToString();
                 var token = Authorization.Substring(7, Authorization.Length - 7);
                 var idTaiKhoan = authService.DecodeJwtAccessToken(token);
+
                 var idThanhVien = taiKhoanRepository.GetThanhVienById(idTaiKhoan);
                 Console.WriteLine($"id {idTaiKhoan}");
 
@@ -100,8 +101,8 @@ public static class PhieuDatEndpoint
             var token = authorization.Substring(7);
             
             //Sử dụng service để decode accesss token lấy id rồi tìm thành viến với id dó
-            var taiKhaiId = authService.DecodeJwtAccessToken(token);
-            var thanhvien = taiKhoanRepository.GetThanhVienById(taiKhaiId);
+            var taiKhoanId = authService.DecodeJwtAccessToken(token);
+            var thanhvien = taiKhoanRepository.GetAccountByProps(new {Id = taiKhoanId}).FirstOrDefault();
             
             if (thanhvien == null)
                 return Results.NotFound("Không tìm thấy thành viên");
@@ -132,7 +133,7 @@ public static class PhieuDatEndpoint
             var resultPhieuDat = phieuDatRepository.AddPhieuDat(newPhieuDat, addPhieuDatRequestDto.listId);
             if(!resultPhieuDat)
                 return Results.UnprocessableEntity("Thêm phiếu đặt không thành công");
-            var resultVatDung = vatDungRepository.updateListTinhTranDaDa(addPhieuDatRequestDto.listId);
+            var resultVatDung = vatDungRepository.updateListTinhTrangDaDat(addPhieuDatRequestDto.listId);
             if (!resultVatDung)
                 return Results.UnprocessableEntity("Đã xảy ra lỗi lúc thêm phiếu đặt");
             
