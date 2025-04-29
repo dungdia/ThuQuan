@@ -67,5 +67,28 @@ public class APIContext
         string message = collection.First().Value.ToString();
         return message;
     }
+
+    public static string getErrorMessage(RestResponse response)
+    {
+        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+        {
+            return response.Content;
+        }
+        string message = "";
+        try
+        {
+            var resultDictionary = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string,Object>>(response.Content);
+            foreach (var item in resultDictionary)
+            {
+                message += item.Value.ToString();
+                message += "\n";
+            }
+        }
+        catch (Exception e)
+        {
+            message = response.Content;
+        }
+        return message;
+    }
     
 }

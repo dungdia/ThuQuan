@@ -28,83 +28,83 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBox1 = new TextBox();
-            button1 = new Button();
-            maskedTextBox1 = new MaskedTextBox();
-            label1 = new Label();
-            label2 = new Label();
+            emailInput = new System.Windows.Forms.TextBox();
+            button1 = new System.Windows.Forms.Button();
+            passwordInput = new System.Windows.Forms.MaskedTextBox();
+            label1 = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
             SuspendLayout();
             // 
-            // textBox1
+            // emailInput
             // 
-            textBox1.BorderStyle = BorderStyle.None;
-            textBox1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox1.Location = new Point(115, 179);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(220, 22);
-            textBox1.TabIndex = 0;
+            emailInput.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            emailInput.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            emailInput.Location = new System.Drawing.Point(115, 179);
+            emailInput.Name = "emailInput";
+            emailInput.Size = new System.Drawing.Size(220, 27);
+            emailInput.TabIndex = 0;
             // 
             // button1
             // 
-            button1.BackColor = Color.FromArgb(244, 241, 187);
-            button1.Cursor = Cursors.Hand;
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.Location = new Point(165, 325);
+            button1.BackColor = System.Drawing.Color.FromArgb(((int)((byte)244)), ((int)((byte)241)), ((int)((byte)187)));
+            button1.Cursor = System.Windows.Forms.Cursors.Hand;
+            button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            button1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            button1.Location = new System.Drawing.Point(165, 325);
             button1.Name = "button1";
-            button1.Size = new Size(120, 42);
+            button1.Size = new System.Drawing.Size(120, 42);
             button1.TabIndex = 2;
             button1.Text = "Đăng nhập";
             button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
+            button1.Click += loginBtn_Click;
             // 
-            // maskedTextBox1
+            // passwordInput
             // 
-            maskedTextBox1.BorderStyle = BorderStyle.None;
-            maskedTextBox1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            maskedTextBox1.Location = new Point(115, 249);
-            maskedTextBox1.Name = "maskedTextBox1";
-            maskedTextBox1.PasswordChar = '*';
-            maskedTextBox1.Size = new Size(220, 22);
-            maskedTextBox1.TabIndex = 3;
+            passwordInput.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            passwordInput.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            passwordInput.Location = new System.Drawing.Point(115, 249);
+            passwordInput.Name = "passwordInput";
+            passwordInput.PasswordChar = '*';
+            passwordInput.Size = new System.Drawing.Size(220, 27);
+            passwordInput.TabIndex = 3;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI Semibold", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.ForeColor = Color.Black;
-            label1.Location = new Point(115, 156);
+            label1.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            label1.ForeColor = System.Drawing.Color.Black;
+            label1.Location = new System.Drawing.Point(115, 156);
             label1.Name = "label1";
-            label1.Size = new Size(111, 20);
+            label1.Size = new System.Drawing.Size(59, 25);
             label1.TabIndex = 4;
-            label1.Text = "Tên đăng nhập";
+            label1.Text = "Email";
             label1.Click += label1_Click;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI Semibold", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.ForeColor = Color.Black;
-            label2.Location = new Point(115, 226);
+            label2.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            label2.ForeColor = System.Drawing.Color.Black;
+            label2.Location = new System.Drawing.Point(115, 226);
             label2.Name = "label2";
-            label2.Size = new Size(74, 20);
+            label2.Size = new System.Drawing.Size(94, 25);
             label2.TabIndex = 5;
             label2.Text = "Mật khẩu";
             label2.Click += label2_Click;
             // 
             // LoginFrame
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(155, 193, 188);
-            ClientSize = new Size(434, 411);
+            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            BackColor = System.Drawing.Color.FromArgb(((int)((byte)155)), ((int)((byte)193)), ((int)((byte)188)));
+            ClientSize = new System.Drawing.Size(434, 411);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(maskedTextBox1);
+            Controls.Add(passwordInput);
             Controls.Add(button1);
-            Controls.Add(textBox1);
-            Name = "LoginFrame";
-            StartPosition = FormStartPosition.CenterScreen;
+            Controls.Add(emailInput);
+            Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "LoginFrame";
             Load += LoginFrame_Load;
             ResumeLayout(false);
@@ -113,10 +113,10 @@
 
         #endregion
 
-        private TextBox textBox1;
-        private Button button1;
-        private MaskedTextBox maskedTextBox1;
-        private Label label1;
+        private TextBox emailInput;
+        private System.Windows.Forms.Button button1;
+        private MaskedTextBox passwordInput;
+        private System.Windows.Forms.Label label1;
         private Label label2;
     }
 }
