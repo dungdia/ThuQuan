@@ -91,7 +91,7 @@ select {
 .select-none {
    user-select: none;
    pointer-events: none;
-   color: var(--select-none-color);
+   color: var(--select-none-color) !important;
    font-weight: 400;
 }
 
@@ -149,7 +149,7 @@ select {
 }
 
 .form-info-text {
-   color: #52c41a !important;
+   color: #52c41a;
 }
 
 .ant-input,

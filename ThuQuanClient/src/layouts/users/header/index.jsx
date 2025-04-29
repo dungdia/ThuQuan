@@ -1699,7 +1699,10 @@ export default function HeaderUser() {
 
                            <div className="navbar-act__separate"></div>
 
-                           <button className="navbar-act__btn">
+                           <button
+                              onClick={handleShowModalCart}
+                              className="navbar-act__btn"
+                           >
                               <img
                                  src={orderIcon}
                                  alt="Đơn phiếu đặt"

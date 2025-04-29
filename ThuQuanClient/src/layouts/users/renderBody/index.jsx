@@ -6,6 +6,7 @@ import categoryItem_3 from "@/assets/images/category/item-3.png";
 import filterIcon from "@/assets/icons/filter.svg";
 import { getVatDung } from "@/services/user/renderBody";
 import { Spin } from "antd";
+import { use } from "react";
 
 export default function RenderBody() {
    const navigate = useNavigate();
@@ -13,6 +14,18 @@ export default function RenderBody() {
    const [categoryId, setCategoryId] = useState(1);
    const [loading, setLoading] = useState(false);
    const location = useLocation();
+   const [name, setName] = useState("");
+
+   useEffect(() => {
+      const accountLoggedIn = JSON.parse(
+         localStorage.getItem("accountLoggedin")
+      );
+
+      if (accountLoggedIn) {
+         const lastName = accountLoggedIn.hoten.split(" ").pop(); // Lấy tên cuối cùng
+         setName(lastName); // Cập nhật state
+      }
+   }, []); // Chỉ chạy một lần khi component được mount
 
    const fetchVatDung = async () => {
       try {
@@ -100,8 +113,10 @@ export default function RenderBody() {
                   <div className="home__row">
                      <h2 className="home__heading">
                         Chào Mừng{" "}
-                        <strong className="home__heading-name">Đức</strong> Đến
-                        Thư Quán
+                        <strong className="home__heading-name">
+                           {name || `Bạn`}
+                        </strong>{" "}
+                        Đến Thư Quán
                      </h2>
                      {/* <button className="filter-btn">
                      Filter
