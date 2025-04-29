@@ -27,6 +27,7 @@ public static class  LichSuEndpoint
         app.MapPost("/CheckLichSuVao", (int? IdThanhVien) =>
         {
             if(!lichSuRepository.CheckLichSuVao(IdThanhVien)){
+                return Results.BadRequest("Lỗi xử lý lịch sử vào");
             }
             
             return Results.Ok(new 
