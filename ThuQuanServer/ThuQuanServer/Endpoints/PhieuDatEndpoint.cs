@@ -107,6 +107,7 @@ public static class PhieuDatEndpoint
             if (thanhvien == null)
                 return Results.NotFound("Không tìm thấy thành viên");
             
+            
             var vatDung = vatDungRepository.GetVatDung().Where(p => addPhieuDatRequestDto.listId.Contains(p.Id)).ToList();
             
             if (vatDung.Count() != addPhieuDatRequestDto.listId.Length)
