@@ -22,8 +22,8 @@
 
         #region Component Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
+        /// <summary>
+        /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
@@ -32,10 +32,10 @@
             // 
             // CRUDButton
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            Name = "CRUDButton";
-            Size = new Size(384, 307);
+            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            Size = new System.Drawing.Size(384, 307);
             ResumeLayout(false);
         }
 

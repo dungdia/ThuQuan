@@ -64,6 +64,7 @@
             panel2 = new System.Windows.Forms.Panel();
             panel3 = new System.Windows.Forms.Panel();
             logoutBtn = new System.Windows.Forms.Button();
+            mainPanel = new System.Windows.Forms.Panel();
             flowLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -214,6 +215,7 @@
             label7.TabIndex = 1;
             label7.Text = "Vật dụng";
             label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            label7.Click += label7_Click;
             // 
             // pictureBox6
             // 
@@ -389,6 +391,7 @@
             label4.TabIndex = 1;
             label4.Text = "Thành viên";
             label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            label4.Click += label4_Click;
             // 
             // pictureBox3
             // 
@@ -458,6 +461,7 @@
             label11.TabIndex = 1;
             label11.Text = "Tài khoản";
             label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            label11.Click += label11_Click;
             // 
             // pictureBox10
             // 
@@ -506,11 +510,19 @@
             logoutBtn.UseVisualStyleBackColor = true;
             logoutBtn.Click += logoutBtn_Click;
             // 
+            // mainPanel
+            // 
+            mainPanel.Location = new System.Drawing.Point(-1, 0);
+            mainPanel.Name = "mainPanel";
+            mainPanel.Size = new System.Drawing.Size(1095, 681);
+            mainPanel.TabIndex = 2;
+            // 
             // MainFrame
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1264, 681);
+            Controls.Add(mainPanel);
             Controls.Add(panel2);
             Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -554,6 +566,8 @@
             ResumeLayout(false);
         }
 
+        private System.Windows.Forms.Panel mainPanel;
+
         #endregion
 
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
@@ -577,7 +591,7 @@
         private Label label6;
         private System.Windows.Forms.PictureBox pictureBox5;
         private System.Windows.Forms.Panel panel8;
-        private Label label7;
+        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.PictureBox pictureBox6;
         private System.Windows.Forms.Panel panel9;
         private Label label8;
