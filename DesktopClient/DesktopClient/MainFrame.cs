@@ -3,6 +3,7 @@ using DesktopClient.DTO;
 using DesktopClient.DTO.ApiResponseDTO;
 using DesktopClient.Models;
 using DesktopClient.UI;
+using Microsoft.VisualBasic.ApplicationServices;
 using Object = System.Object;
 
 namespace DesktopClient
@@ -11,6 +12,7 @@ namespace DesktopClient
     {
         ItemPanel ItemPanel { get; set; }
         MemberPanel MemberPanel { get; set; }
+        AccountPanel AccountPanel { get; set; }
 
         private LoginFrame _loginFrame;
         private AdminLoginDTO _adminLoginDTO;
@@ -21,11 +23,13 @@ namespace DesktopClient
             _loginFrame = loginFrame;
             _adminLoginDTO = adminLoginDTO;
             
-            MemberPanel = new MemberPanel();
-            MemberPanel.Dock = DockStyle.Fill;
-            this.Controls.Add(MemberPanel);
+            AccountPanel = new AccountPanel();
+            AccountPanel.Dock = DockStyle.Fill;
+            mainPanel.Controls.Add(AccountPanel);
             // userNameLabel.Text = _adminLoginDTO.tenNhanVien;
         }
+
+        
 
         private void MainFrame_Load(object sender, EventArgs e)
         {
@@ -51,6 +55,29 @@ namespace DesktopClient
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             throw new System.NotImplementedException();
+        }
+        
+        private void loadUserControl(UserControl uc)
+        {
+            mainPanel.Controls.Clear();
+            uc.Dock = DockStyle.Fill;
+            mainPanel.Controls.Add(uc);
+            uc.BringToFront();
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+            loadUserControl(new MemberPanel());
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+            loadUserControl(new AccountPanel());
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+            loadUserControl(new ItemPanel());
         }
     }
 }
