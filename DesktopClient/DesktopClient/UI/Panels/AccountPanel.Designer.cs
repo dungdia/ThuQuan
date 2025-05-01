@@ -31,30 +31,33 @@ partial class AccountPanel
     /// </summary>
     private void InitializeComponent()
     {
-        dataGridView1 = new System.Windows.Forms.DataGridView();
-        ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+        dataGridView1 = new DataGridView();
+        ((ISupportInitialize)dataGridView1).BeginInit();
         SuspendLayout();
         // 
         // dataGridView1
         // 
-        dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-        dataGridView1.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
+        dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        dataGridView1.BackgroundColor = SystemColors.ButtonFace;
         dataGridView1.ColumnHeadersHeight = 30;
-        dataGridView1.Location = new System.Drawing.Point(58, 143);
+        dataGridView1.Location = new Point(51, 107);
+        dataGridView1.Margin = new Padding(3, 2, 3, 2);
         dataGridView1.Name = "dataGridView1";
         dataGridView1.RowHeadersVisible = false;
         dataGridView1.RowHeadersWidth = 51;
-        dataGridView1.Size = new System.Drawing.Size(994, 538);
+        dataGridView1.Size = new Size(870, 404);
         dataGridView1.TabIndex = 0;
         // 
         // AccountPanel
         // 
-        AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-        AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        BackColor = System.Drawing.SystemColors.ActiveCaption;
+        AutoScaleDimensions = new SizeF(7F, 15F);
+        AutoScaleMode = AutoScaleMode.Font;
+        BackColor = SystemColors.ActiveCaption;
         Controls.Add(dataGridView1);
-        Size = new System.Drawing.Size(1114, 681);
-        ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+        Margin = new Padding(3, 2, 3, 2);
+        Name = "AccountPanel";
+        Size = new Size(1114, 681);
+        ((ISupportInitialize)dataGridView1).EndInit();
         ResumeLayout(false);
     }
 

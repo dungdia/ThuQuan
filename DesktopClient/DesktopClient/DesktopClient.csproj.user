@@ -10,10 +10,34 @@
     <Compile Update="UI\CustomControls\CRUDButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="UI\CustomControls\NavButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\Panels\BookingPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\Panels\BorrowPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\Panels\HistoryPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\Panels\HomePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="UI\Panels\ItemPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="UI\Panels\MemberPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\Panels\PenaltyPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\Panels\ReturnPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\Panels\StaffPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
   </ItemGroup>
