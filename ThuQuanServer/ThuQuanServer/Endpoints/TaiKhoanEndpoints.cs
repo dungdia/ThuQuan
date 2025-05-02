@@ -28,6 +28,7 @@ public static class TaiKhoanEndpoints
         var dbContext = app.ServiceProvider.GetRequiredService<DbContext>();
         var taiKhoanRepository = app.ServiceProvider.GetRequiredService<ITaiKhoanRepository>();
         var passwordHashService = app.ServiceProvider.GetRequiredService<IPasswordHashService>();
+        var nhanVienRepository = app.ServiceProvider.GetRequiredService<INhanVienRepository>();
         
         var groupName = "Thanh Vien";
         
@@ -77,6 +78,12 @@ public static class TaiKhoanEndpoints
         {
             var thanhvien = taiKhoanRepository.GetThanhVien();
             return Results.Ok(thanhvien);
+        }).WithTags(groupName);
+        
+        app.MapGet("/GetNhanVien", () =>
+        {
+            var nhanVien = nhanVienRepository.GetNhanVien();
+            return Results.Ok(nhanVien);
         }).WithTags(groupName);
 
             // POST API đăng kí tài khoản thành viên
