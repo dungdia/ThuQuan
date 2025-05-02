@@ -67,6 +67,12 @@ public class VatDungRepository : IVatDungRepository
         return _dbContext.SaveChange();
     }
 
+    public bool updateTinhTrangDaMuon(int id)
+    {
+        _dbContext.Update<VatDung>(new { TinhTrang = "Đang mượn" }, id);
+        return _dbContext.SaveChange();
+    }
+    
     public bool updateTinhTrangChuaMuon(int id)
     {
             _dbContext.Update<VatDung>(new { TinhTrang = "Chưa mượn" }, id);

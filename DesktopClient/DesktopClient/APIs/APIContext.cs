@@ -1,4 +1,4 @@
-using RestSharp;
+﻿using RestSharp;
 using System.Text.Json;
 
 namespace DesktopClient.APIs;
@@ -30,13 +30,22 @@ public class APIContext
     
     public static List<T> GetMethod<T>(string url) where T : new()
     {
-        var client = new RestClient("http://localhost:3000/" + url);
-        var request = new RestRequest();
-        request.Method = Method.Get;
-        var response = client.Get(request);
-        var collection = JsonSerializer.Deserialize<IEnumerable<Dictionary<string,Object>>>(response.Content);
-        var result = collection.Select(e=>ConvertToModel<T>(e)).ToList();
-        return result;
+
+        try
+        {
+            var client = new RestClient("http://localhost:3000/" + url);
+            var request = new RestRequest();
+            request.Method = Method.Get;
+            request.AddHeader("Authorization", "Bearer " + MainFrame._adminLoginDTO?.accesstoken);
+            var response = client.Get(request);
+            var collection = JsonSerializer.Deserialize<IEnumerable<Dictionary<string,Object>>>(response.Content);
+            var result = collection.Select(e=>ConvertToModel<T>(e)).ToList();
+            return result;
+        }catch(Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        return [];
     }
 
     public static RestResponse PostMethod(string url, object obj)
@@ -44,6 +53,7 @@ public class APIContext
         var client = new RestClient("http://localhost:3000/" + url);
         var request = new RestRequest();
         request.Method = Method.Post;
+        request.AddHeader("Authorization", "Bearer " + MainFrame._adminLoginDTO?.accesstoken);
         RestResponse response = null;
         try
         {

@@ -16,7 +16,7 @@ namespace DesktopClient
     {
 
         private LoginFrame _loginFrame;
-        private AdminLoginDTO _adminLoginDTO;
+        public static AdminLoginDTO? _adminLoginDTO;
 
         NavButton[] navButtons;
         List<(string, Image)> navButtonsData = new List<(string, Image)>

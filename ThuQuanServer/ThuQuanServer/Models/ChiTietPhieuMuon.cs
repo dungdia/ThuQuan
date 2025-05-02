@@ -2,6 +2,6 @@
 
 public class ChiTietPhieuMuon
 {
-    public int IdPhieuMuon { get; set; }
-    public int IdVatDung { get; set; }
+    public int Id_PhieuMuon { get; set; }
+    public int Id_VatDung { get; set; }
 }
