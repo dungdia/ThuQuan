@@ -2,10 +2,10 @@
 
 public class VatDung
 {
-    public int Id { get; set; }
-    public string TenVatDung { get; set; }
-    public string HinhAnh { get; set; }
-    public string? MoTa { get; set; }
-    public int Id_LoaiVatDung { get; set; }
-    public string? TinhTrang { get; set; }
+    public int id { get; set; }
+    public string tenVatDung { get; set; }
+    public string hinhAnh { get; set; }
+    public string? moTa { get; set; }
+    public int id_LoaiVatDung { get; set; }
+    public string? tinhTrang { get; set; }
 }
