@@ -35,7 +35,19 @@ public class PhieuDatRepository : IPhieuDatRepository
     
     public ICollection<PhieuDat> GetPhieuDatByProps(object? values)
     {
-        throw new NotImplementedException();
+        var p = values.GetType().GetProperties();
+        var query = "SELECT * FROM PhieuDat WHERE ";
+        if (p.Length == 1)
+        {
+            query+=string.Join("", p.Select(p => p.Name)) + "=?";
+        }
+        else
+        {
+            query += string.Join("=? AND ", p.Select(p => p.Name)) + "=?";
+        }
+        var props = p.Select(p=> p.GetValue(values)).ToArray();
+        var phieudat = _dbContext.GetData<PhieuDat>(query, props);
+        return phieudat;
     }
     
     public bool AddPhieuDat(PhieuDat phieuDat, int[] vatDungIds)
@@ -86,8 +98,10 @@ public class PhieuDatRepository : IPhieuDatRepository
     }
 
 
-    public bool UpdatePhieuDat()
+    public bool UpdatePhieuDat(PhieuDat phieuDat,int id_phieudat)
     {
-        throw new NotImplementedException();
+        _dbContext.Update<PhieuDat>(phieuDat, id_phieudat);
+        
+        return _dbContext.SaveChange(); 
     }
 }

@@ -14,6 +14,7 @@ public interface IVatDungRepository
     public bool updateListTinhTrangDaDat(int[] listId);
     public bool updateTinhTrangChuaMuon(int id);
     public bool updateTinhTrangBiHong(int id);
+    public bool updateTinhTrangDaMuon(int id);
     public ICollection<VatDung> GetVaTDungBooked();
     public ICollection<VatDung> GetBook();
 

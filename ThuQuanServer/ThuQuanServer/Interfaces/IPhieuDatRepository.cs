@@ -12,5 +12,5 @@ public interface IPhieuDatRepository
     public bool AddPhieuDat(PhieuDat phieuDat,int[] vatDungIds);
     public int AddPhieuDatReturnId(PhieuDat phieuDat);
     public bool AddChiTietPhieuDat(ChiTietPhieuDat chiTietPhieuDat);
-    public bool UpdatePhieuDat();
+    public bool UpdatePhieuDat(PhieuDat phieuDat, int id_phieudat);
 }
