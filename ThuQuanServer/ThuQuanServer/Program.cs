@@ -122,6 +122,7 @@ app.MapLoaiVatDungEndpoint();
 app.MapSecurityEndpoints();
 app.MapSendOTPEndpoints();
 app.MapLichSuEndpoints();
+app.MapThanhVienEndpoint();
 
 app.Run();
 
