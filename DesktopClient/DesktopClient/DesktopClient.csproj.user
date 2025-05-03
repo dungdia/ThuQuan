@@ -28,6 +28,12 @@
     <Compile Update="UI\Dialog\ChildDialog\SelectThanhVienDialog.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="UI\Dialog\RegisterMemberDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UI\Dialog\UpdateMemberDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="UI\Panels\BookingPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -32,3 +32,4 @@ ThuQuanServer/ThuQuanServer/ThuQuanServer.sln.DotSettings.user
 ThuQuanServer/ThuQuanServer/appsettings.json
 DesktopClient/DesktopClient/obj/*
 DesktopClient/DesktopClient/bin/*
+DesktopClient/DesktopClient/DesktopClient.csproj.user
