@@ -11,7 +11,8 @@ public interface ITaiKhoanRepository
     public ThanhVien? GetAccountThanhVienByEmailTaiKhoan(object? values);
     public ICollection<TaiKhoan> GetAccountByProps(object? values);
     public ICollection<ThanhVien> GetThanhVien();
-    public ThanhVien GetThanhVienById(int id);
+    public ThanhVien? GetThanhVienById(int id);
+    public ThanhVien? GetThanhVienByIdThanhVien(int id);
     public NhanVien GetNhanVienById(int id);
     public bool AddThanhVien(TaikhoanInsertDTO taikhoan);
     public bool UpdateThanhVien(ThanhVienRequestDto taikhoan, int idThanhVien);

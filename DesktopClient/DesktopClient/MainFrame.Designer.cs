@@ -31,7 +31,7 @@
             flowLayoutPanel1 = new FlowLayoutPanel();
             panel1 = new Panel();
             label2 = new Label();
-            label1 = new Label();
+            userNameLabel = new Label();
             pictureBox1 = new PictureBox();
             panel2 = new Panel();
             panel3 = new Panel();
@@ -60,7 +60,7 @@
             // panel1
             // 
             panel1.Controls.Add(label2);
-            panel1.Controls.Add(label1);
+            panel1.Controls.Add(userNameLabel);
             panel1.Controls.Add(pictureBox1);
             panel1.Location = new Point(0, 0);
             panel1.Margin = new Padding(0);
@@ -79,16 +79,16 @@
             label2.TabIndex = 2;
             label2.Text = "Nhân viên";
             // 
-            // label1
+            // userNameLabel
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.ForeColor = Color.Black;
-            label1.Location = new Point(8, 117);
-            label1.Name = "label1";
-            label1.Size = new Size(161, 28);
-            label1.TabIndex = 1;
-            label1.Text = "Tên người dùng";
+            userNameLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            userNameLabel.ForeColor = Color.Black;
+            userNameLabel.Location = new Point(3, 117);
+            userNameLabel.Name = "userNameLabel";
+            userNameLabel.Size = new Size(165, 28);
+            userNameLabel.TabIndex = 1;
+            userNameLabel.Text = "Tên người dùng";
+            userNameLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // pictureBox1
             // 
@@ -174,7 +174,7 @@
         private FlowLayoutPanel flowLayoutPanel1;
         private Panel panel1;
         private PictureBox pictureBox1;
-        private Label label1;
+        private Label userNameLabel;
         private Label label2;
         private Panel panel2;
         private Panel panel3;

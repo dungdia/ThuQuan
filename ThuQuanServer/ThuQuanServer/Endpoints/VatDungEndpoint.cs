@@ -18,6 +18,12 @@ public static class VatDungEndpoint
             var result = vatDungRepository.GetVatDung();
             return Results.Ok(result);
         }).WithTags(tagName);
+
+        app.MapGet("/GetVatDungChuaMuon", () =>
+        {
+            var result = vatDungRepository.GetVatDungByProps(new { TinhTrang = "Chưa mượn"});
+            return Results.Ok(result);
+        }).WithTags(tagName);
         
         // Lấy vật dung qua id
         app.MapGet("/VatDung/{id:int}", ([FromRoute] int id) =>
