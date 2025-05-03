@@ -16,7 +16,16 @@
     <Compile Update="UI\Dialog\BookingDialog.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="UI\Dialog\BorrowDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="UI\Dialog\ChildDialog\BookingDateInputDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UI\Dialog\ChildDialog\SelectItemDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UI\Dialog\ChildDialog\SelectThanhVienDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="UI\Panels\BookingPanel.cs">

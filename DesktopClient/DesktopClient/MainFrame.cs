@@ -52,6 +52,7 @@ namespace DesktopClient
             InitializeComponent();
             _loginFrame = loginFrame;
             _adminLoginDTO = adminLoginDTO;
+            userNameLabel.Text = adminLoginDTO.tenNhanVien;
 
             navButtons = new NavButton[navButtonsData.Count];
             for (int i = 0; i < navButtonsData.Count; i++)
