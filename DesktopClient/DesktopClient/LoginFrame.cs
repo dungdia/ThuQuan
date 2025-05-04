@@ -30,7 +30,7 @@ namespace DesktopClient
             emailInput.Text = "";
             passwordInput.Text = "";
         }
-        
+
         private void LoginFrame_Load(object sender, EventArgs e)
         {
 
@@ -40,13 +40,13 @@ namespace DesktopClient
         {
             if (emailInput.Text == "")
             {
-                MessageBox.Show("Không được bỏ trống email","Lỗi",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show("Không được bỏ trống email", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             if (passwordInput.Text == "")
             {
-                MessageBox.Show("Không được bỏ trống password","Lỗi",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show("Không được bỏ trống password", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -55,23 +55,34 @@ namespace DesktopClient
                 email = emailInput.Text,
                 password = passwordInput.Text
             };
-            var response =  APIContext.PostMethod($"adminlogin", adminRequest);
-            
+            var response = APIContext.PostMethod($"adminlogin", adminRequest);
+
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 var errorMessage = APIContext.getErrorMessage(response);
-                MessageBox.Show(errorMessage,"Lỗi",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show(errorMessage, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            var resultDictionary = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string,Object>>(response.Content);
+            var resultDictionary = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, Object>>(response.Content);
             var result = APIContext.ConvertToModel<AdminLoginDTO>(resultDictionary);
-            MessageBox.Show("Đăng nhập thành công","Thành công",MessageBoxButtons.OK,MessageBoxIcon.Information);
-            
+            MessageBox.Show("Đăng nhập thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
             //Open Main Frame with login account have access token and username
-            var mainFrame = new MainFrame(result,this);
+            var mainFrame = new MainFrame(result, this);
             Hide();
             mainFrame.Show();
+        }
+
+        // Hàm bấm bằng nút Enter khi đăng nhập
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Enter)
+            {
+                button1.PerformClick(); // Mô phỏng một cú nhấp chuột
+                return true; // Chỉ ra rằng phím nhấn đã được xử lý
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void label2_Click(object sender, EventArgs e)

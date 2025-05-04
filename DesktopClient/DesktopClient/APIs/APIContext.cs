@@ -16,18 +16,18 @@ public class APIContext
             {
                 if (p.PropertyType.Name == "Int32")
                 {
-                    p.SetValue(t,Int32.Parse(v.ToString()));
+                    p.SetValue(t, Int32.Parse(v.ToString()));
                 }
-                if(p.PropertyType.Name == "String")
+                if (p.PropertyType.Name == "String")
                     p.SetValue(t, v.ToString());
-                if(p.PropertyType.Name == "DateTime")
-                    p.SetValue(t,DateTime.Parse(v.ToString()));
+                if (p.PropertyType.Name == "DateTime")
+                    p.SetValue(t, DateTime.Parse(v.ToString()));
             }
         }
 
         return t;
     }
-    
+
     public static List<T> GetMethod<T>(string url) where T : new()
     {
 
@@ -38,10 +38,11 @@ public class APIContext
             request.Method = Method.Get;
             request.AddHeader("Authorization", "Bearer " + MainFrame._adminLoginDTO?.accesstoken);
             var response = client.Get(request);
-            var collection = JsonSerializer.Deserialize<IEnumerable<Dictionary<string,Object>>>(response.Content);
-            var result = collection.Select(e=>ConvertToModel<T>(e)).ToList();
+            var collection = JsonSerializer.Deserialize<IEnumerable<Dictionary<string, Object>>>(response.Content);
+            var result = collection.Select(e => ConvertToModel<T>(e)).ToList();
             return result;
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
@@ -70,9 +71,34 @@ public class APIContext
         return response;
     }
 
+    public static async Task<RestResponse> PutMethodAsync(string url, object obj)
+    {
+        var client = new RestClient("http://localhost:3000/" + url);
+        var request = new RestRequest();
+        request.Method = Method.Put;
+        request.AddHeader("Authorization", "Bearer " + MainFrame._adminLoginDTO?.accesstoken);
+
+        RestResponse response = null;
+        try
+        {
+            var body = JsonSerializer.Serialize(obj);
+            request.AddJsonBody(body);
+
+            response = await client.ExecuteAsync(request);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+        return response;
+    }
+
+
     public static string translateResponse(string test)
     {
-        var response = JsonSerializer.Deserialize<Dictionary<string,Object>>(test).First();
+        var response = JsonSerializer.Deserialize<Dictionary<string, Object>>(test).First();
         var collection = JsonSerializer.Deserialize<Dictionary<string, Object>>(response.Value.ToString());
         string message = collection.First().Value.ToString();
         return message;
@@ -87,7 +113,7 @@ public class APIContext
         string message = "";
         try
         {
-            var resultDictionary = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string,Object>>(response.Content);
+            var resultDictionary = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, Object>>(response.Content);
             foreach (var item in resultDictionary)
             {
                 message += item.Value.ToString();
@@ -100,5 +126,5 @@ public class APIContext
         }
         return message;
     }
-    
+
 }

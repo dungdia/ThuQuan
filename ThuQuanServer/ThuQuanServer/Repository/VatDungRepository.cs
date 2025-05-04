@@ -92,6 +92,34 @@ public class VatDungRepository : IVatDungRepository
         var vatDung = _dbContext.GetData<VatDung>(query,"Chưa mượn");
         return vatDung;
     }
+
+    public bool UpdateTinhTrangAn(int id)
+    {
+        // Truy vấn trạng thái hiện tại của vật dụng
+        string checkQuery = "SELECT TinhTrang FROM VatDung WHERE id = @id";
+        using var connection = _dbContext.GetOpenConnection();
+    
+        var currentStatus = connection.ExecuteScalar<string>(checkQuery, new { id });
+
+        if (string.IsNullOrEmpty(currentStatus))
+        {
+            return false;
+        }
+    
+        if (currentStatus == "Chưa mượn" || currentStatus == "Bị hỏng")
+        {
+            // Thực hiện cập nhật trạng thái
+            string query = "UPDATE VatDung SET TinhTrang = @TinhTrangAn WHERE id = @id";
+            var result = connection.Execute(query, new { TinhTrangAn = "Ẩn", id });
+        
+            return result > 0; 
+        }
+
+        return false;
+    }
+
+
+
     
     public ICollection<VatDung> GetBook()
     {
