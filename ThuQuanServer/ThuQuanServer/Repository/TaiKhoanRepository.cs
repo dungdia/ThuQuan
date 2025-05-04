@@ -77,11 +77,18 @@ public class TaiKhoanRepository : ITaiKhoanRepository
         return thanhVien;
     }
     
-    public ThanhVien GetThanhVienById(int id)
+    public ThanhVien? GetThanhVienById(int id)
     {
         string query = "SELECT * FROM ThanhVien WHERE Id_taikhoan = ?";
         var thanhVien = _dbContext.GetData<ThanhVien>(query, id).FirstOrDefault();
         return thanhVien;
+    }
+
+    public ThanhVien? GetThanhVienByIdThanhVien(int id)
+    {
+        string query = @"SELECT * FROM Thanhvien WHERE Id = ?";
+        var thanhvien = _dbContext.GetData<ThanhVien>(query, id).FirstOrDefault();
+        return thanhvien;
     }
     
     public NhanVien GetNhanVienById(int id)

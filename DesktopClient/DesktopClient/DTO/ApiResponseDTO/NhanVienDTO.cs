@@ -15,8 +15,11 @@ namespace DesktopClient.DTO.ApiResponseDTO
         public string diachi { get; set; }
         public int id_taikhoan { get; set; }
         public string? tinhtrang { get; set; }
+<<<<<<< HEAD
         public string username { get; set; }
         public string email { get; set; }
         public DateTime ngaythamgia { get; set; }
+=======
+>>>>>>> 431206f7c963665bc3ee18ed571523b311eb3c40
     }
 }
