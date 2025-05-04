@@ -96,7 +96,7 @@ public static class PhieuDatEndpoint
             }
             
             return Results.Ok("Huỷ thành công");
-        });
+        }).WithTags(tagName);
         
         // Lấy phiếu đặt từ id thành viên
         app.MapGet("/GetPhieuDatByToken", (HttpContext context) =>

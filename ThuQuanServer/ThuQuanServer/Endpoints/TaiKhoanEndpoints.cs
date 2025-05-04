@@ -87,6 +87,12 @@ public static class TaiKhoanEndpoints
             var nhanVien = nhanVienRepository.GetNhanVien();
             return Results.Ok(nhanVien);
         }).WithTags(groupName);
+        
+        app.MapGet("/GetThanhVienNotLock", () =>
+        {
+            var thanhVien = taiKhoanRepository.GetThanhVien().Where(p => p.TinhTrang != "Đã bị khoá");
+            return Results.Ok(thanhVien);
+        }).WithTags(groupName);
 
             // POST API đăng kí tài khoản thành viên
             app.MapPost("/userRegister", (

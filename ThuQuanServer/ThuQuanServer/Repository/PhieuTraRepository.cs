@@ -1,4 +1,5 @@
 using ThuQuanServer.ApplicationContext;
+using ThuQuanServer.Dtos.InsertObject;
 using ThuQuanServer.Dtos.Request;
 using ThuQuanServer.Interfaces;
 using ThuQuanServer.Models;
@@ -58,23 +59,24 @@ public class PhieuTraRepository : IPhieuTraRepository
         return chiTietPhieuDat;
     }
 
-    public bool AddPhieuTra(PhieuTra phieuTra, int[] vatDungId)
+    public bool AddPhieuTra(PhieuTraInsertDTO phieuTra, ChiTietPhieuTra[] listVd)
     {
         _dbContext.Add<PhieuTra>(phieuTra);
         var addPhieuTraResult = _dbContext.SaveChange();
         if (!addPhieuTraResult) return false;
         var phieuTraId = _dbContext.GetLastInsertId();
         var chiTietPhieuTraList = new List<ChiTietPhieuTra>();
-        foreach (var item in vatDungId)
+        foreach (var item in listVd)
         {
             var chiTietPhieuTra = new ChiTietPhieuTra()
             {
                 Id_PhieuTra = phieuTraId,
-                Id_VatDung = item
+                Id_VatDung = item.Id_VatDung,
+                TinhTrang = item.TinhTrang
             };
             chiTietPhieuTraList.Add(chiTietPhieuTra);
         }
-
+        
         _dbContext.AddList(chiTietPhieuTraList);
         return _dbContext.SaveChange();
     }

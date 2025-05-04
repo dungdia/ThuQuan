@@ -28,15 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             label1 = new Label();
-            vatDungDataTable = new DataGridView();
+            VatDungTable = new DataGridView();
             cancelBtn = new Button();
             selectBtn = new Button();
             searchInput = new TextBox();
             searchBtn = new Button();
-            ((System.ComponentModel.ISupportInitialize)vatDungDataTable).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)VatDungTable).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -51,40 +51,40 @@
             label1.Text = "Chọn Vật Dụng";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // vatDungDataTable
+            // VatDungTable
             // 
-            vatDungDataTable.AllowUserToResizeColumns = false;
-            vatDungDataTable.AllowUserToResizeRows = false;
-            vatDungDataTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            vatDungDataTable.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            vatDungDataTable.BackgroundColor = SystemColors.ButtonHighlight;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            vatDungDataTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            vatDungDataTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = SystemColors.Window;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
-            vatDungDataTable.DefaultCellStyle = dataGridViewCellStyle4;
-            vatDungDataTable.Dock = DockStyle.Bottom;
-            vatDungDataTable.Location = new Point(0, 151);
-            vatDungDataTable.MultiSelect = false;
-            vatDungDataTable.Name = "vatDungDataTable";
-            vatDungDataTable.ReadOnly = true;
-            vatDungDataTable.RowHeadersVisible = false;
-            vatDungDataTable.RowHeadersWidth = 51;
-            vatDungDataTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            vatDungDataTable.Size = new Size(766, 489);
-            vatDungDataTable.TabIndex = 20;
+            VatDungTable.AllowUserToResizeColumns = false;
+            VatDungTable.AllowUserToResizeRows = false;
+            VatDungTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            VatDungTable.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            VatDungTable.BackgroundColor = SystemColors.ButtonHighlight;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            VatDungTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            VatDungTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            VatDungTable.DefaultCellStyle = dataGridViewCellStyle2;
+            VatDungTable.Dock = DockStyle.Bottom;
+            VatDungTable.Location = new Point(0, 151);
+            VatDungTable.MultiSelect = false;
+            VatDungTable.Name = "VatDungTable";
+            VatDungTable.ReadOnly = true;
+            VatDungTable.RowHeadersVisible = false;
+            VatDungTable.RowHeadersWidth = 51;
+            VatDungTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            VatDungTable.Size = new Size(766, 489);
+            VatDungTable.TabIndex = 20;
             // 
             // cancelBtn
             // 
@@ -113,6 +113,7 @@
             searchInput.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             searchInput.Location = new Point(12, 81);
             searchInput.Name = "searchInput";
+            searchInput.PlaceholderText = "Tên người dùng...";
             searchInput.Size = new Size(252, 43);
             searchInput.TabIndex = 23;
             // 
@@ -136,13 +137,14 @@
             Controls.Add(searchInput);
             Controls.Add(selectBtn);
             Controls.Add(cancelBtn);
-            Controls.Add(vatDungDataTable);
+            Controls.Add(VatDungTable);
             Controls.Add(label1);
-            FormBorderStyle = FormBorderStyle.None;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "SelectItemDialog";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "SelectItemDialog";
-            ((System.ComponentModel.ISupportInitialize)vatDungDataTable).EndInit();
+            ((System.ComponentModel.ISupportInitialize)VatDungTable).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -150,7 +152,7 @@
         #endregion
 
         private Label label1;
-        private DataGridView vatDungDataTable;
+        private DataGridView VatDungTable;
         private Button cancelBtn;
         private Button selectBtn;
         private TextBox searchInput;

@@ -114,9 +114,9 @@ namespace DesktopClient.UI
 
                 string cellValue = ThanhVienTable.Rows[e.RowIndex].Cells["tinhtrang"].Value?.ToString();
 
-                string normalizedCellValue = RemoveAccentsSimple(cellValue);
+                //string normalizedCellValue = RemoveAccentsSimple(cellValue);
 
-                if (normalizedCellValue == "Đa bi khoa")
+                if (cellValue == "Đã bị khoá")
                 {
                     contextMenuStrip1.Items[2].Text = "Mở khóa";
                 }

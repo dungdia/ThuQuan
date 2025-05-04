@@ -1,8 +1,7 @@
-﻿namespace ThuQuanServer.Models;
+﻿namespace ThuQuanServer.Dtos.InsertObject;
 
-public class PhieuPhat
+public class PhieuPhatInsertDTO
 {
-    public int Id { get; set; }
     public int Id_ThanhVien { get; set; }
     public string MucPhat { get; set; }
     public string LyDo { get; set; }

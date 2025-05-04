@@ -1,3 +1,4 @@
+using ThuQuanServer.Dtos.InsertObject;
 using ThuQuanServer.Models;
 
 namespace ThuQuanServer.Interfaces;
@@ -11,7 +12,7 @@ public interface IPhieuTraRepository
     
     public ICollection<ChiTietPhieuTra> GetChiTietPhieuTraByIdPhieuTra(int idPhieuTra);
     public ICollection<ChiTietPhieuTra> GetChiTietPhieuTraByProps(object? values);
-    public bool AddPhieuTra(PhieuTra phieuTra, int[] idVatDung);
+    public bool AddPhieuTra(PhieuTraInsertDTO phieuTra, ChiTietPhieuTra[] listVd);
     public bool AddChiTietPhieuTra(ChiTietPhieuTra chiTietPhieuTra);
     public bool UpdatePhieuTra();
 } 
