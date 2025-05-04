@@ -31,7 +31,7 @@
     <Compile Update="UI\Dialog\RegisterMemberDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="UI\Dialog\UpdateMemberDialog.cs">
+    <Compile Update="UI\Dialog\MemberDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="UI\Panels\BookingPanel.cs">
