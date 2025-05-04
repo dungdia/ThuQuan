@@ -17,11 +17,8 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
-<<<<<<< HEAD
 using MySqlX.XDevAPI.Common;
-=======
 using Mysqlx.Datatypes;
->>>>>>> 431206f7c963665bc3ee18ed571523b311eb3c40
 using ThuQuanServer.Dtos.InsertObject;
 using ThuQuanServer.Dtos.Response;
 
