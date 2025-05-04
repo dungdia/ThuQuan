@@ -11,11 +11,13 @@ using ThuQuanServer.Interfaces;
 using ThuQuanServer.Models;
 using ThuQuanServer.Services;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
+using Mysqlx.Datatypes;
 using ThuQuanServer.Dtos.InsertObject;
 using ThuQuanServer.Dtos.Response;
 
@@ -84,12 +86,6 @@ public static class TaiKhoanEndpoints
         {
             var nhanVien = nhanVienRepository.GetNhanVien();
             return Results.Ok(nhanVien);
-        }).WithTags(groupName);
-
-        app.MapGet("/GetThanhVienNotLock", () =>
-        {
-            var thanhVien = taiKhoanRepository.GetThanhVien().Where(p => p.TinhTrang != "Đã bị khoá");
-            return Results.Ok(thanhVien);
         }).WithTags(groupName);
 
             // POST API đăng kí tài khoản thành viên
