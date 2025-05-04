@@ -7,7 +7,7 @@ public class ThanhVienRequestDto
 {
     [DefaultValue("")]
     [Required(ErrorMessage = "Vui long nhap ho ten")]
-    [Length(10, 100, ErrorMessage = "Ho ten phai tu 10 ky tu den 100 ky tu")]
+    [Length(3, 100, ErrorMessage = "Ho ten phai tu 10 ky tu den 100 ky tu")]
     public string HoTen { get; set; }
     
     [DefaultValue("")]

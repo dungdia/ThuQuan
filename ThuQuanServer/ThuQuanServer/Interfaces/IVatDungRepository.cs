@@ -16,6 +16,9 @@ public interface IVatDungRepository
     public bool updateTinhTrangBiHong(int id);
     public bool updateTinhTrangDaMuon(int id);
     public ICollection<VatDung> GetVaTDungBooked();
+    
+    public bool UpdateTinhTrangAn(int id);
+    
     public ICollection<VatDung> GetBook();
 
     public PageResultVatDungBooks<VatDung> GetVatDungBooks(string search, int page, int pageSize);

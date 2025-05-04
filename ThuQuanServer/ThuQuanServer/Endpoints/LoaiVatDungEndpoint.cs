@@ -75,7 +75,7 @@ public static class LoaiVatDungEndpoint
             {
                 if (!loaiVatDungRepository.UpdateLoaiVatDung(loaiVatDung, id))
                 {
-                    return Results.BadRequest("Update loai vat dung failed!!!");
+                    return Results.BadRequest("Update loai vat dung failed!");
                 }
 
                 return Results.Ok(new ApiResponse
