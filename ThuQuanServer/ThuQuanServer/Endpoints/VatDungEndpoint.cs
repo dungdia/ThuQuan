@@ -66,6 +66,21 @@ public static class VatDungEndpoint
             var books = vatDungRepository.GetBook();
             return Results.Ok(books);
         }).WithTags(tagName);
+        
+        // Cập nhật trạng thái vật dụng thành "Ẩn"
+        app.MapPut("/VatDung/An/{id:int}", ([FromRoute] int id) =>
+        {
+            var result = vatDungRepository.UpdateTinhTrangAn(id);
+            if (result)
+            {
+                return Results.Ok("Cập nhật thành công");
+            }
+            else
+            {
+                return Results.BadRequest("Cập nhật thất bại");
+            }
+        }).WithTags(tagName);
+
 
         // Lấy danh sách sách có phân trang và tìm kiếm
         app.MapGet("/VatDung/books-paging", (
