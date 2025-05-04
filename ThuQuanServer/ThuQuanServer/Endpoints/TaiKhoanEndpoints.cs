@@ -16,6 +16,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
+using MySqlX.XDevAPI.Common;
 using ThuQuanServer.Dtos.InsertObject;
 using ThuQuanServer.Dtos.Response;
 
@@ -29,6 +30,7 @@ public static class TaiKhoanEndpoints
         var taiKhoanRepository = app.ServiceProvider.GetRequiredService<ITaiKhoanRepository>();
         var passwordHashService = app.ServiceProvider.GetRequiredService<IPasswordHashService>();
         var nhanVienRepository = app.ServiceProvider.GetRequiredService<INhanVienRepository>();
+        var _dbcontext = app.ServiceProvider.GetRequiredService<DbContext>();
         
         var groupName = "Thanh Vien";
         
@@ -80,94 +82,90 @@ public static class TaiKhoanEndpoints
             return Results.Ok(thanhvien);
         }).WithTags(groupName);
         
-        app.MapGet("/GetNhanVien", () =>
+        
+
+        // POST API đăng kí tài khoản thành viên
+        app.MapPost("/userRegister", (
+            [FromBody] TaiKhoanRequestDto taikhoanRequest) =>
         {
-            var nhanVien = nhanVienRepository.GetNhanVien();
-            return Results.Ok(nhanVien);
+            // Regular expressions for validation
+            string usernamePattern = @"^.{3,100}$";
+            string emailPattern = @"^[^\s@]+@[^\s@]+\.[^\s@]+$";
+            string passwordPattern = @"^.{6,100}$";
+
+            
+            // Không được để trống các trường
+            if (string.IsNullOrEmpty(taikhoanRequest.UserName) ||
+                string.IsNullOrEmpty(taikhoanRequest.Email) ||
+                string.IsNullOrEmpty(taikhoanRequest.Password))
+            {
+                return Results.BadRequest("Điền thông tin đầy đủ");
+            }
+            
+            // Validate UserName
+            if (!Regex.IsMatch(taikhoanRequest.UserName, usernamePattern))
+            {
+                return Results.BadRequest("Tên đăng nhập phải từ 3 đến 100 ký tự");
+            }
+
+            // Validate Email
+            if (!Regex.IsMatch(taikhoanRequest.Email, emailPattern))
+            {
+                return Results.BadRequest("Email không đúng định dạng");
+            }
+
+            // Validate Password
+            if (!Regex.IsMatch(taikhoanRequest.Password, passwordPattern))
+            {
+                return Results.BadRequest("Mật khẩu phải từ 6 đến 100 ký tự");
+            }
+
+            // Kiểm tra người dùng đã tồn tại hay chưa
+            var existedUserName = taiKhoanRepository.GetAccount()
+                .Where(p => p.UserName == taikhoanRequest.UserName);
+            
+            if (existedUserName.Any())
+            {
+                return Results.BadRequest("Tên tài khoản đã tồn tại");
+            }
+            
+            // Check existed email
+            var existedEmail = taiKhoanRepository.GetAccount()
+                .Where(p => p.Email == taikhoanRequest.Email);
+            
+            if (existedEmail.Any())
+            {
+                return Results.BadRequest("Email đã tồn tại");
+            }
+
+            TaikhoanInsertDTO taikhoanInsertDto = new TaikhoanInsertDTO();
+            
+            taikhoanInsertDto.UserName = taikhoanRequest.UserName;
+            taikhoanInsertDto.Email = taikhoanRequest.Email;
+            taikhoanInsertDto.VaiTro = taikhoanRequest.VaiTro;
+            
+            // Hash password
+            taikhoanInsertDto.Password = passwordHashService.HashPassword(taikhoanRequest.Password);
+            
+            // Time
+            taikhoanInsertDto.NgayThamGia = DateTime.Now;
+            
+            if (!taiKhoanRepository.AddThanhVien(taikhoanInsertDto))
+            {
+                return Results.BadRequest("Đăng kí thất bại. Vui lòng thử lại");
+            }
+            
+            return Results.Ok(new ApiResponse
+            {
+                Success = true,
+                Message = "Đăng kí thành công",
+                Data = taikhoanRequest
+            });
+        }).WithMetadata(typeof(TaiKhoanRequestDto)).WithOpenApi(o =>
+        {
+            o.Security = new List<OpenApiSecurityRequirement>();
+            return o;
         }).WithTags(groupName);
-
-            // POST API đăng kí tài khoản thành viên
-            app.MapPost("/userRegister", (
-                [FromBody] TaiKhoanRequestDto taikhoanRequest) =>
-            {
-                // Regular expressions for validation
-                string usernamePattern = @"^.{3,100}$";
-                string emailPattern = @"^[^\s@]+@[^\s@]+\.[^\s@]+$";
-                string passwordPattern = @"^.{6,100}$";
-
-                
-                // Không được để trống các trường
-                if (string.IsNullOrEmpty(taikhoanRequest.UserName) ||
-                    string.IsNullOrEmpty(taikhoanRequest.Email) ||
-                    string.IsNullOrEmpty(taikhoanRequest.Password))
-                {
-                    return Results.BadRequest("Điền thông tin đầy đủ");
-                }
-                
-                // Validate UserName
-                if (!Regex.IsMatch(taikhoanRequest.UserName, usernamePattern))
-                {
-                    return Results.BadRequest("Tên đăng nhập phải từ 3 đến 100 ký tự");
-                }
-
-                // Validate Email
-                if (!Regex.IsMatch(taikhoanRequest.Email, emailPattern))
-                {
-                    return Results.BadRequest("Email không đúng định dạng");
-                }
-
-                // Validate Password
-                if (!Regex.IsMatch(taikhoanRequest.Password, passwordPattern))
-                {
-                    return Results.BadRequest("Mật khẩu phải từ 6 đến 100 ký tự");
-                }
-
-                // Kiểm tra người dùng đã tồn tại hay chưa
-                var existedUserName = taiKhoanRepository.GetAccount()
-                    .Where(p => p.UserName == taikhoanRequest.UserName);
-                
-                if (existedUserName.Any())
-                {
-                    return Results.BadRequest("Tên tài khoản đã tồn tại");
-                }
-                
-                // Check existed email
-                var existedEmail = taiKhoanRepository.GetAccount()
-                    .Where(p => p.Email == taikhoanRequest.Email);
-                
-                if (existedEmail.Any())
-                {
-                    return Results.BadRequest("Email đã tồn tại");
-                }
-
-                TaikhoanInsertDTO taikhoanInsertDto = new TaikhoanInsertDTO();
-                
-                taikhoanInsertDto.UserName = taikhoanRequest.UserName;
-                taikhoanInsertDto.Email = taikhoanRequest.Email;
-                taikhoanInsertDto.VaiTro = taikhoanRequest.VaiTro;
-                
-                // Hash password
-                taikhoanInsertDto.Password = passwordHashService.HashPassword(taikhoanRequest.Password);
-                
-                // Time
-                taikhoanInsertDto.NgayThamGia = DateTime.Now;
-                
-                if (!taiKhoanRepository.AddThanhVien(taikhoanInsertDto))
-                {
-                    return Results.BadRequest("Đăng kí thất bại. Vui lòng thử lại");
-                }
-                
-                return Results.Ok(new ApiResponse
-                {
-                    Success = true,
-                    Message = "Đăng kí thành công",
-                    Data = taikhoanRequest
-                });
-            }).WithMetadata(typeof(TaiKhoanRequestDto)).WithOpenApi(o =>
-            {
-                o.Security = new List<OpenApiSecurityRequirement>();
-                return o;
-            }).WithTags(groupName);
         
         // PUT API
         app.MapPut("/UpdateThanhVien", (
@@ -186,6 +184,151 @@ public static class TaiKhoanEndpoints
                 Data = thanhVienRequest
             });
         }).WithMetadata(typeof(ThanhVienRequestDto)).WithOpenApi(o =>
+        {
+            o.Security = new List<OpenApiSecurityRequirement>();
+            return o;
+        }).WithTags(groupName);
+        
+        app.MapGet("/GetNhanVienAndTheirAccount", ([FromQuery] string type) =>
+        {
+            string[] typeList = ["Tất cả", "Đang làm việc", "Đã nghỉ"];
+            if (!typeList.Contains(type))
+            {
+                return Results.NotFound("Không tìm thấy nhân viên có tình trạng trên");
+            }
+
+            string query = @"SELECT nhanvien.id, hoten, sodienthoai, gioitinh, diachi, nhanvien.id_taikhoan, nhanvien.tinhtrang, username, email, ngaythamgia
+                            FROM nhanvien
+                            JOIN taikhoan ON nhanvien.id_taikhoan = taikhoan.id
+                            WHERE";
+            IEnumerable<Dictionary<string, object>> result;
+            if (type == "Tất cả")
+            {
+                query += " 1=1 ";
+                result = _dbcontext.ExcuteQuerry(query);
+            }
+            else
+            {
+                query += " nhanvien.tinhtrang = ?";
+                result = _dbcontext.ExcuteQuerry(query, type);
+            }
+            
+            return Results.Ok(result);
+        }).WithTags(groupName);
+
+        app.MapPost("/UpdateNhanVienById", ([FromQuery] int idNhanVien, [FromBody] UpdateNhanVienRequestDto request) =>
+        {
+            var query = "SELECT nhanvien.id_taikhoan FROM nhanvien, taikhoan WHERE nhanvien.id_taikhoan = taikhoan.id AND nhanvien.id = ?";
+            var idTaiKhoan = _dbcontext.ExcuteQuerry(query, idNhanVien);
+            Console.WriteLine(idTaiKhoan);
+            
+            var currentEmailQuery = "SELECT taikhoan.email FROM nhanvien JOIN taikhoan ON nhanvien.id_taikhoan = taikhoan.id WHERE nhanvien.id = ?";
+            var currentEmailResult = _dbcontext.ExcuteQuerry(currentEmailQuery, idNhanVien);
+            string currentEmail = currentEmailResult.FirstOrDefault()?["email"]?.ToString();
+
+            if (!string.Equals(currentEmail, request.email, StringComparison.OrdinalIgnoreCase))
+            {
+                var existedEmail = _dbcontext.ExcuteQuerry("SELECT * FROM taikhoan WHERE email = ? AND id != ?", request.email, idTaiKhoan);
+                if (existedEmail.Any())
+                {
+                    return Results.BadRequest("Email đã tồn tại!");
+                }
+            }
+            var updateQuery = 
+                "UPDATE nhanvien JOIN taikhoan ON nhanvien.id_taikhoan = taikhoan.id SET nhanvien.hoten = ?, nhanvien.sodienthoai = ?, nhanvien.gioitinh = ?, nhanvien.diachi = ?, taikhoan.email = ? WHERE nhanvien.id = ?";
+            var result = _dbcontext.ExecuteNonQuery(updateQuery, request.hoten, request.sodienthoai, request.gioitinh, request.diachi, request.email, idNhanVien);
+            Console.WriteLine(result);
+            if (result != 0)
+            {
+                return Results.Ok("Cập nhật thông tin nhân viên thành công!");
+            }
+            else
+            {
+                return Results.BadRequest("Cập nhật thông tin nhân viên không thành công!");
+            }
+        }).WithMetadata(typeof(UpdateNhanVienRequestDto)).WithOpenApi(o =>
+        {
+            o.Security = new List<OpenApiSecurityRequirement>();
+            return o;
+        }).WithTags(groupName);
+        
+        app.MapPost("/LockAccountNhanVien",
+            ([FromQuery] int idNhanVien) =>
+            {
+                var query = "UPDATE nhanvien JOIN taikhoan ON nhanvien.id_taikhoan = taikhoan.id SET nhanvien.tinhtrang = 2, taikhoan.tinhtrang = 2 WHERE nhanvien.id = ?";
+                var result = _dbcontext.ExecuteNonQuery(query, idNhanVien);
+                Console.WriteLine(result);
+                if (result != 0)
+                {
+                    return Results.Ok("Cập nhật tình trạng nhân viên thành công!");
+                }
+                else
+                {
+                    return Results.BadRequest("Cập nhật tình trạng nhân viên thất bại!");
+                }
+            }).WithTags(groupName);
+        
+        app.MapPost("/UnlockAccountNhanVien",
+            ([FromQuery] int idNhanVien) =>
+            {
+                var query = "UPDATE nhanvien JOIN taikhoan ON nhanvien.id_taikhoan = taikhoan.id SET nhanvien.tinhtrang = 1, taikhoan.tinhtrang = 1 WHERE nhanvien.id = ?";
+                var result = _dbcontext.ExecuteNonQuery(query, idNhanVien);
+                Console.WriteLine(result);
+                if (result != 0)
+                {
+                    return Results.Ok("Cập nhật tình trạng nhân viên thành công!");
+                }
+                else
+                {
+                    return Results.BadRequest("Cập nhật tình trạng nhân viên thất bại!");
+                }
+            }).WithTags(groupName);
+        
+        app.MapPost("/InsertNhanVienAndTheirAccount",
+            ([FromBody] AddNhanVienAndAccountRequestDto request) =>
+            {
+                var existedEmail = _dbcontext.ExcuteQuerry("SELECT * FROM taikhoan WHERE email = ?", request.email);
+                if (existedEmail.Any())
+                {
+                    return Results.BadRequest("Email đã tồn tại!");
+                }
+
+                var existedPhoneNumber = _dbcontext.ExcuteQuerry("SELECT * FROM nhanvien WHERE sodienthoai = ?", request.sodienthoai);
+                if (existedPhoneNumber.Any())
+                {
+                    return Results.BadRequest("Số điện thoại đã được sử dụng!");
+                }
+                
+                var existedUsername = _dbcontext.ExcuteQuerry("SELECT * FROM taikhoan WHERE username = ?", request.username);
+                if (existedUsername.Any())
+                {
+                    return Results.BadRequest("Username đã tồn tại!");
+                }
+
+                request.password = "123456";
+                request.password = passwordHashService.HashPassword(request.password);
+                Console.WriteLine(request.ngaythamgia);
+                var addAccountQuery = "INSERT INTO taikhoan (username, password, email, ngaythamgia, vaitro) VALUES (?, ?, ?, ?, 1)";
+                _dbcontext.ExecuteNonQuery(addAccountQuery, request.username, request.password, request.email, request.ngaythamgia);
+                var lastInsertAccountId = _dbcontext.GetLastInsertId();
+                var addNhanVienQuery = "INSERT INTO nhanvien (hoten, sodienthoai, gioitinh, diachi, tinhtrang, id_taikhoan) VALUES (?, ?, ?, ?, ?, ?)";
+                var result = _dbcontext.ExecuteNonQuery(
+                    addNhanVienQuery,
+                    request.hoten,
+                    request.sodienthoai,
+                    request.gioitinh,
+                    request.diachi,
+                    request.tinhtrang,
+                    lastInsertAccountId);
+                if (result != 0)
+                {
+                    return Results.Ok("Tạo nhân viên mới thành công!");
+                }
+                else
+                {
+                    return Results.BadRequest("Tạo nhân viên thất bại!");
+                }
+            }).WithMetadata(typeof(AddNhanVienAndAccountRequestDto)).WithOpenApi(o =>
         {
             o.Security = new List<OpenApiSecurityRequirement>();
             return o;

@@ -31,6 +31,7 @@ namespace DesktopClient.UI.Dialog
             if (type == "Xem")
             {
                 processBtn.Visible = false;
+                ChiTietPhieuDatDataTable.ReadOnly = true;
             }
 
 
