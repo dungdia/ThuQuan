@@ -60,18 +60,30 @@ namespace DesktopClient.UI.Dialog
             {
                 try
                 {
+                    var successfullyDeleted = new List<VatDung>();
                     foreach (var vatDung in _vatDungs)
                     {
                         var vatDungDelete = new { Id = vatDung.id };
                         var response = await APIContext.PutMethodAsync("VatDung/An/" + vatDung.id, vatDungDelete);
 
-                        if (!response.IsSuccessful)
+                        if (response.IsSuccessful)
+                        {
+                            successfullyDeleted.Add(vatDung);
+                        }
+                        else
                         {
                             MessageBox.Show($"Xóa vật dụng ID {vatDung.id} thất bại. " + APIContext.getErrorMessage(response),
                                 "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
                         }
                     }
+
+                    // Các vật dụng đã xóa thì sẽ xóa khỏi deleteGridView
+                    foreach (var deleteItem in successfullyDeleted)
+                    {
+                        _vatDungs.Remove(deleteItem);
+                    }
+                    VatDungGridView.DataSource = null;
+                    VatDungGridView.DataSource = _vatDungs;
 
                     MessageBox.Show("Tất cả vật dụng đã được xóa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     OnItemsDeleted?.Invoke(); // Gọi sự kiện khi xóa thành công
