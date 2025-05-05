@@ -78,47 +78,44 @@
             // 
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { xemToolStripMenuItem, sửaToolStripMenuItem, xóaToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(123, 70);
+            contextMenuStrip1.Size = new Size(181, 92);
             // 
             // xemToolStripMenuItem
             // 
             xemToolStripMenuItem.Name = "xemToolStripMenuItem";
-            xemToolStripMenuItem.Size = new Size(122, 22);
+            xemToolStripMenuItem.Size = new Size(180, 22);
             xemToolStripMenuItem.Text = "Xem";
             xemToolStripMenuItem.Click += XemEvent;
             // 
             // sửaToolStripMenuItem
             // 
             sửaToolStripMenuItem.Name = "sửaToolStripMenuItem";
-            sửaToolStripMenuItem.Size = new Size(122, 22);
+            sửaToolStripMenuItem.Size = new Size(180, 22);
             sửaToolStripMenuItem.Text = "Cập nhật";
             sửaToolStripMenuItem.Click += EditEvent;
             // 
             // xóaToolStripMenuItem
             // 
             xóaToolStripMenuItem.Name = "xóaToolStripMenuItem";
-            xóaToolStripMenuItem.Size = new Size(122, 22);
+            xóaToolStripMenuItem.Size = new Size(180, 22);
             xóaToolStripMenuItem.Text = "Khóa";
             xóaToolStripMenuItem.Click += LockEvent;
             // 
             // addBtn
             // 
-            addBtn.BackColor = Color.FromArgb(16, 185, 129);
-            addBtn.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
-            addBtn.Location = new Point(946, 81);
-            addBtn.Margin = new Padding(20);
+            addBtn.Location = new Point(1002, 96);
             addBtn.Name = "addBtn";
-            addBtn.Size = new Size(148, 36);
+            addBtn.Size = new Size(75, 23);
             addBtn.TabIndex = 2;
-            addBtn.Text = "Thêm Thành Viên";
-            addBtn.UseVisualStyleBackColor = false;
+            addBtn.Text = "thêm";
+            addBtn.UseVisualStyleBackColor = true;
             addBtn.Click += RegisterEvent;
             // 
             // timkiem_Input
             // 
             timkiem_Input.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            timkiem_Input.Location = new Point(20, 85);
-            timkiem_Input.Margin = new Padding(20);
+            timkiem_Input.Location = new Point(3, 89);
+            timkiem_Input.Margin = new Padding(3, 2, 3, 2);
             timkiem_Input.Name = "timkiem_Input";
             timkiem_Input.PlaceholderText = "Nhập tên người dùng...";
             timkiem_Input.Size = new Size(257, 32);
@@ -127,8 +124,8 @@
             // timkiem_Btn
             // 
             timkiem_Btn.Cursor = Cursors.Hand;
-            timkiem_Btn.Location = new Point(300, 87);
-            timkiem_Btn.Margin = new Padding(20, 20, 5, 20);
+            timkiem_Btn.Location = new Point(266, 89);
+            timkiem_Btn.Margin = new Padding(3, 2, 3, 2);
             timkiem_Btn.Name = "timkiem_Btn";
             timkiem_Btn.Size = new Size(89, 28);
             timkiem_Btn.TabIndex = 4;

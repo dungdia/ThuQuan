@@ -103,9 +103,6 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference(); 
 }
 
-// Load static files in wwwroot
-app.UseStaticFiles();
-
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
