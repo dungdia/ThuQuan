@@ -12,6 +12,8 @@ using DesktopClient.Models;
 using DesktopClient.Contains;
 using System.Net.Http.Headers;
 using DesktopClient.UI.Dialog;
+using System.Net.WebSockets;
+using OfficeOpenXml;
 
 namespace DesktopClient.UI
 {
@@ -109,6 +111,104 @@ namespace DesktopClient.UI
             addDialog.ShowDialog();
         }
 
+        // Nút thêm vật dụng bằng excel
+        private void excel_btn_Click(object sender, EventArgs e)
+        {
+            // Tạo một luồng riêng để xử lý việc chọn và xử lý file Excel
+            Thread staThread = new Thread(() =>
+            {
+                // Sử dụng OpenFileDialog để cho phép người dùng chọn file Excel
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                {
+                    openFileDialog.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm";  // Lọc các file Excel
+                    openFileDialog.Title = "Chọn file Excel";  // Tiêu đề của hộp thoại
+
+                    // Kiểm tra xem người dùng đã chọn file hay chưa
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        var filePath = openFileDialog.FileName;  // Lấy đường dẫn file đã chọn
+
+                        try
+                        {
+                            // Cài đặt license cho EPPlus (thư viện xử lý Excel)
+                            ExcelPackage.License.SetNonCommercialPersonal("Thêm vật dụng");
+
+                            // Mở file Excel với đường dẫn đã chọn
+                            using (var package = new ExcelPackage(new FileInfo(filePath)))
+                            {
+                                var worksheet = package.Workbook.Worksheets[0];  // Lấy worksheet đầu tiên từ file Excel
+                                if (worksheet == null)
+                                {
+                                    throw new Exception("Không tìm thấy worksheet nào trong file Excel.");  // Nếu không có worksheet, báo lỗi
+                                }
+
+                                int rowCount = worksheet.Dimension?.Rows ?? 0;  // Lấy số lượng dòng dữ liệu trong worksheet
+                                if (rowCount < 2)
+                                {
+                                    throw new Exception("File Excel không có dữ liệu hoặc không đúng định dạng.");  // Nếu không có đủ dữ liệu, báo lỗi
+                                }
+
+                                // Lặp qua các dòng dữ liệu bắt đầu từ dòng thứ 2 (dòng đầu tiên là tiêu đề)
+                                for (int row = 2; row <= rowCount; row++)
+                                {
+                                    // Lấy dữ liệu từ các cột trong dòng hiện tại (tên, hình ảnh, mô tả, loại vật dụng)
+                                    string ten = worksheet.Cells[row, 1].Text.Trim();
+                                    string hinh = worksheet.Cells[row, 2].Text.Trim();
+                                    string moTa = worksheet.Cells[row, 3].Text.Trim();
+                                    string loai = worksheet.Cells[row, 4].Text.Trim().ToLower();
+
+                                    // Kiểm tra nếu tên hoặc loại vật dụng bị thiếu
+                                    if (string.IsNullOrEmpty(ten) || string.IsNullOrEmpty(loai))
+                                    {
+                                        throw new Exception($"Dữ liệu không hợp lệ tại dòng {row}. Vui lòng kiểm tra lại.");
+                                    }
+
+                                    // Xác định id_loai dựa trên loại vật dụng (ví dụ: nếu là sách, id_loai = 1, ngược lại = 2)
+                                    int id_loai = loai.Contains("sách") ? 1 : 2;
+
+                                    // Tạo đối tượng dữ liệu để gửi lên API
+                                    var data = new
+                                    {
+                                        tenVatDung = ten,
+                                        hinhAnh = hinh,
+                                        moTa = moTa,
+                                        id_LoaiVatDung = id_loai
+                                    };
+
+                                    // Gửi dữ liệu lên API thông qua phương thức Post
+                                    var response = APIContext.PostMethod("VatDung", data);
+
+                                    // Kiểm tra kết quả trả về từ API, nếu không thành công thì ném lỗi
+                                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                                    {
+                                        throw new Exception($"Lỗi ở dòng {row}: {APIContext.getErrorMessage(response)}");
+                                    }
+                                }
+
+                                // Hiển thị thông báo thành công nếu tất cả dữ liệu được xử lý thành công
+                                MessageBox.Show("Thêm vật dụng từ Excel thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+
+                                // Gọi lại phương thức ReloadData để làm mới dữ liệu trong giao diện
+                                this.Invoke((MethodInvoker)ReloadData);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            // Nếu có lỗi trong quá trình xử lý file Excel, hiển thị thông báo lỗi
+                            MessageBox.Show($"Lỗi khi đọc file Excel: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                        }
+                    }
+                }
+            });
+            // Đảm bảo luồng chạy dưới chế độ STA
+            staThread.SetApartmentState(ApartmentState.STA);
+
+            // Khởi động luồng
+            staThread.Start();
+        }
+
+
+
         // Hàm làm mới dữ liệu
         private void ReloadData()
         {
@@ -174,7 +274,6 @@ namespace DesktopClient.UI
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-
 
     }
 }

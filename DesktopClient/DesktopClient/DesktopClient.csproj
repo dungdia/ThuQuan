@@ -19,7 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="EPPlus" Version="8.0.3" />
     <PackageReference Include="RestSharp" Version="112.1.1-alpha.0.4" />
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>

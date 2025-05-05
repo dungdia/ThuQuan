@@ -56,8 +56,25 @@ public class VatDungRepository : IVatDungRepository
 
     public bool UpdateVatDung(VatDungRequestDto vatDungRequestDto, int id)
     {
-        _dbContext.Update<VatDung>(vatDungRequestDto, id);
-        return _dbContext.SaveChange();
+        // Truy vấn trạng thái hiện tại của vật dụng
+        string checkQuery= "SELECT TinhTrang FROM VatDung Where id = @id";
+        using var connection = _dbContext.GetOpenConnection();
+        
+        var currentStatus = connection.ExecuteScalar<string>(checkQuery, new { id });
+        
+        // Truy vấn trạng thái hiện tại của vật dụng
+        if (string.IsNullOrEmpty(currentStatus))
+        {
+            return false;
+        }
+
+        if (currentStatus == "Chưa mượn" || currentStatus == "Bị hỏng")
+        {
+            _dbContext.Update<VatDung>(vatDungRequestDto, id);
+            return _dbContext.SaveChange();
+        }
+
+        return false;
     }
 
     public bool updateListTinhTrangDaDat(int[] listId)
