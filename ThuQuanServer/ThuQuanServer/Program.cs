@@ -124,6 +124,7 @@ app.MapSecurityEndpoints();
 app.MapSendOTPEndpoints();
 app.MapLichSuEndpoints();
 app.MapThanhVienEndpoint();
+app.MapPhieuPhatEndpoint();
 
 app.Run();
 

@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             phieuMuonTable = new DataGridView();
             textBox1 = new TextBox();
             typeDropDown = new ComboBox();
             button1 = new Button();
             contextMenuStrip1 = new ContextMenuStrip(components);
             viewToolStripMenuItem = new ToolStripMenuItem();
-            createToolStripMenuItem = new ToolStripMenuItem();
+            addButton = new Button();
             ((System.ComponentModel.ISupportInitialize)phieuMuonTable).BeginInit();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
@@ -49,23 +49,23 @@
             phieuMuonTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             phieuMuonTable.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             phieuMuonTable.BackgroundColor = SystemColors.ButtonFace;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            phieuMuonTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            phieuMuonTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             phieuMuonTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = SystemColors.Window;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
-            phieuMuonTable.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            phieuMuonTable.DefaultCellStyle = dataGridViewCellStyle2;
             phieuMuonTable.Dock = DockStyle.Bottom;
             phieuMuonTable.Location = new Point(0, 129);
             phieuMuonTable.MultiSelect = false;
@@ -112,29 +112,37 @@
             // contextMenuStrip1
             // 
             contextMenuStrip1.ImageScalingSize = new Size(20, 20);
-            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { viewToolStripMenuItem, createToolStripMenuItem });
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { viewToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(150, 52);
+            contextMenuStrip1.Size = new Size(150, 28);
             // 
             // viewToolStripMenuItem
             // 
             viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            viewToolStripMenuItem.Size = new Size(210, 24);
+            viewToolStripMenuItem.Size = new Size(149, 24);
             viewToolStripMenuItem.Text = "Xem phiếu";
             viewToolStripMenuItem.Click += viewToolStripMenuItem_Click;
             // 
-            // createToolStripMenuItem
+            // addButton
             // 
-            createToolStripMenuItem.Name = "createToolStripMenuItem";
-            createToolStripMenuItem.Size = new Size(210, 24);
-            createToolStripMenuItem.Text = "Tạo Phiếu";
-            createToolStripMenuItem.Click += createToolStripMenuItem_Click;
+            addButton.BackColor = Color.FromArgb(16, 185, 129);
+            addButton.Cursor = Cursors.Hand;
+            addButton.FlatStyle = FlatStyle.Flat;
+            addButton.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            addButton.Location = new Point(1055, 36);
+            addButton.Name = "addButton";
+            addButton.Size = new Size(169, 48);
+            addButton.TabIndex = 11;
+            addButton.Text = "Tạo Phiếu Mượn";
+            addButton.UseVisualStyleBackColor = false;
+            addButton.Click += createToolStripMenuItem_Click;
             // 
             // BorrowPanel
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
+            Controls.Add(addButton);
             Controls.Add(typeDropDown);
             Controls.Add(button1);
             Controls.Add(textBox1);
@@ -156,6 +164,6 @@
         private Button button1;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem viewToolStripMenuItem;
-        private ToolStripMenuItem createToolStripMenuItem;
+        private Button addButton;
     }
 }
