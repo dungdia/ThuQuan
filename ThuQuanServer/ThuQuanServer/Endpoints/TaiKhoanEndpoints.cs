@@ -83,17 +83,32 @@ public static class TaiKhoanEndpoints
             var thanhvien = taiKhoanRepository.GetThanhVien();
             return Results.Ok(thanhvien);
         }).WithTags(groupName);
+      
+        app.MapGet("/GetNhanVien", () =>
+        {
+            var nhanVien = nhanVienRepository.GetNhanVien();
+            return Results.Ok(nhanVien);
+        }).WithTags(groupName);
         
-        
+         app.MapGet("/GetThanhVienNotLock", () =>
+        {
+            var thanhVien = taiKhoanRepository.GetThanhVien().Where(p => p.TinhTrang != "Đã bị khoá");
+            return Results.Ok(thanhVien);
+        }).WithTags(groupName);
 
         // POST API đăng kí tài khoản thành viên
         app.MapPost("/userRegister", (
             [FromBody] TaiKhoanRequestDto taikhoanRequest) =>
         {
+
+        
+
+
             // Regular expressions for validation
             string usernamePattern = @"^.{3,100}$";
             string emailPattern = @"^[^\s@]+@[^\s@]+\.[^\s@]+$";
             string passwordPattern = @"^.{6,100}$";
+
 
             
             // Không được để trống các trường

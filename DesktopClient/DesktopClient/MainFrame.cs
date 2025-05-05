@@ -30,7 +30,7 @@ namespace DesktopClient
             ("Phạt", Properties.Resources.home_svgrepo_com),
             ("Thành viên", Properties.Resources.cardholder_svgrepo_com),
             ("Nhân viên", Properties.Resources.user_svgrepo_com),
-            ("Tài khoản", Properties.Resources.lock_password_svgrepo_com)
+            //("Tài khoản", Properties.Resources.lock_password_svgrepo_com)
         };
 
         List<UserControl> panels = new List<UserControl> 
@@ -44,7 +44,7 @@ namespace DesktopClient
             new PenaltyPanel(),
             new MemberPanel(),
             new StaffPanel(),
-            new AccountPanel()
+            //new AccountPanel()
         };
 
         public MainFrame(AdminLoginDTO adminLoginDTO, LoginFrame loginFrame)

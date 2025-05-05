@@ -69,6 +69,12 @@ namespace DesktopClient.UI.Panels
 
         private void viewToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (phieuMuonTable.CurrentRow == null)
+            {
+                MessageBox.Show("Không có một hàng để chọn", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             var idx = phieuMuonTable.CurrentRow.Index;
             //var id = phieuMuonTable.Rows[idx].Cells["id"].Value.ToString();
             if (idx < 0)

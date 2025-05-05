@@ -27,6 +27,7 @@ builder.Services.AddSingleton<IPhieuTraRepository, PhieuTraRepository>();
 builder.Services.AddSingleton<INhanVienRepository, NhanVienRepository>();
 builder.Services.AddSingleton<ILichSuRepository, LichSuRepository>();
 builder.Services.AddSingleton<IPhieuMuonRepository, PhieuMuonRepository>();
+builder.Services.AddSingleton<IPhieuPhatRepository, PhieuPhatRepository>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
 
 builder.Services.AddAuthorization();

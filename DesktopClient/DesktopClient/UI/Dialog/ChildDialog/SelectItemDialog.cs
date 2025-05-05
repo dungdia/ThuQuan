@@ -26,13 +26,13 @@ namespace DesktopClient.UI.Dialog.ChildDialog
             _selectedItems = selectedItems;
 
             _vatDungList = APIContext.GetMethod<VatDung>("GetVatDungChuaMuon").Where(vd => !_selectedItems.Contains(vd.id)).ToList();
-            vatDungDataTable.DataSource = _vatDungList;
-            vatDungDataTable.Columns["id"].FillWeight = 30;
-            vatDungDataTable.Columns["tenVatDung"].HeaderText = "Tên Vật Dụng";
-            vatDungDataTable.Columns["hinhAnh"].Visible = false;
-            vatDungDataTable.Columns["moTa"].Visible = false;
-            vatDungDataTable.Columns["id_LoaiVatDung"].Visible = false;
-            vatDungDataTable.Columns["tinhTrang"].Visible = false;
+            VatDungTable.DataSource = _vatDungList;
+            VatDungTable.Columns["id"].FillWeight = 30;
+            VatDungTable.Columns["tenVatDung"].HeaderText = "Tên Vật Dụng";
+            VatDungTable.Columns["hinhAnh"].Visible = false;
+            VatDungTable.Columns["moTa"].Visible = false;
+            VatDungTable.Columns["id_LoaiVatDung"].Visible = false;
+            VatDungTable.Columns["tinhTrang"].Visible = false;
         }
 
         private void selectBtn_Click(object sender, EventArgs e)
@@ -40,8 +40,8 @@ namespace DesktopClient.UI.Dialog.ChildDialog
             var chiTietPhieuMuon = new ChiTietPhieuMuonDTO()
             {
                 id_phieumuon = _parent._phieuMuonDTO.id,
-                id_vatdung = (int)vatDungDataTable.SelectedRows[0].Cells["id"].Value,
-                tenvatdung = vatDungDataTable.SelectedRows[0].Cells["tenVatDung"].Value.ToString()
+                id_vatdung = (int)VatDungTable.SelectedRows[0].Cells["id"].Value,
+                tenvatdung = VatDungTable.SelectedRows[0].Cells["tenVatDung"].Value.ToString()
             };
 
             _parent._ChiTietPhieuMuonDTO.Add(chiTietPhieuMuon);
@@ -59,7 +59,7 @@ namespace DesktopClient.UI.Dialog.ChildDialog
             var tempList = _vatDungList
                 .Where(vd => vd.tenVatDung.ToLower().Contains(searchInput.Text.ToLower())).ToList();
 
-            vatDungDataTable.DataSource = tempList;
+            VatDungTable.DataSource = tempList;
 
         }
     }

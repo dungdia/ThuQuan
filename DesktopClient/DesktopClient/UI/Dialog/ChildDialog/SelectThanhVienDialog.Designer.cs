@@ -116,10 +116,11 @@
             Controls.Add(CancelBtn);
             Controls.Add(thanhVienDataTable);
             Controls.Add(label1);
-            FormBorderStyle = FormBorderStyle.None;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "SelectThanhVienDialog";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "SelectThanhVienDialog";
             ((System.ComponentModel.ISupportInitialize)thanhVienDataTable).EndInit();
             ResumeLayout(false);
         }
