@@ -9,18 +9,17 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DesktopClient.APIs;
 using DesktopClient.DTO.ApiResponseDTO;
-using DesktopClient.Models;
 
 namespace DesktopClient.UI.Dialog.ChildDialog
 {
-    public partial class SelectThanhVienDialog : Form
+    public partial class SelectThanhVienPhieuPhatDialog : Form
     {
-        public BorrowDialog _parent;
-
-        public SelectThanhVienDialog(BorrowDialog parent)
+        public PenaltyDialog _parent;
+        public SelectThanhVienPhieuPhatDialog(PenaltyDialog parent)
         {
             InitializeComponent();
             _parent = parent;
+
             var response = APIContext.GetMethod<ThanhVienNotLockDTO>($"GetThanhVienNotLock");
             thanhVienDataTable.DataSource = response;
             thanhVienDataTable.Columns["id"].FillWeight = 30;
@@ -38,7 +37,7 @@ namespace DesktopClient.UI.Dialog.ChildDialog
 
         private void SelectBtn_Click(object sender, EventArgs e)
         {
-            if (thanhVienDataTable.Rows.Count == 0)
+            if(thanhVienDataTable.Rows.Count == 0)
             {
                 MessageBox.Show("Không có thành viên nào", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -54,10 +53,9 @@ namespace DesktopClient.UI.Dialog.ChildDialog
             var id = thanhVienDataTable.Rows[idx].Cells["id"].Value.ToString();
             var hoten = thanhVienDataTable.Rows[idx].Cells["hoten"].Value.ToString();
 
-            _parent._phieuMuonDTO.id_thanhvien = Int32.Parse(id);
-            _parent._phieuMuonDTO.ten_thanhvien = hoten;
-            
-            _parent.refeshInputDate();
+            _parent._phieuPhatDTO.id_thanhvien = Int32.Parse(id);
+            _parent._phieuPhatDTO.hoten = hoten;
+            _parent.RefeshAtribute();
             //MessageBox.Show($"Đã chọn thành viên {hoten}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
         }
