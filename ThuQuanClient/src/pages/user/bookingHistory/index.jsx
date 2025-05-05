@@ -78,6 +78,31 @@ export default function BookingHistory() {
       },
    ];
 
+   // Hàm lấy dữ liệu phiếu đặt
+   const fetchBookingHistory = async () => {
+      try {
+         setIsLoading(true);
+         if (!accessToken) return; // Nếu không có accessToken thì không fetch
+
+         const response = await getAllDataBookingHistory();
+         if (response) {
+            setDataIten(response);
+            message.success("Tải dữ liệu thành công!!");
+         } else {
+            message.error("Không có dữ liệu!!");
+         }
+      } catch (error) {
+         console.log("Error: ", error);
+      } finally {
+         setIsLoading(false);
+      }
+   };
+
+   // Hàm chạy mỗi khi có accessToken
+   useEffect(() => {
+      fetchBookingHistory();
+   }, [accessToken]);
+
    const data = useMemo(() => {
       return (
          dataItem?.flatMap((item, index) =>
@@ -91,7 +116,7 @@ export default function BookingHistory() {
             }))
          ) || []
       );
-   }, [dataItem, accountLoggedin]);
+   }, [dataItem]);
 
    const debounceSearch = useDebounce(searchText, 800);
 
@@ -109,28 +134,6 @@ export default function BookingHistory() {
       }
    }, [debounceSearch, data]);
 
-   // Hàm lấy dữ liệu phiếu đặt
-   const fetchBookingHistory = async () => {
-      try {
-         setIsLoading(true);
-         if (!accessToken) return; // Nếu không có accessToken thì không fetch
-
-         const response = await getAllDataBookingHistory();
-         setDataIten(response.data || []);
-         message.success("Tải dữ liệu thành công!!");
-      } catch (error) {
-         console.log("Error: ", error);
-         
-      } finally {
-         setIsLoading(false);
-      }
-   };
-
-   // Hàm chạy mỗi khi có accessToken thay đổi
-   useEffect(() => {
-      fetchBookingHistory();
-   }, [accessToken]);
-
    // Hàm mở modal xem chi tiết phiếu đặt
    const handleShowModalDetail = (id) => {
       setIsShowModalDetail(true);
@@ -138,7 +141,6 @@ export default function BookingHistory() {
       // Lấy id phiếu đặt
       setBaseId(id);
    };
-
 
    // Hàm đóng modal xem chi tiết phiếu đặt
    const handleCloseModalDetail = (id) => {
@@ -151,7 +153,6 @@ export default function BookingHistory() {
    // Lấy ra vật dụng theo id từ trong dataItem
    const foundVatDung = dataItem?.find((item) => item.id === baseId)
       ?.chiTietPhieuDatList?.[0]?.vatDung;
-
 
    // Hàm đặt lại vật dụng qua trang itemDetail
    const handleBookedAgain = (vatdung) => {
