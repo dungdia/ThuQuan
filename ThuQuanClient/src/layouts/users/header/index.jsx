@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { initJsToggle } from "../../../assets/js/header";
 import moreIcon from "@/assets/icons/more.svg";
@@ -38,6 +38,7 @@ import {
    changePassword,
    checkCurrentPassword,
    findAccountByEmail,
+   getAllDataPenalty,
    UpdateInfoUser,
 } from "@/services/user/header";
 import { HttpStatusCode } from "axios";
@@ -122,6 +123,14 @@ export default function HeaderUser() {
    const [loadingConfirmAllBooked, setLoadingConfirmAllBooked] =
       useState(false);
    const [isShowConfirmAllBooked, setIsShowConfirmAllBooked] = useState(false);
+   const [isShowModalPenalty, setIsShowModalPenalty] = useState(false);
+   const [dataPenaltys, setDataPenaltys] = useState([]);
+   const [isLoadingPenalty, setIsLoadingPenalty] = useState(false);
+   const [searchTextPenalty, setSearchTextPenalty] = useState("");
+   const [filteredDataPenalty, setFilteredDataPenalty] = useState([]);
+   const [isShowModalDetailPenalty, setIsShowModalDetailPenalty] =
+      useState(false);
+   const [baseIdDetailPenalty, setBaseIdDetailPenalty] = useState(null);
 
    if (
       searchValue === undefined ||
@@ -484,6 +493,19 @@ export default function HeaderUser() {
          key: "3",
       },
       {
+         label: (
+            <div
+               className="dropdown__item"
+               onClick={(e) => {
+                  e.stopPropagation(), handleShowModalPenalty();
+               }}
+            >
+               Vi phạm
+            </div>
+         ),
+         key: "4",
+      },
+      {
          type: "divider",
       },
       {
@@ -497,7 +519,7 @@ export default function HeaderUser() {
                Đăng xuất
             </div>
          ),
-         key: "4",
+         key: "5",
       },
    ];
 
@@ -541,6 +563,150 @@ export default function HeaderUser() {
    useEffect(() => {
       initJsToggle();
    }, []);
+
+   // Hàm xử lý mở modal Vi phạm
+   const handleShowModalPenalty = () => {
+      setIsShowModalPenalty(true);
+   };
+
+   // Hàm đóng modal Vi phạm
+   const handleCloseModalPenalty = () => {
+      setIsShowModalPenalty(false);
+   };
+
+   // Dữ liệu của modal Vi phạm
+   const columnsPenalty = [
+      {
+         title: "Họ và tên",
+         dataIndex: "HoTen",
+         key: "HoTen",
+         render: (_, item) => (
+            <p title={accountLoggedin?.hoten} className="format format-width">
+               {accountLoggedin?.hoten}
+            </p>
+         ),
+      },
+      {
+         title: "Số điện thoại",
+         dataIndex: "sdt",
+         key: "sdt",
+         render: (_, item) => (
+            <p title={accountLoggedin?.sdt} className="format format-width">
+               {accountLoggedin?.sdt}
+            </p>
+         ),
+      },
+      {
+         title: "Tên vật dụng",
+         dataIndex: "tenVatDung",
+         key: "tenVatDung",
+      },
+      ,
+      {
+         title: "Lý do",
+         dataIndex: "lydo",
+         key: "lydo",
+      },
+      {
+         title: "Mức phạt",
+         key: "mucphat",
+         dataIndex: "mucphat",
+      },
+      {
+         title: "Hành động",
+         key: "action",
+         render: (_, item) => (
+            <div className="gap-modal">
+               <Button
+                  onClick={() => handleShowModalDetailPenalty(item.id)}
+                  color="danger"
+                  variant="filled"
+               >
+                  Xem
+               </Button>
+            </div>
+         ),
+      },
+   ];
+
+   // Kiểm tra trạng thái đăng nhập
+   const accessToken = Cookies.get("accessToken");
+
+   const fetchPenalty = async () => {
+      try {
+         setIsLoadingPenalty(true);
+         if (!accessToken) return; // Nếu không có token thì không làm gì cả
+
+         const response = await getAllDataPenalty();
+         if (response) {
+            setDataPenaltys(response);
+            message.success("Lấy dữ liệu thành công!");
+         } else {
+            message.error("Không có dữ liệu vi phạm!");
+         }
+      } catch (error) {
+         console.log("Error: ", error);
+      } finally {
+         setIsLoadingPenalty(false);
+      }
+   };
+
+   // Hàm chạy mỗi khi có accessToken
+   useEffect(() => {
+      fetchPenalty();
+   }, [accessToken]);
+
+   const dataPenalty = useMemo(() => {
+      return (
+         dataPenaltys?.flatMap((item, index) =>
+            item.chiTietPhieuPhatList.map((detail, index) => ({
+               id: item.id,
+               key: `${item.id}-${index}`,
+               lydo: item.lydo,
+               mucphat: item.mucphat,
+               tenVatDung: detail.vatDung.tenVatDung,
+            }))
+         ) || []
+      );
+   }, [dataPenaltys]);
+
+   // Hàm xử lý tìm kiếm trong bảng Vi phạm
+   const debouncedSearchPenalty = useDebounce(searchTextPenalty, 800);
+
+   useEffect(() => {
+      if (!debouncedSearchPenalty) {
+         setFilteredDataPenalty(dataPenalty); // Nếu không có giá trị tìm kiếm, hiển thị tất cả dữ liệu
+      } else {
+         const lowerSearch = debouncedSearchPenalty.toLowerCase();
+         const filteredData = dataPenalty.filter(
+            (item) =>
+               item.mucphat.toLowerCase().includes(lowerSearch) ||
+               item.tenVatDung.toLowerCase().includes(lowerSearch)
+         );
+         setFilteredDataPenalty(filteredData); // Nếu có giá trị tìm kiếm, lọc dữ liệu
+      }
+   }, [debouncedSearchPenalty, dataPenalty]);
+
+   // Hàm mở modal xem chi tiết Vi phạm
+   const handleShowModalDetailPenalty = (id) => {
+      setIsShowModalDetailPenalty(true);
+
+      // Lấy id phiếu phạt
+      setBaseIdDetailPenalty(id);
+   };
+
+   // Hàm mở modal xem chi tiết Vi phạm
+   const handleCloseModalDetailPenalty = (id) => {
+      setIsShowModalDetailPenalty(false);
+
+      // reset id
+      setBaseIdDetailPenalty(null);
+   };
+
+   // Lấy ra vật dụng theo id từ trong dataPenaltys
+   const foundPenalty =
+      dataPenaltys?.find((item) => item.id === baseIdDetailPenalty)
+         ?.chiTietPhieuPhatList?.[0]?.vatDung || null;
 
    // Hàm mở modal about
    const handleShowAbout = () => {
@@ -867,7 +1033,6 @@ export default function HeaderUser() {
    };
 
    // Hàm xác nhận đặt tất cả item trong cart
-   // Hàm xác nhận đặt tất cả item trong cart
    const confirmAllItemCart = async () => {
       try {
          setLoadingConfirmAllBooked(true);
@@ -1114,6 +1279,85 @@ export default function HeaderUser() {
                      : false // Ẩn phân trang
                }
             />
+         </Modal>
+
+         {/* Giao diện xem chi tiết phiếu phạt */}
+         <Modal
+            title={`Chi tiết phiếu phạt ${
+               dataPenaltys.find((item) => item.id === baseIdDetailPenalty)
+                  ?.tinhTrang
+            }`}
+            open={isShowModalDetailPenalty}
+            footer={false}
+            onCancel={handleCloseModalDetailPenalty}
+         >
+            {foundPenalty && (
+               <div className="list__detail">
+                  <img
+                     className="list__detail--img"
+                     src={foundPenalty.hinhAnh}
+                     title={foundPenalty.tenVatDung}
+                     alt={foundPenalty.moTa}
+                  />
+                  <span className="list__detail--title">
+                     <p className="list__detail--title-text-name format format-width">
+                        {`Tên: ${foundPenalty.tenVatDung}`}
+                     </p>
+
+                     <p className="list__detail--title-text-desc format format-width">
+                        {`Mô tả: ${foundPenalty.moTa}`}
+                     </p>
+                     <p
+                        className={`list__detail--title-text-status ${
+                           foundPenalty.tinhTrang === "Chưa mượn"
+                              ? ""
+                              : foundPenalty.tinhTrang === "Đang mượn"
+                              ? "list__detail--title-text-status-borrowed"
+                              : foundPenalty.tinhTrang === "Đã đặt"
+                              ? "list__detail--title-text-status-booked"
+                              : "list__detail--title-text-status-broken"
+                        }`}
+                     >
+                        {`Tình trạng: ${foundPenalty.tinhTrang}`}
+                     </p>
+                  </span>
+               </div>
+            )}
+         </Modal>
+
+         {/* Giao diện vi phạm */}
+         <Modal
+            width={1400}
+            onCancel={handleCloseModalPenalty}
+            title="Bảng vi phạm"
+            open={isShowModalPenalty}
+            footer={false}
+         >
+            <Input.Search
+               className="input-search"
+               placeholder="Nhập tên vật dụng hoặc mức phạt..."
+               allowClear
+               onChange={(e) => setSearchTextPenalty(e.target.value)}
+               style={{ marginBottom: 16 }}
+            />
+            <Table
+               loading={isLoadingPenalty}
+               columns={columnsPenalty}
+               dataSource={filteredDataPenalty}
+               pagination={
+                  filteredDataPenalty.length > 4
+                     ? {
+                          pageSize: 4,
+                          showSizeChanger: false,
+                          showQuickJumper: true,
+                          showTotal: (total, range) =>
+                             `${range[0]}-${range[1]} trong tổng ${total} vật dụng`,
+                       }
+                     : false // Ẩn phân trang
+               }
+            >
+               {" "}
+            </Table>
          </Modal>
 
          {/* Giao diện cập nhật thông tin cá nhân */}

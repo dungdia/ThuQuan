@@ -41,5 +41,17 @@ public class PhieuPhatRepository : IPhieuPhatRepository
         _dbContext.AddList(chiTietPhieuPhatList);
         return _dbContext.SaveChange();
     }
+
+    public ICollection<PhieuPhat> GetPhieuPhatByIdThanhVien(int idThanhVien)
+    {
+        string query = "SELECT * FROM PhieuPhat WHERE id_thanhvien = @0";
+        return _dbContext.GetData<PhieuPhat>(query, idThanhVien);
+    }
+
+    public ICollection<ChiTietPhieuPhat> GetChiTietPhieuPhatByIdPhieuPhat(int idPhieuPhat)
+    {
+        string query = "SELECT * FROM ChiTietPhieuPhat WHERE id_phieuphat = @0";
+        return _dbContext.GetData<ChiTietPhieuPhat>(query, idPhieuPhat);
+    }
     
 }
