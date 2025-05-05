@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             ThanhVienTable = new DataGridView();
             contextMenuStrip1 = new ContextMenuStrip(components);
             xemToolStripMenuItem = new ToolStripMenuItem();
@@ -49,14 +49,14 @@
             ThanhVienTable.AllowUserToResizeRows = false;
             ThanhVienTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             ThanhVienTable.BackgroundColor = SystemColors.ButtonFace;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            ThanhVienTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            ThanhVienTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             ThanhVienTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             ThanhVienTable.Location = new Point(0, 140);
             ThanhVienTable.MultiSelect = false;
@@ -64,8 +64,8 @@
             ThanhVienTable.ReadOnly = true;
             ThanhVienTable.RowHeadersVisible = false;
             ThanhVienTable.RowHeadersWidth = 55;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 11F);
-            ThanhVienTable.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 11F);
+            ThanhVienTable.RowsDefaultCellStyle = dataGridViewCellStyle4;
             ThanhVienTable.RowTemplate.Height = 30;
             ThanhVienTable.RowTemplate.Resizable = DataGridViewTriState.False;
             ThanhVienTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -78,37 +78,39 @@
             // 
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { xemToolStripMenuItem, sửaToolStripMenuItem, xóaToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(181, 92);
+            contextMenuStrip1.Size = new Size(123, 70);
             // 
             // xemToolStripMenuItem
             // 
             xemToolStripMenuItem.Name = "xemToolStripMenuItem";
-            xemToolStripMenuItem.Size = new Size(180, 22);
+            xemToolStripMenuItem.Size = new Size(122, 22);
             xemToolStripMenuItem.Text = "Xem";
             xemToolStripMenuItem.Click += XemEvent;
             // 
             // sửaToolStripMenuItem
             // 
             sửaToolStripMenuItem.Name = "sửaToolStripMenuItem";
-            sửaToolStripMenuItem.Size = new Size(180, 22);
+            sửaToolStripMenuItem.Size = new Size(122, 22);
             sửaToolStripMenuItem.Text = "Cập nhật";
             sửaToolStripMenuItem.Click += EditEvent;
             // 
             // xóaToolStripMenuItem
             // 
             xóaToolStripMenuItem.Name = "xóaToolStripMenuItem";
-            xóaToolStripMenuItem.Size = new Size(180, 22);
+            xóaToolStripMenuItem.Size = new Size(122, 22);
             xóaToolStripMenuItem.Text = "Khóa";
             xóaToolStripMenuItem.Click += LockEvent;
             // 
             // addBtn
             // 
-            addBtn.Location = new Point(1002, 96);
+            addBtn.BackColor = Color.FromArgb(16, 185, 129);
+            addBtn.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
+            addBtn.Location = new Point(947, 84);
             addBtn.Name = "addBtn";
-            addBtn.Size = new Size(75, 23);
+            addBtn.Size = new Size(148, 36);
             addBtn.TabIndex = 2;
-            addBtn.Text = "thêm";
-            addBtn.UseVisualStyleBackColor = true;
+            addBtn.Text = "Thêm thành viên";
+            addBtn.UseVisualStyleBackColor = false;
             addBtn.Click += RegisterEvent;
             // 
             // timkiem_Input
@@ -124,7 +126,7 @@
             // timkiem_Btn
             // 
             timkiem_Btn.Cursor = Cursors.Hand;
-            timkiem_Btn.Location = new Point(266, 89);
+            timkiem_Btn.Location = new Point(266, 92);
             timkiem_Btn.Margin = new Padding(3, 2, 3, 2);
             timkiem_Btn.Name = "timkiem_Btn";
             timkiem_Btn.Size = new Size(89, 28);
