@@ -145,8 +145,10 @@ namespace DesktopClient.UI
             {
                 var error = APIContext.getErrorMessage(response);
                 MessageBox.Show(error);
+            } else
+            {
+                MessageBox.Show(response.Content);
             }
-            MessageBox.Show(response.Content);
             refeshTable("all", "");
         }
 

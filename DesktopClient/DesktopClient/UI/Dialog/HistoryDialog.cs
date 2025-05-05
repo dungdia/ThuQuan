@@ -43,9 +43,9 @@ namespace DesktopClient.UI.Dialog
 
         public void refeshTable(int? idThanhVien, string type, params object?[] value)
         {
-            LichSuList = APIContext.GetMethod<LichSuDTO>($"LichSu/GetThanhVien");
+            LichSuList = APIContext.GetMethod<LichSuDTO>($"LichSu/GetLichSu?id_thanhvien={idThanhVien}");
             Debug.WriteLine(value[0]);
-            Debug.WriteLine(LichSuList[0].thoigianvao.ToString("MM"));
+            //Debug.WriteLine(LichSuList[0].thoigianvao.ToString("MM"));
             if (idThanhVien != null)
             {
                 LichSuList = LichSuList.Where(x => x.id_thanhvien == Convert.ToInt32(idThanhVien)).ToList();
