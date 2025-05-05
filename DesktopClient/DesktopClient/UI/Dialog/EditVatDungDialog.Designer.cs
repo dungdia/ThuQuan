@@ -38,6 +38,8 @@
             close_btn = new Button();
             save_btn = new Button();
             type_combobox = new ComboBox();
+            img_pictureBox = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)img_pictureBox).BeginInit();
             SuspendLayout();
             // 
             // name_item
@@ -126,17 +128,27 @@
             // type_combobox
             // 
             type_combobox.FormattingEnabled = true;
-            type_combobox.Items.AddRange(new object[] { "Sách", "Thiết bị" });
             type_combobox.Location = new Point(667, 93);
             type_combobox.Name = "type_combobox";
             type_combobox.Size = new Size(121, 23);
             type_combobox.TabIndex = 13;
+            // 
+            // img_pictureBox
+            // 
+            img_pictureBox.Location = new Point(209, 132);
+            img_pictureBox.Name = "img_pictureBox";
+            img_pictureBox.Size = new Size(91, 93);
+            img_pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            img_pictureBox.TabIndex = 14;
+            img_pictureBox.TabStop = false;
+            img_pictureBox.Click += img_pictureBox_Click;
             // 
             // EditVatDungDialog
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 237);
+            Controls.Add(img_pictureBox);
             Controls.Add(type_combobox);
             Controls.Add(save_btn);
             Controls.Add(close_btn);
@@ -149,6 +161,7 @@
             Controls.Add(name_item);
             Name = "EditVatDungDialog";
             Text = "Cập nhật vật dụng";
+            ((System.ComponentModel.ISupportInitialize)img_pictureBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -167,5 +180,6 @@
         private Button close_btn;
         private Button save_btn;
         private ComboBox type_combobox;
+        private PictureBox img_pictureBox;
     }
 }
