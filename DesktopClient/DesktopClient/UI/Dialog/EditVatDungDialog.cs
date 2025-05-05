@@ -30,6 +30,9 @@ namespace DesktopClient.UI.Dialog
             type_combobox.FormattingEnabled = true;
             type_combobox.Items.AddRange(new object[] { "Sách", "Thiết bị" });
             type_combobox.SelectedIndex = vatDung.id_LoaiVatDung == 1 ? 0 : 1;
+
+            // Load ảnh từ đường dẫn
+            LoadImageFromPath(vatDung.hinhAnh);
         }
 
         private void close_btn_Click(object sender, EventArgs e)
@@ -79,6 +82,60 @@ namespace DesktopClient.UI.Dialog
             }
 
 
+        }
+
+        // Sự kiện khi click vào PictureBox để chọn ảnh mới
+        private void img_pictureBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // Hàm dùng để load ảnh từ đường dẫn (local)
+        private void LoadImageFromPath(string path)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(path))
+                {
+                    img_pictureBox.Image = null;
+                    return;
+                }
+
+                if (path.StartsWith("http://") || path.StartsWith("https://"))
+                {
+                    // Load ảnh từ URL (Web)
+                    using (var client = new HttpClient())
+                    {
+                        var response = client.GetAsync(path).Result;
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var stream = response.Content.ReadAsStreamAsync().Result;
+                            img_pictureBox.Image = Image.FromStream(stream);
+                        }
+                        else
+                        {
+                            img_pictureBox.Image = null;
+                        }
+                    }
+                }
+                else if (!string.IsNullOrEmpty(path) && File.Exists(path))
+                {
+                    // Load từ local file
+                    using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+                    {
+                        img_pictureBox.Image = Image.FromStream(fs);
+                    }
+                }
+                else
+                {
+                    img_pictureBox.Image = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Đã xảy ra lỗi khi tải ảnh: {ex.Message}", "Lỗi hệ thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void desc_item_TextChanged(object sender, EventArgs e)
