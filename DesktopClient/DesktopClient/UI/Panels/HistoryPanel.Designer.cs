@@ -105,7 +105,7 @@
             search_Input.Location = new Point(16, 88);
             search_Input.Margin = new Padding(3, 2, 3, 2);
             search_Input.Name = "search_Input";
-            search_Input.PlaceholderText = "Nhập id thành viên";
+            search_Input.PlaceholderText = "Nhập số điện thoại";
             search_Input.Size = new Size(257, 32);
             search_Input.TabIndex = 5;
             // 

@@ -16,13 +16,26 @@ public static class  LichSuEndpoint
         
         var groupName = "Lich Su";
 
-        app.MapGet("LichSu/GetThanhVien", () =>
+        app.MapGet("LichSu/GetLichSu", ([FromQuery] int? idThanhVien) =>
         {
-            var query = @"SELECT tv.id as id_thanhvien, tv.hoten, tv.sodienthoai, tv.tinhtrang, ls.id as id_lichsu, ls.thoigianvao
+            var query = "";
+            if (idThanhVien == null)
+            {
+                query = @"SELECT tv.id as id_thanhvien, tv.hoten, tv.sodienthoai, tv.tinhtrang, ls.id as id_lichsu, ls.thoigianvao
                           FROM thanhvien tv 
                           JOIN lichsu ls
-                          ON tv.id = ls.id_thanhvien;";   
-            var result = dbContext.ExcuteQuerry(query).ToList();
+                          ON ls.id_thanhvien = tv.id";  
+            }
+            else
+            {
+                query = @"SELECT tv.id as id_thanhvien, tv.hoten, tv.sodienthoai, tv.tinhtrang, ls.id as id_lichsu, ls.thoigianvao
+                          FROM thanhvien tv 
+                          JOIN lichsu ls
+                          ON ls.id_thanhvien = tv.id
+                          WHERE tv.id = ?";  
+            }
+            
+            var result = dbContext.ExcuteQuerry(query, idThanhVien ?? null).ToList();
             
             return Results.Ok(result);
         }).WithTags(groupName);

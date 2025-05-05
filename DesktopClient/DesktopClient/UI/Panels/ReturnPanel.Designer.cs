@@ -37,7 +37,7 @@
             typeDropDown = new ComboBox();
             contextMenuStrip1 = new ContextMenuStrip(components);
             viewToolStripMenuItem = new ToolStripMenuItem();
-            addToolStripMenuItem = new ToolStripMenuItem();
+            addButton = new Button();
             ((System.ComponentModel.ISupportInitialize)phieuTraTable).BeginInit();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
@@ -112,29 +112,37 @@
             // contextMenuStrip1
             // 
             contextMenuStrip1.ImageScalingSize = new Size(20, 20);
-            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { viewToolStripMenuItem, addToolStripMenuItem });
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { viewToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(211, 80);
+            contextMenuStrip1.Size = new Size(149, 28);
             // 
             // viewToolStripMenuItem
             // 
             viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            viewToolStripMenuItem.Size = new Size(210, 24);
+            viewToolStripMenuItem.Size = new Size(148, 24);
             viewToolStripMenuItem.Text = "Xem Phiếu";
             viewToolStripMenuItem.Click += viewToolStripMenuItem_Click;
             // 
-            // addToolStripMenuItem
+            // addButton
             // 
-            addToolStripMenuItem.Name = "addToolStripMenuItem";
-            addToolStripMenuItem.Size = new Size(210, 24);
-            addToolStripMenuItem.Text = "Tạo Phiếu";
-            addToolStripMenuItem.Click += addToolStripMenuItem_Click;
+            addButton.BackColor = Color.FromArgb(16, 185, 129);
+            addButton.Cursor = Cursors.Hand;
+            addButton.FlatStyle = FlatStyle.Flat;
+            addButton.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            addButton.Location = new Point(1048, 41);
+            addButton.Name = "addButton";
+            addButton.Size = new Size(169, 48);
+            addButton.TabIndex = 12;
+            addButton.Text = "Tạo Phiếu Trả";
+            addButton.UseVisualStyleBackColor = false;
+            addButton.Click += addToolStripMenuItem_Click;
             // 
             // ReturnPanel
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
+            Controls.Add(addButton);
             Controls.Add(typeDropDown);
             Controls.Add(button1);
             Controls.Add(textBox1);
@@ -156,6 +164,6 @@
         private ComboBox typeDropDown;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem viewToolStripMenuItem;
-        private ToolStripMenuItem addToolStripMenuItem;
+        private Button addButton;
     }
 }

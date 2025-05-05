@@ -20,7 +20,7 @@ namespace DesktopClient.UI.Panels
     public partial class HistoryPanel : UserControl
     {
 
-        List<LichSuDTO> NhanvienList = new List<LichSuDTO>();
+        List<ThanhVienDTO> NhanvienList = new List<ThanhVienDTO>();
 
         public HistoryPanel()
         {
@@ -30,28 +30,23 @@ namespace DesktopClient.UI.Panels
 
         public void refeshTable(string type, string value)
         {
-            NhanvienList = APIContext.GetMethod<LichSuDTO>($"LichSu/GetThanhVien");
-            if (type == "id")
+            NhanvienList = APIContext.GetMethod<ThanhVienDTO>($"Admin/GetThanhVien");
+            if (type == "phone")
             {
-                NhanvienList = NhanvienList.Where(x => x.id_thanhvien.ToString().StartsWith(value, StringComparison.OrdinalIgnoreCase)).ToList();
+                NhanvienList = NhanvienList.Where(x => x.sodienthoai.ToString().StartsWith(value, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
-            NhanvienList = NhanvienList.GroupBy(x => x.id_thanhvien).Select(x => x.First()).ToList();
             LichSuTable.DataSource = NhanvienList;
 
             LichSuTable.Columns["id_thanhvien"].HeaderText = "ID";
             LichSuTable.Columns["id_thanhvien"].FillWeight = 30;
-            LichSuTable.Columns["hoten"].HeaderText = "Họ tên";
-            LichSuTable.Columns["sodienthoai"].HeaderText = "Số điện thoại";
-            LichSuTable.Columns["tinhtrang"].HeaderText = "Tình trạng";
-            //ThanhVienTable.Columns["email"].HeaderText = "Email";
-            //ThanhVienTable.Columns["email"].DisplayIndex = 7;
 
-            //// Visible
-            LichSuTable.Columns["id_lichsu"].Visible = false;
-            LichSuTable.Columns["thoigianvao"].Visible = false;
-            //ThanhVienTable.Columns["password"].Visible = false;
-
+            // Visible
+            LichSuTable.Columns["id_taikhoan"].Visible = false;
+            LichSuTable.Columns["username"].Visible = false;
+            LichSuTable.Columns["email"].Visible = false;
+            LichSuTable.Columns["password"].Visible = false;
+            LichSuTable.Columns["ngaythamgia"].Visible = false;
         }
 
         private void CheckEvent(object sender, EventArgs e)
@@ -65,21 +60,24 @@ namespace DesktopClient.UI.Panels
             Debug.WriteLine(idThanhVien);
 
             var tinhtrang = currentRows.Cells["tinhtrang"].Value.ToString();
-            Debug.WriteLine(tinhtrang);
             // Cái này ngoài đời check đc
-            if (tinhtrang == "Đã bị khóa")
+            if (tinhtrang == "Đã bị khoá")
             {
                 MessageBox.Show("Thành viên đang bị khóa", "Thoại báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-
-            var response = APIContext.PostMethod($"LichSu/CheckLichSuVao?idThanhVien={idThanhVien}", null);
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            else
             {
-                var error = APIContext.getErrorMessage(response);
-                MessageBox.Show(error);
+                var response = APIContext.PostMethod($"LichSu/CheckLichSuVao?idThanhVien={idThanhVien}", null);
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    var error = APIContext.getErrorMessage(response);
+                    MessageBox.Show(error);
+                } else
+                {
+                    MessageBox.Show(response.Content);
+                }
+                refeshTable("all", "");
             }
-            MessageBox.Show(response.Content);
-            refeshTable("all", "");
         }
 
         private void XemLichSuEvent(object sender, EventArgs e)
@@ -91,7 +89,7 @@ namespace DesktopClient.UI.Panels
         private void SearchEvent(object sender, EventArgs e)
         {
             var input = search_Input.Text;
-            refeshTable("id", input);
+            refeshTable("phone", input);
         }
 
         private void LichSuTable_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)

@@ -200,6 +200,8 @@ public class DbContext
 
     public int AddList<T>(List<T> value)
     {
+        if (value.Count <= 0)
+            return 1;
         var tableName = typeof(T).Name;
         var props = value.First()?.GetType().GetProperties();
         if (props == null)

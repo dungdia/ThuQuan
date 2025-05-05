@@ -1,5 +1,6 @@
 ﻿using ThuQuanServer.ApplicationContext;
 using ThuQuanServer.Dtos.InsertObject;
+using ThuQuanServer.Dtos.Request;
 using ThuQuanServer.Interfaces;
 using ThuQuanServer.Models;
 
@@ -20,11 +21,31 @@ public class PhieuPhatRepository : IPhieuPhatRepository
         return phieuphat;
     }
     
+    public ICollection<PhieuPhat> GetPhieuPhatByProps(object? values)
+    {
+        var p = values.GetType().GetProperties();
+        var query = "SELECT * FROM Phieuphat WHERE ";
+        if (p.Length == 1)
+        {
+            query+=string.Join("", p.Select(p => p.Name)) + "=?";
+        }
+        else
+        {
+            query += string.Join("=? AND ", p.Select(p => p.Name)) + "=?";
+        }
+        var props = p.Select(p=> p.GetValue(values)).ToArray();
+        var phieuPhat = _dbContext.GetData<PhieuPhat>(query, props);
+        return phieuPhat;
+    }
+    
     public bool AddPhieuPhat(PhieuPhatInsertDTO phieuPhat, ChiTietPhieuPhat[] ctPhieuPhat)
     {
         _dbContext.Add<PhieuPhat>(phieuPhat);
         var addPhieuPhatResult = _dbContext.SaveChange();
         if (!addPhieuPhatResult) return false;
+        if (ctPhieuPhat.Length <= 0)
+            return true;
+        
         var phieuPhatId = _dbContext.GetLastInsertId();
         var chiTietPhieuPhatList = new List<ChiTietPhieuPhat>();
         foreach (var item in ctPhieuPhat)
@@ -52,6 +73,12 @@ public class PhieuPhatRepository : IPhieuPhatRepository
     {
         string query = "SELECT * FROM ChiTietPhieuPhat WHERE id_phieuphat = @0";
         return _dbContext.GetData<ChiTietPhieuPhat>(query, idPhieuPhat);
+    }
+    
+    public bool UpdatePhieuPhat(PhieuPhatInsertDTO phieuPhatInsertDto,int id)
+    {
+        _dbContext.Update<PhieuPhat>(phieuPhatInsertDto, id);
+        return _dbContext.SaveChange();
     }
     
 }
