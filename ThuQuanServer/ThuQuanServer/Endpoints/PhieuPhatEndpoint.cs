@@ -18,6 +18,8 @@ public static class PhieuPhatEndpoint
         var phieuPhatRepository = app.ServiceProvider.GetService<IPhieuPhatRepository>();
         var taiKhoanRepository = app.ServiceProvider.GetService<ITaiKhoanRepository>();
         var _dbcontext = app.ServiceProvider.GetService<DbContext>();
+        var authService = app.ServiceProvider.GetService<IAuthService>();
+        var vatDungRepository = app.ServiceProvider.GetService<IVatDungRepository>();
         var tagName = "Phieu Phat";
 
         app.MapGet("/GetPhieuPhat", (string type) =>
@@ -65,7 +67,7 @@ public static class PhieuPhatEndpoint
             if (phieuphat == null)
                 return Results.NotFound("Không tìm thấy phiếu phạt");
 
-            if (phieuphat.tinhtrang != "Đã xuất phiếu")
+            if (phieuphat.TinhTrang != "Đã xuất phiếu")
                 return Results.BadRequest("Không thể huỷ phiếu này");
                 
             var phieuPhatInsertDTO = new PhieuPhatInsertDTO()
@@ -89,7 +91,7 @@ public static class PhieuPhatEndpoint
             if (phieuphat == null)
                 return Results.NotFound("Không tìm thấy phiếu phạt");
 
-            if (phieuphat.tinhtrang != "Đã xuất phiếu" && phieuphat.tinhtrang != "Đã huỷ")
+            if (phieuphat.TinhTrang != "Đã xuất phiếu" && phieuphat.TinhTrang != "Đã huỷ")
                 return Results.BadRequest("Không thể xoá phiếu này");
                 
             var phieuPhatInsertDTO = new PhieuPhatInsertDTO()
@@ -117,7 +119,7 @@ public static class PhieuPhatEndpoint
                 MucPhat = phieuPhatRequestDTO.MucPhat,
                 Id_ThanhVien = phieuPhatRequestDTO.Id_ThanhVien,
                 LyDo = phieuPhatRequestDTO.LyDo,
-                tinhtrang = phieuPhat.tinhtrang
+                tinhtrang = phieuPhat.TinhTrang
             };
             
             if (!phieuPhatRepository.UpdatePhieuPhat(phieuPhatInsertDTO, phieuPhatRequestDTO.id))
@@ -267,6 +269,7 @@ public static class PhieuPhatEndpoint
                     {
                         Id_PhieuPhat = chiTiet.Id_PhieuPhat,
                         Id_VatDung = chiTiet.Id_VatDung,
+                        GhiChu = chiTiet.GhiChu,
                         VatDung = vatDung,
                     };
                     listChiTietPhieuPhat.Add(current_chiTiet);
