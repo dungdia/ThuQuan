@@ -613,6 +613,11 @@ export default function HeaderUser() {
          dataIndex: "mucphat",
       },
       {
+         title: "Ghi chú",
+         key: "ghichu",
+         dataIndex: "ghichu",
+      },
+      {
          title: "Hành động",
          key: "action",
          render: (_, item) => (
@@ -638,6 +643,8 @@ export default function HeaderUser() {
          if (!accessToken) return; // Nếu không có token thì không làm gì cả
 
          const response = await getAllDataPenalty();
+         console.log("response: ", response);
+
          if (response) {
             setDataPenaltys(response);
             message.success("Lấy dữ liệu thành công!");
@@ -664,6 +671,7 @@ export default function HeaderUser() {
                key: `${item.id}-${index}`,
                lydo: item.lydo,
                mucphat: item.mucphat,
+               ghichu: detail.ghiChu,
                tenVatDung: detail.vatDung.tenVatDung,
             }))
          ) || []
