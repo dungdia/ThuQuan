@@ -13,8 +13,6 @@ namespace ThuQuanServer.Endpoints;
 
 public static class PhieuPhatEndpoint
 {
-
-
     public static void MapPhieuPhatEndpoint(this IEndpointRouteBuilder app)
     {
         var phieuPhatRepository = app.ServiceProvider.GetService<IPhieuPhatRepository>();
