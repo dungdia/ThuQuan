@@ -117,6 +117,26 @@ namespace DesktopClient.UI.Dialog
             var confirmResult = MessageBox.Show("Xác nhận lưu thông tin nhân viên?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirmResult == DialogResult.Yes)
             {
+                if (fullNameTextbox.Text == String.Empty)
+                {
+                    MessageBox.Show("Vui lòng nhập họ tên nhân viên!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (phoneNumberTextbox.Text == String.Empty)
+                {
+                    MessageBox.Show("Vui lòng nhập số điện thoại nhân viên!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (addressTextbox.Text == String.Empty)
+                {
+                    MessageBox.Show("Vui lòng nhập địa chỉ nhân viên!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (emailTextbox.Text == String.Empty)
+                {
+                    MessageBox.Show("Vui lòng nhập email nhân viên!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 var nhanVien = new UpdateNhanVienRequestDTO
                 {
                     hoten = fullNameTextbox.Text,
@@ -146,18 +166,43 @@ namespace DesktopClient.UI.Dialog
             var confirmResult = MessageBox.Show("Xác nhận thêm nhân viên?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirmResult == DialogResult.Yes)
             {
-                var newNhanVien = new AddNhanVienAndAccountRequestDTO
+                if(fullNameTextbox.Text == String.Empty)
                 {
-                    hoten = fullNameTextbox.Text,
-                    sodienthoai = phoneNumberTextbox.Text,
-                    gioitinh = genderCombobox.Text,
-                    diachi = addressTextbox.Text,
-                    email = emailTextbox.Text,
-                    username = usernameTextbox.Text,
-                    password = "123456", // Set password mặc định
-                    ngaythamgia = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ssZ"),
-                    tinhtrang = statusCombobox.Text,
-                };
+                    MessageBox.Show("Vui lòng nhập họ tên nhân viên!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                } 
+                if(phoneNumberTextbox.Text == String.Empty)
+                {
+                    MessageBox.Show("Vui lòng nhập số điện thoại nhân viên!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (addressTextbox.Text == String.Empty)
+                {
+                    MessageBox.Show("Vui lòng nhập địa chỉ nhân viên!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (usernameTextbox.Text == String.Empty)
+                {
+                    MessageBox.Show("Vui lòng nhập tên tài khoản nhân viên!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (emailTextbox.Text == String.Empty)
+                {
+                    MessageBox.Show("Vui lòng nhập email nhân viên!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                var newNhanVien = new AddNhanVienAndAccountRequestDTO
+                    {
+                        hoten = fullNameTextbox.Text,
+                        sodienthoai = phoneNumberTextbox.Text,
+                        gioitinh = genderCombobox.Text,
+                        diachi = addressTextbox.Text,
+                        email = emailTextbox.Text,
+                        username = usernameTextbox.Text,
+                        password = "123456", // Set password mặc định
+                        ngaythamgia = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ssZ"),
+                        tinhtrang = statusCombobox.Text,
+                    };
                 var result = APIContext.PostMethod($"InsertNhanVienAndTheirAccount", newNhanVien);
                 if (result.StatusCode != System.Net.HttpStatusCode.OK)
                 {

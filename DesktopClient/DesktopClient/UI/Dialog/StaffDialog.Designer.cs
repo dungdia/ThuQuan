@@ -151,6 +151,7 @@
             // 
             // statusCombobox
             // 
+            statusCombobox.DropDownStyle = ComboBoxStyle.DropDownList;
             statusCombobox.Font = new Font("Segoe UI", 10.8F);
             statusCombobox.ForeColor = SystemColors.InfoText;
             statusCombobox.FormattingEnabled = true;
@@ -280,6 +281,7 @@
             // 
             // genderCombobox
             // 
+            genderCombobox.DropDownStyle = ComboBoxStyle.DropDownList;
             genderCombobox.Font = new Font("Segoe UI", 10.8F);
             genderCombobox.ForeColor = SystemColors.InfoText;
             genderCombobox.FormattingEnabled = true;
