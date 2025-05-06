@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
             ThanhVienTable = new DataGridView();
             contextMenuStrip1 = new ContextMenuStrip(components);
             xemToolStripMenuItem = new ToolStripMenuItem();
@@ -39,6 +39,7 @@
             addBtn = new Button();
             timkiem_Input = new TextBox();
             timkiem_Btn = new Button();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)ThanhVienTable).BeginInit();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
@@ -49,27 +50,27 @@
             ThanhVienTable.AllowUserToResizeRows = false;
             ThanhVienTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             ThanhVienTable.BackgroundColor = SystemColors.ButtonFace;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            ThanhVienTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = SystemColors.Control;
+            dataGridViewCellStyle9.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            dataGridViewCellStyle9.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.True;
+            ThanhVienTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             ThanhVienTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            ThanhVienTable.Location = new Point(0, 140);
+            ThanhVienTable.Location = new Point(58, 140);
             ThanhVienTable.MultiSelect = false;
             ThanhVienTable.Name = "ThanhVienTable";
             ThanhVienTable.ReadOnly = true;
             ThanhVienTable.RowHeadersVisible = false;
             ThanhVienTable.RowHeadersWidth = 55;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 11F);
-            ThanhVienTable.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle10.Font = new Font("Segoe UI", 11F);
+            ThanhVienTable.RowsDefaultCellStyle = dataGridViewCellStyle10;
             ThanhVienTable.RowTemplate.Height = 30;
             ThanhVienTable.RowTemplate.Resizable = DataGridViewTriState.False;
             ThanhVienTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            ThanhVienTable.Size = new Size(1114, 538);
+            ThanhVienTable.Size = new Size(994, 538);
             ThanhVienTable.TabIndex = 0;
             ThanhVienTable.CellMouseClick += OptionEvent;
             ThanhVienTable.DataBindingComplete += ThanhVienTable_DataBindingComplete;
@@ -104,42 +105,63 @@
             // addBtn
             // 
             addBtn.BackColor = Color.FromArgb(16, 185, 129);
-            addBtn.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold);
-            addBtn.Location = new Point(947, 84);
+            addBtn.FlatAppearance.BorderSize = 0;
+            addBtn.FlatStyle = FlatStyle.Flat;
+            addBtn.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            addBtn.ForeColor = Color.White;
+            addBtn.Image = Properties.Resources.add;
+            addBtn.ImageAlign = ContentAlignment.TopCenter;
+            addBtn.Location = new Point(980, 56);
             addBtn.Name = "addBtn";
-            addBtn.Size = new Size(148, 36);
+            addBtn.Size = new Size(72, 65);
             addBtn.TabIndex = 2;
-            addBtn.Text = "Thêm thành viên";
+            addBtn.Text = "Thêm";
+            addBtn.TextAlign = ContentAlignment.BottomCenter;
             addBtn.UseVisualStyleBackColor = false;
             addBtn.Click += RegisterEvent;
             // 
             // timkiem_Input
             // 
-            timkiem_Input.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            timkiem_Input.Location = new Point(3, 89);
-            timkiem_Input.Margin = new Padding(3, 2, 3, 2);
+            timkiem_Input.BorderStyle = BorderStyle.None;
+            timkiem_Input.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            timkiem_Input.Location = new Point(58, 90);
+            timkiem_Input.Margin = new Padding(0);
+            timkiem_Input.Multiline = true;
             timkiem_Input.Name = "timkiem_Input";
-            timkiem_Input.PlaceholderText = "Nhập tên người dùng...";
-            timkiem_Input.Size = new Size(257, 32);
+            timkiem_Input.Size = new Size(212, 31);
             timkiem_Input.TabIndex = 3;
             // 
             // timkiem_Btn
             // 
+            timkiem_Btn.BackColor = Color.White;
             timkiem_Btn.Cursor = Cursors.Hand;
-            timkiem_Btn.Location = new Point(266, 92);
+            timkiem_Btn.FlatAppearance.BorderSize = 0;
+            timkiem_Btn.FlatStyle = FlatStyle.Flat;
+            timkiem_Btn.Image = Properties.Resources.search;
+            timkiem_Btn.Location = new Point(276, 91);
             timkiem_Btn.Margin = new Padding(3, 2, 3, 2);
             timkiem_Btn.Name = "timkiem_Btn";
-            timkiem_Btn.Size = new Size(89, 28);
+            timkiem_Btn.Size = new Size(32, 32);
             timkiem_Btn.TabIndex = 4;
-            timkiem_Btn.Text = "Tìm kiếm";
-            timkiem_Btn.UseVisualStyleBackColor = true;
+            timkiem_Btn.UseVisualStyleBackColor = false;
             timkiem_Btn.Click += SearchEvent;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(58, 69);
+            label1.Name = "label1";
+            label1.Size = new Size(81, 21);
+            label1.TabIndex = 7;
+            label1.Text = "Tìm kiếm";
             // 
             // MemberPanel
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
+            Controls.Add(label1);
             Controls.Add(timkiem_Btn);
             Controls.Add(timkiem_Input);
             Controls.Add(addBtn);
@@ -162,5 +184,6 @@
         private Button addBtn;
         private TextBox timkiem_Input;
         private Button timkiem_Btn;
+        private Label label1;
     }
 }
