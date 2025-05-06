@@ -334,7 +334,7 @@ export default function Register() {
                autoComplete="off"
             >
                <Form.Item
-                  label={<div className="">Mã OTP</div>}
+                  label={<div className="form-label-text">Mã OTP</div>}
                   name="opt"
                   rules={[
                      {
@@ -348,7 +348,7 @@ export default function Register() {
                <Form.Item
                   hasFeedback
                   validateStatus={passOTPStatus}
-                  label={<div className="">Mật khẩu mới</div>}
+                  label={<div className="form-label-text">Mật khẩu mới</div>}
                   name="newPassword"
                   rules={[
                      {
@@ -371,7 +371,9 @@ export default function Register() {
                <Form.Item
                   hasFeedback
                   validateStatus={rePassOTPStatus}
-                  label={<div className="">Viết lại mật khẩu</div>}
+                  label={
+                     <div className="form-label-text">Viết lại mật khẩu</div>
+                  }
                   name="rePassword"
                   rules={[
                      {
@@ -427,7 +429,7 @@ export default function Register() {
                <Form.Item
                   hasFeedback
                   validateStatus={emailOTPStatus}
-                  label={<div className="font-bold">Email</div>}
+                  label={<div className="form-label-text">Email</div>}
                   name="email"
                   rules={[
                      {

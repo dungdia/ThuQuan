@@ -13,6 +13,7 @@ import {
    handleEmailChange,
    handleNameChange,
    handlePasswordChange,
+   handleUserNameChange,
 } from "@/utils/validate";
 import Cookies from "js-cookie";
 
@@ -155,7 +156,9 @@ export default function Register() {
                            prefix={<UserPen className="auth__form-icon" />}
                            placeholder="Nhập tên"
                            className="auth__content-input ant-input-outlined"
-                           onChange={(e) => handleNameChange(e, setNameStatus)}
+                           onChange={(e) =>
+                              handleUserNameChange(e, setNameStatus)
+                           }
                         />
                      </Form.Item>
                      <Form.Item

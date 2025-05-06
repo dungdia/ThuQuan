@@ -5,6 +5,13 @@ const validateName = (value) => {
    return regex.test(value);
 };
 
+// Hàm kiểm tra định dạng của userName
+const validateUserName = (value) => {
+   const regex =
+      /^[a-zA-ZÀÁẠÃẢẶẴẲẮẰÁĂÂẤẪẨẬẦÃÈẼẺẸÉÊẾỀỄỆỂÌÍỈỊIỢỠỚỜỞÕỌỎÒÓỔỖỐỒỘÔÕƯỨỪỰỮỬỤŨỦÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂÊƠàáạảãèéẹẻẽìíịỉĩòóọỏõùúụủũơớờợởỡăắằặẳẵâấầậẩẫêếềệểễđĩọỏốồộổỗồờớợởẽẹẻếìíùúụũưữựửữữýỳỵỷỹ \d ]+$/;
+   return regex.test(value);
+};
+
 // Hàm kiểm tra định dạng email
 const validateEmail = (email) => {
    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex kiểm tra email
@@ -40,8 +47,23 @@ const handleNameChange = (e, setNameStatus) => {
       setNameStatus("success"); // Tên hợp lệ
    } else {
       setNameStatus("error"); // Tên không hợp lệ
+      console.log("Lỗi");
    }
 };
+
+// Hàm xử lý userName
+const handleUserNameChange = (e, setNameStatus) => {
+   const name = e.target.value;
+   // Cập nhật trạng thái validate
+   if (!name) {
+      setNameStatus(""); // Reset trạng thái nếu input rỗng
+   } else if (validateUserName(name)) {
+      setNameStatus("success"); // Tên hợp lệ
+   } else {
+      setNameStatus("error"); // Tên không hợp lệ
+      console.log("Lỗi");
+   }
+}
 
 // Hàm xử lý password
 const handlePasswordChange = (e, setPassStatus) => {
@@ -83,6 +105,7 @@ const handleConfirmPassword = (
 
 export {
    handleNameChange,
+   handleUserNameChange,
    handleConfirmPassword,
    handleEmailChange,
    handlePasswordChange,
