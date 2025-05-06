@@ -3,7 +3,7 @@ import heartIcon from "@/assets/icons/heart.svg";
 import heartRedIcon from "@/assets/icons/heart-red.svg";
 import starIcon from "@/assets/icons/star.svg";
 import { Link, useNavigate } from "react-router-dom";
-import { message, Spin } from "antd";
+import { message, Pagination, Spin } from "antd";
 import { getAllDevices } from "@/services/user/device-manager";
 import { useDebounce } from "@/hook/useDebounce";
 import { HeaderContext } from "@/providers/userHeaderProvider";
