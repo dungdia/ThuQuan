@@ -108,7 +108,7 @@
             Controls.Add(emailInput);
             Name = "LoginFrame";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "LoginFrame";
+            Text = "Đăng nhập";
             Load += LoginFrame_Load;
             ResumeLayout(false);
             PerformLayout();
