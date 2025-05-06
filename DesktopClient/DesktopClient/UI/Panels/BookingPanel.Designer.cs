@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
             phieuDatTable = new DataGridView();
             textBox1 = new TextBox();
             button1 = new Button();
@@ -39,6 +39,7 @@
             viewToolStripMenuItem = new ToolStripMenuItem();
             editToolStripMenuItem = new ToolStripMenuItem();
             cancelToolStripMenuItem = new ToolStripMenuItem();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)phieuDatTable).BeginInit();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
@@ -50,53 +51,57 @@
             phieuDatTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             phieuDatTable.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             phieuDatTable.BackgroundColor = SystemColors.ButtonFace;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            phieuDatTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = SystemColors.Control;
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            phieuDatTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             phieuDatTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            phieuDatTable.DefaultCellStyle = dataGridViewCellStyle2;
-            phieuDatTable.Dock = DockStyle.Bottom;
-            phieuDatTable.Location = new Point(0, 129);
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = SystemColors.Window;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
+            phieuDatTable.DefaultCellStyle = dataGridViewCellStyle6;
+            phieuDatTable.Location = new Point(58, 140);
+            phieuDatTable.Margin = new Padding(3, 2, 3, 2);
             phieuDatTable.MultiSelect = false;
             phieuDatTable.Name = "phieuDatTable";
             phieuDatTable.ReadOnly = true;
             phieuDatTable.RowHeadersVisible = false;
             phieuDatTable.RowHeadersWidth = 51;
             phieuDatTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            phieuDatTable.Size = new Size(1273, 779);
+            phieuDatTable.Size = new Size(994, 538);
             phieuDatTable.TabIndex = 0;
             phieuDatTable.CellMouseClick += phieuDatTable_CellMouseClick;
             // 
             // textBox1
             // 
-            textBox1.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox1.Location = new Point(17, 44);
+            textBox1.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox1.Location = new Point(58, 90);
+            textBox1.Margin = new Padding(0);
+            textBox1.Multiline = true;
             textBox1.Name = "textBox1";
-            textBox1.PlaceholderText = "Nhập tên người dùng...";
-            textBox1.Size = new Size(293, 38);
+            textBox1.Size = new Size(212, 31);
             textBox1.TabIndex = 1;
             // 
             // button1
             // 
+            button1.BackColor = Color.White;
             button1.Cursor = Cursors.Hand;
-            button1.Location = new Point(316, 44);
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Image = Properties.Resources.search;
+            button1.Location = new Point(443, 90);
+            button1.Margin = new Padding(0);
             button1.Name = "button1";
-            button1.Size = new Size(102, 38);
+            button1.Size = new Size(32, 32);
             button1.TabIndex = 2;
-            button1.Text = "Search";
-            button1.UseVisualStyleBackColor = true;
+            button1.UseVisualStyleBackColor = false;
             // 
             // typeDropDown
             // 
@@ -104,9 +109,10 @@
             typeDropDown.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             typeDropDown.FormattingEnabled = true;
             typeDropDown.Items.AddRange(new object[] { "Tất cả", "Chưa xử lý", "Đã xử lý", "Đã huỷ" });
-            typeDropDown.Location = new Point(424, 46);
+            typeDropDown.Location = new Point(273, 90);
+            typeDropDown.Margin = new Padding(3, 2, 3, 2);
             typeDropDown.Name = "typeDropDown";
-            typeDropDown.Size = new Size(190, 36);
+            typeDropDown.Size = new Size(167, 29);
             typeDropDown.TabIndex = 3;
             typeDropDown.SelectedIndexChanged += typeDropDown_SelectedIndexChanged;
             // 
@@ -115,41 +121,51 @@
             contextMenuStrip1.ImageScalingSize = new Size(20, 20);
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { viewToolStripMenuItem, editToolStripMenuItem, cancelToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(153, 76);
+            contextMenuStrip1.Size = new Size(134, 70);
             // 
             // viewToolStripMenuItem
             // 
             viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            viewToolStripMenuItem.Size = new Size(152, 24);
+            viewToolStripMenuItem.Size = new Size(133, 22);
             viewToolStripMenuItem.Text = "Xem";
             viewToolStripMenuItem.Click += viewToolStripMenuItem_Click;
             // 
             // editToolStripMenuItem
             // 
             editToolStripMenuItem.Name = "editToolStripMenuItem";
-            editToolStripMenuItem.Size = new Size(152, 24);
+            editToolStripMenuItem.Size = new Size(133, 22);
             editToolStripMenuItem.Text = "Xử lý phiếu";
             editToolStripMenuItem.Click += editToolStripMenuItem_Click;
             // 
             // cancelToolStripMenuItem
             // 
             cancelToolStripMenuItem.Name = "cancelToolStripMenuItem";
-            cancelToolStripMenuItem.Size = new Size(152, 24);
+            cancelToolStripMenuItem.Size = new Size(133, 22);
             cancelToolStripMenuItem.Text = "Huỷ phiếu";
             cancelToolStripMenuItem.Click += cancelToolStripMenuItem_Click;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(58, 67);
+            label1.Name = "label1";
+            label1.Size = new Size(81, 21);
+            label1.TabIndex = 8;
+            label1.Text = "Tìm kiếm";
+            // 
             // BookingPanel
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
+            Controls.Add(label1);
             Controls.Add(typeDropDown);
             Controls.Add(button1);
             Controls.Add(textBox1);
             Controls.Add(phieuDatTable);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "BookingPanel";
-            Size = new Size(1273, 908);
+            Size = new Size(1114, 681);
             ((System.ComponentModel.ISupportInitialize)phieuDatTable).EndInit();
             contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
@@ -166,5 +182,6 @@
         private ToolStripMenuItem viewToolStripMenuItem;
         private ToolStripMenuItem editToolStripMenuItem;
         private ToolStripMenuItem cancelToolStripMenuItem;
+        private Label label1;
     }
 }

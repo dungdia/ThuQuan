@@ -100,5 +100,10 @@ namespace DesktopClient.UI.Panels
             var returnDialog = new ReturnDialog(this, "Tạo", PhieuTraDTO);
             returnDialog.ShowDialog();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -24,8 +24,8 @@ namespace DesktopClient.UI.Dialog
 
             name_item.Text = vatDung.tenVatDung;
             img_item.Text = vatDung.hinhAnh;
-            desc_item.Text = vatDung.moTa;
-
+            //desc_item.Text = vatDung.moTa;
+            richTextBox1.Text = vatDung.moTa;
             // Initialize type_combobox  
             type_combobox.FormattingEnabled = true;
             type_combobox.Items.AddRange(new object[] { "Sách", "Thiết bị" });
@@ -57,7 +57,7 @@ namespace DesktopClient.UI.Dialog
                         id = _vatDung.id,
                         tenVatDung = name_item.Text,
                         hinhAnh = img_item.Text,
-                        moTa = desc_item.Text,
+                        moTa = richTextBox1.Text,
                         id_LoaiVatDung = type_combobox.SelectedIndex == 0 ? 1 : 2,
                         tinhTrang = _vatDung.tinhTrang
                     };

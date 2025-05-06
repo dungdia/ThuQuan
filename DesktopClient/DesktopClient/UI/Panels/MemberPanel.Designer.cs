@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             ThanhVienTable = new DataGridView();
             contextMenuStrip1 = new ContextMenuStrip(components);
             xemToolStripMenuItem = new ToolStripMenuItem();
@@ -50,14 +50,14 @@
             ThanhVienTable.AllowUserToResizeRows = false;
             ThanhVienTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             ThanhVienTable.BackgroundColor = SystemColors.ButtonFace;
-            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = SystemColors.Control;
-            dataGridViewCellStyle9.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            dataGridViewCellStyle9.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.True;
-            ThanhVienTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            ThanhVienTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             ThanhVienTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             ThanhVienTable.Location = new Point(58, 140);
             ThanhVienTable.MultiSelect = false;
@@ -65,8 +65,8 @@
             ThanhVienTable.ReadOnly = true;
             ThanhVienTable.RowHeadersVisible = false;
             ThanhVienTable.RowHeadersWidth = 55;
-            dataGridViewCellStyle10.Font = new Font("Segoe UI", 11F);
-            ThanhVienTable.RowsDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 11F);
+            ThanhVienTable.RowsDefaultCellStyle = dataGridViewCellStyle2;
             ThanhVienTable.RowTemplate.Height = 30;
             ThanhVienTable.RowTemplate.Resizable = DataGridViewTriState.False;
             ThanhVienTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -168,6 +168,7 @@
             Controls.Add(ThanhVienTable);
             Name = "MemberPanel";
             Size = new Size(1114, 681);
+            Load += MemberPanel_Load;
             ((System.ComponentModel.ISupportInitialize)ThanhVienTable).EndInit();
             contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);

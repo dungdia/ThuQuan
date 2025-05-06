@@ -30,7 +30,6 @@
         {
             name_item = new TextBox();
             img_item = new TextBox();
-            desc_item = new TextBox();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
@@ -39,35 +38,29 @@
             save_btn = new Button();
             type_combobox = new ComboBox();
             img_pictureBox = new PictureBox();
+            richTextBox1 = new RichTextBox();
             ((System.ComponentModel.ISupportInitialize)img_pictureBox).BeginInit();
             SuspendLayout();
             // 
             // name_item
             // 
-            name_item.Location = new Point(12, 93);
+            name_item.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            name_item.Location = new Point(256, 56);
             name_item.Name = "name_item";
-            name_item.Size = new Size(100, 23);
+            name_item.Size = new Size(230, 27);
             name_item.TabIndex = 0;
             // 
             // img_item
             // 
-            img_item.Location = new Point(152, 93);
+            img_item.Location = new Point(32, 293);
             img_item.Name = "img_item";
             img_item.Size = new Size(230, 23);
             img_item.TabIndex = 1;
             // 
-            // desc_item
-            // 
-            desc_item.Location = new Point(419, 93);
-            desc_item.Name = "desc_item";
-            desc_item.Size = new Size(214, 23);
-            desc_item.TabIndex = 2;
-            desc_item.TextChanged += desc_item_TextChanged;
-            // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(21, 64);
+            label1.Location = new Point(256, 37);
             label1.Name = "label1";
             label1.Size = new Size(76, 15);
             label1.TabIndex = 5;
@@ -76,7 +69,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(230, 64);
+            label2.Location = new Point(32, 275);
             label2.Name = "label2";
             label2.Size = new Size(56, 15);
             label2.TabIndex = 6;
@@ -86,7 +79,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(500, 64);
+            label3.Location = new Point(256, 101);
             label3.Name = "label3";
             label3.Size = new Size(38, 15);
             label3.TabIndex = 7;
@@ -95,7 +88,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(692, 64);
+            label4.Location = new Point(501, 37);
             label4.Name = "label4";
             label4.Size = new Size(79, 15);
             label4.TabIndex = 8;
@@ -104,11 +97,14 @@
             // 
             // close_btn
             // 
-            close_btn.BackColor = Color.MistyRose;
-            close_btn.ForeColor = SystemColors.ActiveCaptionText;
-            close_btn.Location = new Point(532, 148);
+            close_btn.BackColor = Color.FromArgb(244, 67, 54);
+            close_btn.FlatAppearance.BorderSize = 0;
+            close_btn.FlatStyle = FlatStyle.Flat;
+            close_btn.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            close_btn.ForeColor = Color.White;
+            close_btn.Location = new Point(400, 293);
             close_btn.Name = "close_btn";
-            close_btn.Size = new Size(101, 51);
+            close_btn.Size = new Size(101, 35);
             close_btn.TabIndex = 10;
             close_btn.Text = "Đóng";
             close_btn.UseVisualStyleBackColor = false;
@@ -116,10 +112,14 @@
             // 
             // save_btn
             // 
-            save_btn.BackColor = Color.PaleGreen;
-            save_btn.Location = new Point(671, 148);
+            save_btn.BackColor = Color.FromArgb(21, 154, 32);
+            save_btn.FlatAppearance.BorderSize = 0;
+            save_btn.FlatStyle = FlatStyle.Flat;
+            save_btn.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            save_btn.ForeColor = Color.White;
+            save_btn.Location = new Point(522, 293);
             save_btn.Name = "save_btn";
-            save_btn.Size = new Size(100, 51);
+            save_btn.Size = new Size(100, 35);
             save_btn.TabIndex = 11;
             save_btn.Text = "Cập nhật";
             save_btn.UseVisualStyleBackColor = false;
@@ -127,27 +127,38 @@
             // 
             // type_combobox
             // 
+            type_combobox.DropDownStyle = ComboBoxStyle.DropDownList;
+            type_combobox.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             type_combobox.FormattingEnabled = true;
-            type_combobox.Location = new Point(667, 93);
+            type_combobox.Location = new Point(501, 55);
             type_combobox.Name = "type_combobox";
-            type_combobox.Size = new Size(121, 23);
+            type_combobox.Size = new Size(121, 28);
             type_combobox.TabIndex = 13;
             // 
             // img_pictureBox
             // 
-            img_pictureBox.Location = new Point(209, 132);
+            img_pictureBox.Location = new Point(32, 37);
             img_pictureBox.Name = "img_pictureBox";
-            img_pictureBox.Size = new Size(91, 93);
+            img_pictureBox.Size = new Size(178, 221);
             img_pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             img_pictureBox.TabIndex = 14;
             img_pictureBox.TabStop = false;
             img_pictureBox.Click += img_pictureBox_Click;
             // 
+            // richTextBox1
+            // 
+            richTextBox1.Location = new Point(256, 119);
+            richTextBox1.Name = "richTextBox1";
+            richTextBox1.Size = new Size(366, 139);
+            richTextBox1.TabIndex = 15;
+            richTextBox1.Text = "";
+            // 
             // EditVatDungDialog
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 237);
+            ClientSize = new Size(652, 347);
+            Controls.Add(richTextBox1);
             Controls.Add(img_pictureBox);
             Controls.Add(type_combobox);
             Controls.Add(save_btn);
@@ -156,10 +167,10 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(desc_item);
             Controls.Add(img_item);
             Controls.Add(name_item);
             Name = "EditVatDungDialog";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Cập nhật vật dụng";
             ((System.ComponentModel.ISupportInitialize)img_pictureBox).EndInit();
             ResumeLayout(false);
@@ -170,7 +181,6 @@
 
         private TextBox name_item;
         private TextBox img_item;
-        private TextBox desc_item;
         private TextBox type_item;
         private TextBox status_item;
         private Label label1;
@@ -181,5 +191,6 @@
         private Button save_btn;
         private ComboBox type_combobox;
         private PictureBox img_pictureBox;
+        private RichTextBox richTextBox1;
     }
 }
