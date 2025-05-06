@@ -61,7 +61,8 @@
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(58, 140);
+            dataGridView1.Location = new Point(66, 187);
+            dataGridView1.Margin = new Padding(3, 4, 3, 4);
             dataGridView1.MultiSelect = false;
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
@@ -70,19 +71,20 @@
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle2;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new Size(994, 538);
+            dataGridView1.Size = new Size(1136, 717);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellMouseClick += dataGridView1_CellMouseClick;
             // 
             // searchTextbox
             // 
+            searchTextbox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             searchTextbox.BorderStyle = BorderStyle.None;
             searchTextbox.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            searchTextbox.Location = new Point(58, 90);
+            searchTextbox.Location = new Point(66, 120);
             searchTextbox.Margin = new Padding(0);
             searchTextbox.Multiline = true;
             searchTextbox.Name = "searchTextbox";
-            searchTextbox.Size = new Size(212, 31);
+            searchTextbox.Size = new Size(242, 41);
             searchTextbox.TabIndex = 1;
             // 
             // searchBtn
@@ -92,10 +94,9 @@
             searchBtn.FlatStyle = FlatStyle.Flat;
             searchBtn.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             searchBtn.Image = Properties.Resources.search;
-            searchBtn.Location = new Point(419, 89);
-            searchBtn.Margin = new Padding(3, 2, 3, 2);
+            searchBtn.Location = new Point(479, 119);
             searchBtn.Name = "searchBtn";
-            searchBtn.Size = new Size(32, 32);
+            searchBtn.Size = new Size(37, 43);
             searchBtn.TabIndex = 2;
             searchBtn.UseVisualStyleBackColor = false;
             searchBtn.Click += searchBtn_Click;
@@ -107,10 +108,9 @@
             comboBox1.Font = new Font("Segoe UI", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             comboBox1.FormattingEnabled = true;
             comboBox1.Items.AddRange(new object[] { "Tất cả", "Đang làm việc", "Đã nghỉ" });
-            comboBox1.Location = new Point(276, 90);
-            comboBox1.Margin = new Padding(3, 2, 3, 2);
+            comboBox1.Location = new Point(315, 120);
             comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(137, 31);
+            comboBox1.Size = new Size(156, 38);
             comboBox1.TabIndex = 3;
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
@@ -119,26 +119,26 @@
             contextMenuStrip1.ImageScalingSize = new Size(20, 20);
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { viewDetailToolStripMenuItem, editToolStripMenuItem, accountLockToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(177, 70);
+            contextMenuStrip1.Size = new Size(206, 76);
             // 
             // viewDetailToolStripMenuItem
             // 
             viewDetailToolStripMenuItem.Name = "viewDetailToolStripMenuItem";
-            viewDetailToolStripMenuItem.Size = new Size(176, 22);
+            viewDetailToolStripMenuItem.Size = new Size(205, 24);
             viewDetailToolStripMenuItem.Text = "Xem chi tiết";
             viewDetailToolStripMenuItem.Click += viewDetailToolStripMenuItem_Click;
             // 
             // editToolStripMenuItem
             // 
             editToolStripMenuItem.Name = "editToolStripMenuItem";
-            editToolStripMenuItem.Size = new Size(176, 22);
+            editToolStripMenuItem.Size = new Size(205, 24);
             editToolStripMenuItem.Text = "Sửa";
             editToolStripMenuItem.Click += editToolStripMenuItem_Click;
             // 
             // accountLockToolStripMenuItem
             // 
             accountLockToolStripMenuItem.Name = "accountLockToolStripMenuItem";
-            accountLockToolStripMenuItem.Size = new Size(176, 22);
+            accountLockToolStripMenuItem.Size = new Size(205, 24);
             accountLockToolStripMenuItem.Text = "Mở/Khóa tài khoản";
             accountLockToolStripMenuItem.Click += accountLockToolStripMenuItem_Click;
             // 
@@ -152,10 +152,9 @@
             addButton.ForeColor = Color.White;
             addButton.Image = Properties.Resources.add;
             addButton.ImageAlign = ContentAlignment.TopCenter;
-            addButton.Location = new Point(980, 56);
-            addButton.Margin = new Padding(3, 2, 3, 2);
+            addButton.Location = new Point(1120, 75);
             addButton.Name = "addButton";
-            addButton.Size = new Size(72, 65);
+            addButton.Size = new Size(82, 87);
             addButton.TabIndex = 4;
             addButton.Text = "Thêm";
             addButton.TextAlign = ContentAlignment.BottomCenter;
@@ -169,10 +168,9 @@
             refreshBtn.FlatStyle = FlatStyle.Flat;
             refreshBtn.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             refreshBtn.Image = Properties.Resources.refresh;
-            refreshBtn.Location = new Point(457, 90);
-            refreshBtn.Margin = new Padding(3, 2, 3, 2);
+            refreshBtn.Location = new Point(522, 120);
             refreshBtn.Name = "refreshBtn";
-            refreshBtn.Size = new Size(32, 32);
+            refreshBtn.Size = new Size(37, 43);
             refreshBtn.TabIndex = 5;
             refreshBtn.UseVisualStyleBackColor = false;
             refreshBtn.Click += refreshBtn_Click;
@@ -181,15 +179,15 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(58, 69);
+            label1.Location = new Point(66, 92);
             label1.Name = "label1";
-            label1.Size = new Size(81, 21);
+            label1.Size = new Size(100, 28);
             label1.TabIndex = 6;
             label1.Text = "Tìm kiếm";
             // 
             // StaffPanel
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
             Controls.Add(label1);
@@ -199,8 +197,9 @@
             Controls.Add(searchBtn);
             Controls.Add(searchTextbox);
             Controls.Add(dataGridView1);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "StaffPanel";
-            Size = new Size(1114, 681);
+            Size = new Size(1273, 908);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);

@@ -155,6 +155,7 @@
             Controls.Add(centerPanel);
             Controls.Add(panel2);
             Margin = new Padding(3, 4, 3, 4);
+            MaximizeBox = false;
             Name = "MainFrame";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";

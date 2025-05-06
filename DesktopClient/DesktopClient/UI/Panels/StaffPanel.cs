@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace DesktopClient.UI.Panels
 {
@@ -54,7 +55,9 @@ namespace DesktopClient.UI.Panels
             dataGridView1.Columns["diaChi"].HeaderText = "Địa chỉ";
             dataGridView1.Columns["tinhTrang"].HeaderText = "Tình trạng";
             dataGridView1.Columns["username"].HeaderText = "Tên tài khoản";
+            dataGridView1.Columns["username"].Visible = false;
             dataGridView1.Columns["email"].HeaderText = "Email";
+            dataGridView1.Columns["email"].Visible = false;
             dataGridView1.Columns["ngaythamgia"].HeaderText = "Ngày tham gia";
         }
 
@@ -177,6 +180,7 @@ namespace DesktopClient.UI.Panels
         private void refreshBtn_Click(object sender, EventArgs e)
         {
             searchTextbox.Text = "";
+            comboBox1.SelectedIndex = 0;
             refreshTable();
         }
 
