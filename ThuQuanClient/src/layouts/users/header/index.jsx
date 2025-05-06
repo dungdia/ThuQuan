@@ -131,6 +131,7 @@ export default function HeaderUser() {
    const [isShowModalDetailPenalty, setIsShowModalDetailPenalty] =
       useState(false);
    const [baseIdDetailPenalty, setBaseIdDetailPenalty] = useState(null);
+   const [accessToken, setAccessToken] = useState(Cookies.get("accessToken"));
 
    if (
       searchValue === undefined ||
@@ -634,12 +635,33 @@ export default function HeaderUser() {
       },
    ];
 
-   // Kiểm tra trạng thái đăng nhập
-   const accessToken = Cookies.get("accessToken");
+   // Kiểm tra đã có accessToken hay chưa
+   useEffect(() => {
+      const waitForToken = async () => {
+         let token = Cookies.get("accessToken");
+         const maxRetries = 50; // Giới hạn số lần kiểm tra (50 x 100ms = 5 giây)
+         let retries = 0;
+
+         while (!token && retries < maxRetries) {
+            await new Promise((resolve) => setTimeout(resolve, 100)); // Đợi 100ms
+            token = Cookies.get("accessToken");
+            retries++;
+         }
+
+         if (token) {
+            setAccessToken(token); // Cập nhật state khi có token
+         } else {
+            console.error("Không tìm thấy accessToken sau khi đợi.");
+         }
+      };
+
+      waitForToken();
+   }, []);
 
    const fetchPenalty = async () => {
       try {
          setIsLoadingPenalty(true);
+
          if (!accessToken) return; // Nếu không có token thì không làm gì cả
 
          const response = await getAllDataPenalty();
@@ -660,7 +682,9 @@ export default function HeaderUser() {
 
    // Hàm chạy mỗi khi có accessToken
    useEffect(() => {
-      fetchPenalty();
+      if (accessToken) {
+         fetchPenalty();
+      }
    }, [accessToken]);
 
    const dataPenalty = useMemo(() => {
@@ -1341,13 +1365,23 @@ export default function HeaderUser() {
             open={isShowModalPenalty}
             footer={false}
          >
-            <Input.Search
-               className="input-search"
-               placeholder="Nhập tên vật dụng hoặc mức phạt..."
-               allowClear
-               onChange={(e) => setSearchTextPenalty(e.target.value)}
-               style={{ marginBottom: 16 }}
-            />
+            <div className="flex-modal-2">
+               <Input.Search
+                  className="input-search"
+                  placeholder="Nhập tên vật dụng hoặc mức phạt..."
+                  allowClear
+                  onChange={(e) => setSearchTextPenalty(e.target.value)}
+                  style={{ marginBottom: 16 }}
+               />
+               <Button
+                  color="cyan"
+                  variant="solid"
+                  onClick={fetchPenalty}
+                  className="btn-reload"
+               >
+                  Tải lại
+               </Button>
+            </div>
             <Table
                loading={isLoadingPenalty}
                columns={columnsPenalty}
@@ -1761,13 +1795,13 @@ export default function HeaderUser() {
             {/* FAQ Section */}
             <section id="faq" className="modal-section">
                <h2 className="section-title">Câu hỏi thường gặp</h2>
-               <p>
+               <p className="about-text">
                   <strong>1. Làm thế nào để đặt hàng?</strong>
                   <br />
                   Để đặt hàng, hãy thêm sản phẩm vào giỏ hàng và nhấp vào nút
                   "Thanh toán".
                </p>
-               <p>
+               <p className="about-text">
                   <strong>
                      2. Làm thế nào để kiểm tra trạng thái đơn hàng?
                   </strong>
@@ -1775,7 +1809,7 @@ export default function HeaderUser() {
                   Bạn có thể kiểm tra trạng thái đơn hàng trong tài khoản của
                   bạn hoặc liên hệ với chúng tôi qua trang Liên hệ.
                </p>
-               <p>
+               <p className="about-text">
                   <strong>3. Làm thế nào để thay đổi thông tin cá nhân?</strong>
                   <br />
                   Bạn có thể cập nhật thông tin cá nhân trong phần Tài khoản của
@@ -1786,16 +1820,16 @@ export default function HeaderUser() {
             {/* Shipping Section */}
             <section id="shipping" className="modal-section">
                <h2 className="section-title">Thông tin Vận chuyển</h2>
-               <p>
+               <p className="about-text">
                   Chúng tôi cung cấp các tùy chọn vận chuyển nhanh chóng và đáng
                   tin cậy. Chi phí vận chuyển và thời gian giao hàng cụ thể sẽ
                   hiển thị trong quá trình thanh toán.
                </p>
-               <p>
+               <p className="about-text">
                   <strong>Phí Vận chuyển:</strong> Phí vận chuyển được tính dựa
                   trên địa chỉ giao hàng của bạn.
                </p>
-               <p>
+               <p className="about-text">
                   <strong>Thời Gian Giao Hàng:</strong> Thời gian giao hàng ước
                   tính sẽ được hiển thị trong quá trình thanh toán.
                </p>
@@ -1806,15 +1840,15 @@ export default function HeaderUser() {
                <h2 className="section-title">
                   Chính sách Đổi trả và Hoàn tiền
                </h2>
-               <p>
+               <p className="about-text">
                   Chúng tôi chấp nhận đổi trả trong vòng 30 ngày kể từ ngày mua.
                   Để đổi trả, vui lòng liên hệ với chúng tôi qua trang Liên hệ.
                </p>
-               <p>
+               <p className="about-text">
                   <strong>Điều Kiện Đổi Trả:</strong> Sản phẩm phải còn nguyên
                   vẹn, chưa sử dụng và có các nhãn mác gốc.
                </p>
-               <p>
+               <p className="about-text">
                   <strong>Hoàn Tiền:</strong> Hoàn tiền sẽ được xử lý trong vòng
                   7-10 ngày làm việc sau khi nhận được sản phẩm đổi trả.
                </p>
@@ -1823,18 +1857,18 @@ export default function HeaderUser() {
             {/* Contact Section */}
             <section id="contact" className="modal-section">
                <h2 className="section-title">Liên hệ chúng tôi</h2>
-               <p>
+               <p className="about-text">
                   Nếu bạn có bất kỳ câu hỏi hoặc cần hỗ trợ, hãy liên hệ với
                   chúng tôi qua email:
                   <a href="mailto:support@example.com" className="contact-link">
                      support@example.com
                   </a>
                </p>
-               <p>
+               <p className="about-text">
                   Hoặc gọi đến số điện thoại hỗ trợ của chúng tôi:
                   <strong>(123) 456-7890</strong>.
                </p>
-               <p>
+               <p className="about-text">
                   Chúng tôi cũng có thể được liên hệ qua mạng xã hội:
                   <a href="#" className="contact-link">
                      Facebook

@@ -14,6 +14,7 @@ export default function BookingHistory() {
    const [filteredData, setFilteredData] = useState([]);
    const [isShowModalDetail, setIsShowModalDetail] = useState(false);
    const [baseId, setBaseId] = useState(null);
+   const [accessToken, setAccessToken] = useState(Cookies.get("accessToken"));
 
    // Lấy dữ liệu người dùng từ local
    const accountLoggedin = useMemo(() => {
@@ -21,8 +22,27 @@ export default function BookingHistory() {
       return acc ? JSON.parse(acc) : {};
    }, []);
 
-   // Kiểm tra trạng thái đăng nhập
-   const accessToken = Cookies.get("accessToken");
+   // Lấy accessToken từ cookie
+   useEffect(() => {
+      const waitForToken = async () => {
+         let token = Cookies.get("accessToken");
+         const maxRetries = 50; // Số lần thử tối đa
+         let retries = 0; // Biến đếm số lần thử
+
+         while (!token && retries < maxRetries) {
+            await new Promise((resolve) => setTimeout(resolve, 100)); // Chờ 100ms trước khi thử lại
+            token = Cookies.get("accessToken"); // Cập nhật giá trị token
+            retries++; // Tăng biến đếm số lần thử
+         }
+
+         if (token) {
+            setAccessToken(token); // Cập nhật accessToken nếu có
+         } else {
+            console.error("Không tìm thấy accessToken sau khi đợi.");
+         }
+      };
+      waitForToken(); // Gọi hàm chờ token
+   }, []);
 
    useEffect(() => {
       if (!accessToken) {
@@ -100,7 +120,9 @@ export default function BookingHistory() {
 
    // Hàm chạy mỗi khi có accessToken
    useEffect(() => {
-      fetchBookingHistory();
+      if (accessToken) {
+         fetchBookingHistory(); // Gọi hàm lấy dữ liệu phiếu đặt
+      }
    }, [accessToken]);
 
    const data = useMemo(() => {
@@ -231,13 +253,23 @@ export default function BookingHistory() {
          <HeaderUser />
          <div className="container ">
             <div className="booking__history">
-               <Input.Search
-                  className="input-search"
-                  placeholder="Nhập tên vật dụng hoặc ngày (dd/mm/yyyy)"
-                  allowClear
-                  onChange={(e) => setSearchText(e.target.value)}
-                  style={{ marginBottom: 16 }}
-               />
+               <div className="flex-modal-2">
+                  <Input.Search
+                     className="input-search"
+                     placeholder="Nhập tên vật dụng hoặc ngày (dd/mm/yyyy)"
+                     allowClear
+                     onChange={(e) => setSearchText(e.target.value)}
+                     style={{ marginBottom: 16 }}
+                  />
+                  <Button
+                     color="cyan"
+                     variant="solid"
+                     onClick={fetchBookingHistory}
+                     className="btn-reload"
+                  >
+                     Tải lại
+                  </Button>
+               </div>
                <Table
                   loading={isLoading}
                   columns={columns}
