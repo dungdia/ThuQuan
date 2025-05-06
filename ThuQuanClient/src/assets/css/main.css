@@ -239,6 +239,21 @@ select {
   --line-clamp: 2;
 }
 
+.about-text {
+  color: var(--text-color);
+}
+
+.flex-modal-2 {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 30px;
+}
+
+.btn-reload {
+  margin-bottom: 6px;
+}
+
 .flex-modal {
   display: flex;
   align-items: center;
