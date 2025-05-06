@@ -9,7 +9,7 @@ public interface IPhieuPhatRepository
     public ICollection<PhieuPhat> GetPhieuPhat();
     public bool AddPhieuPhat(PhieuPhatInsertDTO phieuPhat, ChiTietPhieuPhat[] ctPhieuPhat);
 
-    public ICollection<PhieuPhat> GetPhieuPhatByIdThanhVien(int idPhieuPhat);
+    public ICollection<PhieuPhat> GetPhieuPhatByIdThanhVien(int idThanhVien);
     public ICollection<ChiTietPhieuPhat> GetChiTietPhieuPhatByIdPhieuPhat(int idPhieuPhat);
 
     public ICollection<PhieuPhat> GetPhieuPhatByProps(object? values);

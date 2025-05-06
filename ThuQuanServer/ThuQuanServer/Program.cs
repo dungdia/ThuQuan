@@ -116,7 +116,7 @@ app.UseValidationMiddleware();
 // Endpoints
 app.MapTaiKhoanEndpoints();
 app.MapPhieuDatEndpoints();
-app.MapPhieuPhatEndpoints();
+app.MapPhieuPhatEndpoint();
 app.MapPhieuMuonEndpoints();
 app.MapPhieuTraEndpoints();
 app.MapVatDungEndpoints();
@@ -125,7 +125,6 @@ app.MapSecurityEndpoints();
 app.MapSendOTPEndpoints();
 app.MapLichSuEndpoints();
 app.MapThanhVienEndpoint();
-app.MapPhieuPhatEndpoint();
 
 app.Run();
 
