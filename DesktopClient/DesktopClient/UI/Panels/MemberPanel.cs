@@ -145,7 +145,8 @@ namespace DesktopClient.UI
             {
                 var error = APIContext.getErrorMessage(response);
                 MessageBox.Show(error);
-            } else
+            }
+            else
             {
                 MessageBox.Show(response.Content);
             }
@@ -182,9 +183,14 @@ namespace DesktopClient.UI
                 tinhtrang = currentRows.Cells["tinhtrang"].Value.ToString()
             };
 
-            
+
             var updateDialog = new MemberDialog(selectedItem, "Xem", this);
             updateDialog.ShowDialog();
+        }
+
+        private void MemberPanel_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

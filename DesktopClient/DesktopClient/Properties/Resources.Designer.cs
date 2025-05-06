@@ -103,6 +103,26 @@ namespace DesktopClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap check_circle_svgrepo_com__3_ {
+            get {
+                object obj = ResourceManager.GetObject("check-circle-svgrepo-com (3)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap check_circle_svgrepo_com__3_1 {
+            get {
+                object obj = ResourceManager.GetObject("check-circle-svgrepo-com (3)1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap clock_square_svgrepo_com {
             get {
                 object obj = ResourceManager.GetObject("clock-square-svgrepo-com", resourceCulture);
@@ -113,9 +133,49 @@ namespace DesktopClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap export_excel {
+            get {
+                object obj = ResourceManager.GetObject("export_excel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap history_svgrepo_com {
             get {
                 object obj = ResourceManager.GetObject("history-svgrepo-com", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap history_svgrepo_com__1_ {
+            get {
+                object obj = ResourceManager.GetObject("history-svgrepo-com (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap history_svgrepo_com__2_ {
+            get {
+                object obj = ResourceManager.GetObject("history-svgrepo-com (2)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap history_svgrepo_com__2___1_ {
+            get {
+                object obj = ResourceManager.GetObject("history-svgrepo-com (2) (1)", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

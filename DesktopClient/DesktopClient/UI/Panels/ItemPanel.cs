@@ -49,7 +49,14 @@ namespace DesktopClient.UI
             }
         }
 
-
+        private void OptionEvent(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (e.RowIndex < 0) return;
+                contextMenuStrip1.Show(Cursor.Position);
+            }
+        }
 
         // Nút xóa vật dụng
         private void delete_item_Click(object sender, EventArgs e)

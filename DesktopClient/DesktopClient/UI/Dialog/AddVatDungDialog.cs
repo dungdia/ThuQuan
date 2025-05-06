@@ -62,7 +62,7 @@ namespace DesktopClient.UI.Dialog
                 return;
             }
 
-            if (!otherRegex.IsMatch(desc_item.Text))
+            if (!otherRegex.IsMatch(richTextBox1.Text))
             {
                 MessageBox.Show("Mô tả phải chứa ít nhất 5 ký tự.");
                 return;
@@ -80,7 +80,7 @@ namespace DesktopClient.UI.Dialog
                 {
                     tenVatDung = name_item.Text,
                     hinhAnh = img_item.Text,
-                    moTa = desc_item.Text,
+                    moTa = richTextBox1.Text,
                     id_LoaiVatDung = type_combobox.SelectedIndex == 1 ? 1 : 2
                 };
 
@@ -107,5 +107,9 @@ namespace DesktopClient.UI.Dialog
             }
         }
 
+        private void name_item_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

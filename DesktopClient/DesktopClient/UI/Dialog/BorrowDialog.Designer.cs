@@ -58,20 +58,21 @@
             // 
             idLabel.AutoSize = true;
             idLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            idLabel.Location = new Point(26, 15);
+            idLabel.Location = new Point(23, 11);
             idLabel.Name = "idLabel";
-            idLabel.Size = new Size(31, 28);
+            idLabel.Size = new Size(25, 21);
             idLabel.TabIndex = 3;
             idLabel.Text = "ID";
             // 
             // idTextBox
             // 
             idTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            idTextBox.Location = new Point(26, 46);
+            idTextBox.Location = new Point(23, 34);
+            idTextBox.Margin = new Padding(3, 2, 3, 2);
             idTextBox.Name = "idTextBox";
             idTextBox.ReadOnly = true;
             idTextBox.ShortcutsEnabled = false;
-            idTextBox.Size = new Size(69, 34);
+            idTextBox.Size = new Size(61, 29);
             idTextBox.TabIndex = 2;
             idTextBox.TabStop = false;
             // 
@@ -79,20 +80,21 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(101, 15);
+            label1.Location = new Point(88, 11);
             label1.Name = "label1";
-            label1.Size = new Size(132, 28);
+            label1.Size = new Size(107, 21);
             label1.TabIndex = 5;
             label1.Text = "ID Thành Viên";
             // 
             // id_thanhvienTextBox
             // 
             id_thanhvienTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            id_thanhvienTextBox.Location = new Point(101, 46);
+            id_thanhvienTextBox.Location = new Point(88, 34);
+            id_thanhvienTextBox.Margin = new Padding(3, 2, 3, 2);
             id_thanhvienTextBox.Name = "id_thanhvienTextBox";
             id_thanhvienTextBox.ReadOnly = true;
             id_thanhvienTextBox.ShortcutsEnabled = false;
-            id_thanhvienTextBox.Size = new Size(132, 34);
+            id_thanhvienTextBox.Size = new Size(116, 29);
             id_thanhvienTextBox.TabIndex = 4;
             id_thanhvienTextBox.TabStop = false;
             // 
@@ -100,20 +102,21 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(239, 15);
+            label2.Location = new Point(209, 11);
             label2.Name = "label2";
-            label2.Size = new Size(142, 28);
+            label2.Size = new Size(115, 21);
             label2.TabIndex = 7;
             label2.Text = "Tên Thành Viên";
             // 
             // ten_thanhvienTextBox
             // 
             ten_thanhvienTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            ten_thanhvienTextBox.Location = new Point(239, 46);
+            ten_thanhvienTextBox.Location = new Point(209, 34);
+            ten_thanhvienTextBox.Margin = new Padding(3, 2, 3, 2);
             ten_thanhvienTextBox.Name = "ten_thanhvienTextBox";
             ten_thanhvienTextBox.ReadOnly = true;
             ten_thanhvienTextBox.ShortcutsEnabled = false;
-            ten_thanhvienTextBox.Size = new Size(192, 34);
+            ten_thanhvienTextBox.Size = new Size(168, 29);
             ten_thanhvienTextBox.TabIndex = 6;
             ten_thanhvienTextBox.TabStop = false;
             // 
@@ -121,20 +124,21 @@
             // 
             idnhanvienLabel.AutoSize = true;
             idnhanvienLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            idnhanvienLabel.Location = new Point(437, 15);
+            idnhanvienLabel.Location = new Point(382, 11);
             idnhanvienLabel.Name = "idnhanvienLabel";
-            idnhanvienLabel.Size = new Size(126, 28);
+            idnhanvienLabel.Size = new Size(102, 21);
             idnhanvienLabel.TabIndex = 9;
             idnhanvienLabel.Text = "ID Nhân Viên";
             // 
             // id_nhanvienTextBox
             // 
             id_nhanvienTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            id_nhanvienTextBox.Location = new Point(437, 46);
+            id_nhanvienTextBox.Location = new Point(382, 34);
+            id_nhanvienTextBox.Margin = new Padding(3, 2, 3, 2);
             id_nhanvienTextBox.Name = "id_nhanvienTextBox";
             id_nhanvienTextBox.ReadOnly = true;
             id_nhanvienTextBox.ShortcutsEnabled = false;
-            id_nhanvienTextBox.Size = new Size(132, 34);
+            id_nhanvienTextBox.Size = new Size(116, 29);
             id_nhanvienTextBox.TabIndex = 8;
             id_nhanvienTextBox.TabStop = false;
             // 
@@ -142,20 +146,21 @@
             // 
             tennhanvienLabel.AutoSize = true;
             tennhanvienLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tennhanvienLabel.Location = new Point(575, 15);
+            tennhanvienLabel.Location = new Point(503, 11);
             tennhanvienLabel.Name = "tennhanvienLabel";
-            tennhanvienLabel.Size = new Size(136, 28);
+            tennhanvienLabel.Size = new Size(110, 21);
             tennhanvienLabel.TabIndex = 11;
             tennhanvienLabel.Text = "Tên Nhân Viên";
             // 
             // ten_nhanvienTextBox
             // 
             ten_nhanvienTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            ten_nhanvienTextBox.Location = new Point(575, 46);
+            ten_nhanvienTextBox.Location = new Point(503, 34);
+            ten_nhanvienTextBox.Margin = new Padding(3, 2, 3, 2);
             ten_nhanvienTextBox.Name = "ten_nhanvienTextBox";
             ten_nhanvienTextBox.ReadOnly = true;
             ten_nhanvienTextBox.ShortcutsEnabled = false;
-            ten_nhanvienTextBox.Size = new Size(192, 34);
+            ten_nhanvienTextBox.Size = new Size(168, 29);
             ten_nhanvienTextBox.TabIndex = 10;
             ten_nhanvienTextBox.TabStop = false;
             // 
@@ -163,20 +168,21 @@
             // 
             tinhtrangLabel.AutoSize = true;
             tinhtrangLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tinhtrangLabel.Location = new Point(773, 15);
+            tinhtrangLabel.Location = new Point(676, 11);
             tinhtrangLabel.Name = "tinhtrangLabel";
-            tinhtrangLabel.Size = new Size(101, 28);
+            tinhtrangLabel.Size = new Size(81, 21);
             tinhtrangLabel.TabIndex = 13;
             tinhtrangLabel.Text = "Tình trạng";
             // 
             // tinhtrangTextBox
             // 
             tinhtrangTextBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tinhtrangTextBox.Location = new Point(773, 46);
+            tinhtrangTextBox.Location = new Point(676, 34);
+            tinhtrangTextBox.Margin = new Padding(3, 2, 3, 2);
             tinhtrangTextBox.Name = "tinhtrangTextBox";
             tinhtrangTextBox.ReadOnly = true;
             tinhtrangTextBox.ShortcutsEnabled = false;
-            tinhtrangTextBox.Size = new Size(177, 34);
+            tinhtrangTextBox.Size = new Size(155, 29);
             tinhtrangTextBox.TabIndex = 12;
             tinhtrangTextBox.TabStop = false;
             // 
@@ -186,9 +192,10 @@
             thoigianMuonTimePicker.CalendarTitleBackColor = SystemColors.Window;
             thoigianMuonTimePicker.Enabled = false;
             thoigianMuonTimePicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            thoigianMuonTimePicker.Location = new Point(26, 120);
+            thoigianMuonTimePicker.Location = new Point(23, 90);
+            thoigianMuonTimePicker.Margin = new Padding(3, 2, 3, 2);
             thoigianMuonTimePicker.Name = "thoigianMuonTimePicker";
-            thoigianMuonTimePicker.Size = new Size(351, 34);
+            thoigianMuonTimePicker.Size = new Size(308, 29);
             thoigianMuonTimePicker.TabIndex = 14;
             // 
             // thoigiantraTimePicker
@@ -196,18 +203,19 @@
             thoigiantraTimePicker.CalendarFont = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             thoigiantraTimePicker.CalendarTitleBackColor = SystemColors.Window;
             thoigiantraTimePicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            thoigiantraTimePicker.Location = new Point(551, 120);
+            thoigiantraTimePicker.Location = new Point(482, 90);
+            thoigiantraTimePicker.Margin = new Padding(3, 2, 3, 2);
             thoigiantraTimePicker.Name = "thoigiantraTimePicker";
-            thoigiantraTimePicker.Size = new Size(351, 34);
+            thoigiantraTimePicker.Size = new Size(308, 29);
             thoigiantraTimePicker.TabIndex = 15;
             // 
             // thoigianmuonLabel
             // 
             thoigianmuonLabel.AutoSize = true;
             thoigianmuonLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            thoigianmuonLabel.Location = new Point(26, 89);
+            thoigianmuonLabel.Location = new Point(23, 67);
             thoigianmuonLabel.Name = "thoigianmuonLabel";
-            thoigianmuonLabel.Size = new Size(150, 28);
+            thoigianmuonLabel.Size = new Size(121, 21);
             thoigianmuonLabel.TabIndex = 16;
             thoigianmuonLabel.Text = "Thời gian mượn";
             // 
@@ -215,9 +223,9 @@
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label7.Location = new Point(551, 89);
+            label7.Location = new Point(482, 67);
             label7.Name = "label7";
-            label7.Size = new Size(122, 28);
+            label7.Size = new Size(98, 21);
             label7.TabIndex = 17;
             label7.Text = "Thời gian trả";
             // 
@@ -246,22 +254,28 @@
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
             chiTietPhieuMuonTable.DefaultCellStyle = dataGridViewCellStyle2;
             chiTietPhieuMuonTable.Dock = DockStyle.Bottom;
-            chiTietPhieuMuonTable.Location = new Point(0, 220);
+            chiTietPhieuMuonTable.Location = new Point(0, 165);
+            chiTietPhieuMuonTable.Margin = new Padding(3, 2, 3, 2);
             chiTietPhieuMuonTable.MultiSelect = false;
             chiTietPhieuMuonTable.Name = "chiTietPhieuMuonTable";
             chiTietPhieuMuonTable.ReadOnly = true;
             chiTietPhieuMuonTable.RowHeadersVisible = false;
             chiTietPhieuMuonTable.RowHeadersWidth = 51;
             chiTietPhieuMuonTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            chiTietPhieuMuonTable.Size = new Size(962, 367);
+            chiTietPhieuMuonTable.Size = new Size(842, 275);
             chiTietPhieuMuonTable.TabIndex = 18;
             // 
             // removeItemBtn
             // 
-            removeItemBtn.BackColor = Color.Red;
-            removeItemBtn.Location = new Point(621, 160);
+            removeItemBtn.BackColor = Color.FromArgb(244, 67, 54);
+            removeItemBtn.FlatAppearance.BorderSize = 0;
+            removeItemBtn.FlatStyle = FlatStyle.Flat;
+            removeItemBtn.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            removeItemBtn.ForeColor = Color.White;
+            removeItemBtn.Location = new Point(543, 120);
+            removeItemBtn.Margin = new Padding(3, 2, 3, 2);
             removeItemBtn.Name = "removeItemBtn";
-            removeItemBtn.Size = new Size(161, 54);
+            removeItemBtn.Size = new Size(141, 40);
             removeItemBtn.TabIndex = 19;
             removeItemBtn.Text = "Xoá vật dụng";
             removeItemBtn.UseVisualStyleBackColor = false;
@@ -270,9 +284,14 @@
             // addItemBtn
             // 
             addItemBtn.BackColor = SystemColors.ActiveCaption;
-            addItemBtn.Location = new Point(454, 160);
+            addItemBtn.FlatAppearance.BorderSize = 0;
+            addItemBtn.FlatStyle = FlatStyle.Flat;
+            addItemBtn.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            addItemBtn.ForeColor = Color.White;
+            addItemBtn.Location = new Point(397, 120);
+            addItemBtn.Margin = new Padding(3, 2, 3, 2);
             addItemBtn.Name = "addItemBtn";
-            addItemBtn.Size = new Size(161, 54);
+            addItemBtn.Size = new Size(141, 40);
             addItemBtn.TabIndex = 20;
             addItemBtn.Text = "Thêm vật dụng";
             addItemBtn.UseVisualStyleBackColor = false;
@@ -281,9 +300,14 @@
             // selectUserBtn
             // 
             selectUserBtn.BackColor = SystemColors.MenuHighlight;
-            selectUserBtn.Location = new Point(287, 160);
+            selectUserBtn.FlatAppearance.BorderSize = 0;
+            selectUserBtn.FlatStyle = FlatStyle.Flat;
+            selectUserBtn.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            selectUserBtn.ForeColor = Color.White;
+            selectUserBtn.Location = new Point(251, 120);
+            selectUserBtn.Margin = new Padding(3, 2, 3, 2);
             selectUserBtn.Name = "selectUserBtn";
-            selectUserBtn.Size = new Size(161, 54);
+            selectUserBtn.Size = new Size(141, 40);
             selectUserBtn.TabIndex = 21;
             selectUserBtn.Text = "Chọn Thành Viên";
             selectUserBtn.UseVisualStyleBackColor = false;
@@ -291,10 +315,15 @@
             // 
             // createBtn
             // 
-            createBtn.BackColor = Color.PaleGreen;
-            createBtn.Location = new Point(789, 160);
+            createBtn.BackColor = Color.FromArgb(21, 154, 32);
+            createBtn.FlatAppearance.BorderSize = 0;
+            createBtn.FlatStyle = FlatStyle.Flat;
+            createBtn.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            createBtn.ForeColor = Color.White;
+            createBtn.Location = new Point(690, 120);
+            createBtn.Margin = new Padding(3, 2, 3, 2);
             createBtn.Name = "createBtn";
-            createBtn.Size = new Size(161, 54);
+            createBtn.Size = new Size(141, 40);
             createBtn.TabIndex = 22;
             createBtn.Text = "Tạo phiếu";
             createBtn.UseVisualStyleBackColor = false;
@@ -302,9 +331,10 @@
             // 
             // BorrowDialog
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(962, 587);
+            BackColor = Color.White;
+            ClientSize = new Size(842, 440);
             Controls.Add(createBtn);
             Controls.Add(selectUserBtn);
             Controls.Add(addItemBtn);
@@ -327,6 +357,7 @@
             Controls.Add(idLabel);
             Controls.Add(idTextBox);
             FormBorderStyle = FormBorderStyle.FixedDialog;
+            Margin = new Padding(3, 2, 3, 2);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "BorrowDialog";
