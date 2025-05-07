@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DesktopClient.APIs;
 using DesktopClient.DTO.ApiResponseDTO;
+using DesktopClient.Interface;
 using DesktopClient.Models;
 using DesktopClient.UI.Dialog;
 
 namespace DesktopClient.UI.Panels
 {
-    public partial class BorrowPanel : UserControl
+    public partial class BorrowPanel : UserControl,IChildPanel
     {
         public BorrowPanel()
         {

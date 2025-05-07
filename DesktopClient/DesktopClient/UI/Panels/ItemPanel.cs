@@ -14,10 +14,11 @@ using System.Net.Http.Headers;
 using DesktopClient.UI.Dialog;
 using System.Net.WebSockets;
 using OfficeOpenXml;
+using DesktopClient.Interface;
 
 namespace DesktopClient.UI
 {
-    public partial class ItemPanel : UserControl
+    public partial class ItemPanel : UserControl,IChildPanel
     {
         List<VatDung> vatDungs = new List<VatDung>();
         public ItemPanel()
@@ -214,6 +215,11 @@ namespace DesktopClient.UI
             staThread.Start();
         }
 
+
+        public void refeshTable()
+        {
+           ReloadData();
+        }
 
 
         // Hàm làm mới dữ liệu

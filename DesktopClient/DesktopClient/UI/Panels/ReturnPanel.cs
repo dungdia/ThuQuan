@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DesktopClient.APIs;
 using DesktopClient.DTO.ApiResponseDTO;
+using DesktopClient.Interface;
 using DesktopClient.UI.Dialog;
 
 namespace DesktopClient.UI.Panels
 {
-    public partial class ReturnPanel : UserControl
+    public partial class ReturnPanel : UserControl,IChildPanel
     {
         public ReturnPanel()
         {

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using DesktopClient.APIs;
 using DesktopClient.DTO;
 using DesktopClient.DTO.ApiResponseDTO;
+using DesktopClient.Interface;
 using DesktopClient.Models;
 using DesktopClient.UI;
 using DesktopClient.UI.CustomControls;
@@ -93,6 +94,11 @@ namespace DesktopClient
         private void switchFrame(int index)
         {
             centerPanel.Controls.Clear();
+            if (panels[index] is IChildPanel refreshablePanel)
+            {
+                refreshablePanel.refeshTable();
+            }
+
             centerPanel.Controls.Add(panels[index]);
         }
 

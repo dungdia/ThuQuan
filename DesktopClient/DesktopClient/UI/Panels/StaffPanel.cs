@@ -1,5 +1,6 @@
 ﻿using DesktopClient.APIs;
 using DesktopClient.DTO.ApiResponseDTO;
+using DesktopClient.Interface;
 using DesktopClient.Models;
 using DesktopClient.UI.Dialog;
 using System;
@@ -15,13 +16,18 @@ using System.Windows.Forms.VisualStyles;
 
 namespace DesktopClient.UI.Panels
 {
-    public partial class StaffPanel : UserControl
+    public partial class StaffPanel : UserControl,IChildPanel
     {
         List<NhanVienDTO> nhanViens = new List<NhanVienDTO>();
         public StaffPanel()
         {
             InitializeComponent();
             comboBox1.SelectedIndex = 0;
+            refreshTable();
+        }
+
+        public void refeshTable()
+        {
             refreshTable();
         }
 
