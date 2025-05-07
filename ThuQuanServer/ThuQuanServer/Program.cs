@@ -29,6 +29,7 @@ builder.Services.AddSingleton<ILichSuRepository, LichSuRepository>();
 builder.Services.AddSingleton<IPhieuMuonRepository, PhieuMuonRepository>();
 builder.Services.AddSingleton<IPhieuPhatRepository, PhieuPhatRepository>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
+builder.Services.AddSingleton<IThongKeRepository, ThongKeRepository>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -125,6 +126,7 @@ app.MapSecurityEndpoints();
 app.MapSendOTPEndpoints();
 app.MapLichSuEndpoints();
 app.MapThanhVienEndpoint();
+app.MapThongKeEndpoints();
 
 app.Run();
 
