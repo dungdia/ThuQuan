@@ -12,13 +12,14 @@ using System.Windows.Forms;
 using DesktopClient.APIs;
 using DesktopClient.DTO;
 using DesktopClient.DTO.ApiResponseDTO;
+using DesktopClient.Interface;
 using DesktopClient.Models;
 using DesktopClient.UI.CustomControls;
 using DesktopClient.UI.Dialog;
 
 namespace DesktopClient.UI
 {
-    public partial class MemberPanel : UserControl
+    public partial class MemberPanel : UserControl,IChildPanel
     {
         List<ThanhVienDTO> thanhViens;
         public MemberPanel()
@@ -47,6 +48,10 @@ namespace DesktopClient.UI
             return sb.ToString();
         }
 
+        public void refeshTable()
+        {
+            refeshTable("all", "");
+        }
         public void refeshTable(string type, string value)
         {
             thanhViens = APIContext.GetMethod<ThanhVienDTO>("Admin/GetThanhVien");

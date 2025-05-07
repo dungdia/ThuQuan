@@ -294,7 +294,8 @@ public static class PhieuTraEndpoint
                     MoTa = vd.MoTa,
                     TinhTrang = vd.TinhTrang
                 };
-                vatDungRepository.UpdateVatDung(vatDungInsert,vd.Id);
+                _dbcontext.Update<VatDung>(vatDungInsert,vd.Id);
+                _dbcontext.SaveChange();
             }
 
             if (phieuPhat != null)

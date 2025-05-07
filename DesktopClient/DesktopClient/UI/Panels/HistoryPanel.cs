@@ -12,12 +12,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DesktopClient.APIs;
 using DesktopClient.DTO.ApiResponseDTO;
+using DesktopClient.Interface;
 using DesktopClient.Models;
 using DesktopClient.UI.Dialog;
+using static OfficeOpenXml.ExcelErrorValue;
 
 namespace DesktopClient.UI.Panels
 {
-    public partial class HistoryPanel : UserControl
+    public partial class HistoryPanel : UserControl,IChildPanel
     {
 
         List<ThanhVienDTO> NhanvienList = new List<ThanhVienDTO>();
@@ -25,6 +27,11 @@ namespace DesktopClient.UI.Panels
         public HistoryPanel()
         {
             InitializeComponent();
+            refeshTable("all", "");
+        }
+
+        public void refeshTable()
+        {
             refeshTable("all", "");
         }
 
