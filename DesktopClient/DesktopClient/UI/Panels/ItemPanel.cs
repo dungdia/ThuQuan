@@ -263,7 +263,9 @@ namespace DesktopClient.UI
                 .Where(vatDung => vatDung.tenVatDung.ToLower().Contains(searchText) ||
                                  vatDung.id_LoaiVatDung == 1 && "Sách".ToLower().Contains(searchText) ||
                                  vatDung.id_LoaiVatDung != 1 && "Thiết bị".ToLower().Contains(searchText) ||
+                                 vatDung.id.ToString().ToLower().Contains(searchText) ||
                                  vatDung.tinhTrang.ToLower().Contains(searchText))
+                                 
                 .ToList();
 
             dataGridView1.DataSource = null; // bỏ dữ liệu cũ

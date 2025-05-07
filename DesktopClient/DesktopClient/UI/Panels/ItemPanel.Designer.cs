@@ -85,7 +85,7 @@
             text_search.Location = new Point(58, 90);
             text_search.Multiline = true;
             text_search.Name = "text_search";
-            text_search.PlaceholderText = "Nhập vật dụng (tên, loại, tình trạng)...";
+            text_search.PlaceholderText = "Nhập vật dụng (id, tên, loại, tình trạng)...";
             text_search.Size = new Size(212, 31);
             text_search.TabIndex = 1;
             text_search.TextChanged += text_search_TextChanged;

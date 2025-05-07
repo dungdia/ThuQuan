@@ -54,12 +54,14 @@ namespace DesktopClient.UI.Dialog
 
         private async void confirm_delete_item_Click(object sender, EventArgs e)
         {
+            var countVatDung = _vatDungs.Count;
             var confirmResult = MessageBox.Show($"Bạn chắc chắn muốn xóa {_vatDungs.Count} vật dụng này?",
                 "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (confirmResult == DialogResult.Yes)
             {
                 try
                 {
+                    var check = true;
                     var successfullyDeleted = new List<VatDung>();
                     foreach (var vatDung in _vatDungs)
                     {
@@ -74,6 +76,7 @@ namespace DesktopClient.UI.Dialog
                         {
                             MessageBox.Show($"Xóa vật dụng ID {vatDung.id} thất bại. " + APIContext.getErrorMessage(response),
                                 "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            check = false;
                         }
                     }
 
@@ -85,7 +88,20 @@ namespace DesktopClient.UI.Dialog
                     VatDungGridView.DataSource = null;
                     VatDungGridView.DataSource = _vatDungs;
 
-                    MessageBox.Show("Tất cả vật dụng đã được xóa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    if (check)
+                    {
+                        MessageBox.Show("Tất cả vật dụng đã được xóa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else if (!check && _vatDungs.Count > 0 && _vatDungs.Count < countVatDung)
+                    {
+                        MessageBox.Show("Đã xóa một số vật dụng Chưa mượn hoặc bị hỏng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    }
+                    else if (!check && _vatDungs.Count == countVatDung)
+                    {
+                        MessageBox.Show("Không xóa được vật dụng nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    }
                     OnItemsDeleted?.Invoke(); // Gọi sự kiện khi xóa thành công
                     this.Close();
                 }
