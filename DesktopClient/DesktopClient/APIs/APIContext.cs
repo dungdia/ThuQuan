@@ -95,7 +95,6 @@ public class APIContext
         return response;
     }
 
-
     public static string translateResponse(string test)
     {
         var response = JsonSerializer.Deserialize<Dictionary<string, Object>>(test).First();

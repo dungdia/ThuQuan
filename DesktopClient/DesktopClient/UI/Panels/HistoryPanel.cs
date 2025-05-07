@@ -19,7 +19,7 @@ using static OfficeOpenXml.ExcelErrorValue;
 
 namespace DesktopClient.UI.Panels
 {
-    public partial class HistoryPanel : UserControl,IChildPanel
+    public partial class HistoryPanel : UserControl, IChildPanel
     {
 
         List<ThanhVienDTO> NhanvienList = new List<ThanhVienDTO>();
@@ -67,24 +67,21 @@ namespace DesktopClient.UI.Panels
             Debug.WriteLine(idThanhVien);
 
             var tinhtrang = currentRows.Cells["tinhtrang"].Value.ToString();
-            // Cái này ngoài đời check đc
+
             if (tinhtrang == "Đã bị khoá")
             {
                 MessageBox.Show("Thành viên đang bị khóa", "Thoại báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            else
+            var response = APIContext.PostMethod($"LichSu/CheckLichSuVao?idThanhVien={idThanhVien}", null!);
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                var response = APIContext.PostMethod($"LichSu/CheckLichSuVao?idThanhVien={idThanhVien}", null);
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    var error = APIContext.getErrorMessage(response);
-                    MessageBox.Show(error);
-                } else
-                {
-                    MessageBox.Show(response.Content);
-                }
-                refeshTable("all", "");
+                var error = APIContext.getErrorMessage(response);
+                MessageBox.Show(error);
+                return;
             }
+            MessageBox.Show(response.Content);
+            refeshTable("all", "");
         }
 
         private void XemLichSuEvent(object sender, EventArgs e)
@@ -107,7 +104,7 @@ namespace DesktopClient.UI.Panels
             }
         }
 
-        private void XemEvent(object sender, EventArgs e)
+        private void Xem_Event(object sender, EventArgs e)
         {
             var idx = LichSuTable.CurrentRow.Index;
             var currentRows = LichSuTable.Rows[idx];

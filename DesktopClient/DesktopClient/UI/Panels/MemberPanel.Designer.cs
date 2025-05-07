@@ -29,17 +29,19 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
             ThanhVienTable = new DataGridView();
             contextMenuStrip1 = new ContextMenuStrip(components);
             xemToolStripMenuItem = new ToolStripMenuItem();
             sửaToolStripMenuItem = new ToolStripMenuItem();
             xóaToolStripMenuItem = new ToolStripMenuItem();
+            xóaToolStripMenuItem1 = new ToolStripMenuItem();
             addBtn = new Button();
             timkiem_Input = new TextBox();
             timkiem_Btn = new Button();
             label1 = new Label();
+            excel_btn = new Button();
             ((System.ComponentModel.ISupportInitialize)ThanhVienTable).BeginInit();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
@@ -50,36 +52,35 @@
             ThanhVienTable.AllowUserToResizeRows = false;
             ThanhVienTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             ThanhVienTable.BackgroundColor = SystemColors.ButtonFace;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            ThanhVienTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = SystemColors.Control;
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            ThanhVienTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             ThanhVienTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             ThanhVienTable.Location = new Point(58, 140);
-            ThanhVienTable.MultiSelect = false;
             ThanhVienTable.Name = "ThanhVienTable";
-            ThanhVienTable.ReadOnly = true;
             ThanhVienTable.RowHeadersVisible = false;
             ThanhVienTable.RowHeadersWidth = 55;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 11F);
-            ThanhVienTable.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 11F);
+            ThanhVienTable.RowsDefaultCellStyle = dataGridViewCellStyle6;
             ThanhVienTable.RowTemplate.Height = 30;
             ThanhVienTable.RowTemplate.Resizable = DataGridViewTriState.False;
             ThanhVienTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             ThanhVienTable.Size = new Size(994, 538);
             ThanhVienTable.TabIndex = 0;
             ThanhVienTable.CellMouseClick += OptionEvent;
+            ThanhVienTable.CurrentCellDirtyStateChanged += ThanhVienTable_CurrentCellDirtyStateChanged;
             ThanhVienTable.DataBindingComplete += ThanhVienTable_DataBindingComplete;
             // 
             // contextMenuStrip1
             // 
-            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { xemToolStripMenuItem, sửaToolStripMenuItem, xóaToolStripMenuItem });
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { xemToolStripMenuItem, sửaToolStripMenuItem, xóaToolStripMenuItem, xóaToolStripMenuItem1 });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(123, 70);
+            contextMenuStrip1.Size = new Size(123, 92);
             // 
             // xemToolStripMenuItem
             // 
@@ -101,6 +102,13 @@
             xóaToolStripMenuItem.Size = new Size(122, 22);
             xóaToolStripMenuItem.Text = "Khóa";
             xóaToolStripMenuItem.Click += LockEvent;
+            // 
+            // xóaToolStripMenuItem1
+            // 
+            xóaToolStripMenuItem1.Name = "xóaToolStripMenuItem1";
+            xóaToolStripMenuItem1.Size = new Size(122, 22);
+            xóaToolStripMenuItem1.Text = "Xóa";
+            xóaToolStripMenuItem1.Click += Xoa_Event;
             // 
             // addBtn
             // 
@@ -156,11 +164,30 @@
             label1.TabIndex = 7;
             label1.Text = "Tìm kiếm";
             // 
+            // excel_btn
+            // 
+            excel_btn.BackColor = Color.FromArgb(16, 185, 129);
+            excel_btn.FlatAppearance.BorderSize = 0;
+            excel_btn.FlatStyle = FlatStyle.Flat;
+            excel_btn.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            excel_btn.ForeColor = Color.White;
+            excel_btn.Image = Properties.Resources.export_excel;
+            excel_btn.ImageAlign = ContentAlignment.TopCenter;
+            excel_btn.Location = new Point(857, 56);
+            excel_btn.Name = "excel_btn";
+            excel_btn.Size = new Size(104, 65);
+            excel_btn.TabIndex = 8;
+            excel_btn.Text = "Nhập excel";
+            excel_btn.TextAlign = ContentAlignment.BottomCenter;
+            excel_btn.UseVisualStyleBackColor = false;
+            excel_btn.Click += excel_btn_Click;
+            // 
             // MemberPanel
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
+            Controls.Add(excel_btn);
             Controls.Add(label1);
             Controls.Add(timkiem_Btn);
             Controls.Add(timkiem_Input);
@@ -168,7 +195,6 @@
             Controls.Add(ThanhVienTable);
             Name = "MemberPanel";
             Size = new Size(1114, 681);
-            Load += MemberPanel_Load;
             ((System.ComponentModel.ISupportInitialize)ThanhVienTable).EndInit();
             contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
@@ -186,5 +212,7 @@
         private TextBox timkiem_Input;
         private Button timkiem_Btn;
         private Label label1;
+        private ToolStripMenuItem xóaToolStripMenuItem1;
+        private Button excel_btn;
     }
 }

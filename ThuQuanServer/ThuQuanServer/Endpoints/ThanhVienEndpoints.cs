@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MySqlX.XDevAPI.Common;
 using ThuQuanServer.ApplicationContext;
 using ThuQuanServer.Dtos.Request;
+using ThuQuanServer.Dtos.Request.ThanhVien;
 using ThuQuanServer.Interfaces;
 using ThuQuanServer.Models;
 
@@ -36,25 +38,27 @@ public static class ThanhVienEndpoints
                 return Results.Ok(tks);
             }
         }).WithTags("admin");
+        
         // Đăng kí nhan viên
-        app.MapPost("/Admin/AddThanhVien", (RegisterAccountRequestDTO requestDTO) =>
+        app.MapPost("/Admin/AddThanhVien", (AdminThanhVienRequestDTO request) =>
         {
-            Console.WriteLine(requestDTO);
-    
-            var existedUsername = taiKhoanRepository.GetAccount().Where(x => x.UserName == requestDTO.username).ToList().Any();
-            if (existedUsername) return Results.BadRequest("Tên tài khoản đã tồn tại");
+            var existedUsername = dbContext.ExcuteQuerry("SELECT * FROM taikhoan WHERE username = ?", request.username).ToList().Any();
+            if (existedUsername) return Results.BadRequest($"tên tài khoản: {request.username} đã tồn tại");
             
-            var existedEmail = taiKhoanRepository.GetAccount().Where(x => x.Email == requestDTO.email).ToList().Any();
-            if (existedEmail) return Results.BadRequest("Tên email đã tồn tại");
+            var existedEmail = dbContext.ExcuteQuerry("SELECT * FROM taikhoan WHERE email = ?", request.email).ToList().Any();
+            if (existedEmail) return Results.BadRequest($"email: {request.email} đã tồn tại");
             
-            requestDTO.password = passwordHashService.HashPassword(requestDTO.password);
+            var existedPhone = dbContext.ExcuteQuerry("SELECT * FROM thanhvien WHERE sodienthoai = ?", request.sodienthoai).ToList().Any();
+            if (existedPhone) return Results.BadRequest($"số điện thoại: {request.sodienthoai} đã tồn tại");
+            
+            request.password = passwordHashService.HashPassword(request.password);
             
             var AddAccountDTO = new
             {
-                username = requestDTO.username,
-                email = requestDTO.email,
+                username = request.username,
+                email = request.email,
                 ngaythamgia = DateTime.Now,
-                password = requestDTO.password,
+                password = request.password,
                 vaiTro = 0
             };
             
@@ -64,17 +68,16 @@ public static class ThanhVienEndpoints
             var AddThanhVienDTO = new
             {
                 id_taikhoan = lastId,
-                hoten = "",
-                sodienthoai = "",
+                hoten = request.hoten,
+                sodienthoai = request.sodienthoai,
                 tinhtrang = 1
             };
             
             dbContext.Add<ThanhVien>(AddThanhVienDTO);
-            
             dbContext.SaveChange();
             
-            return Results.Ok("Đăng ký thành công");
-        }).WithTags("admin").WithMetadata(typeof(RegisterAccountRequestDTO));
+            return Results.Ok("Đăng ký thành viên mới thành công");
+        }).WithTags("admin").WithMetadata(typeof(AdminThanhVienRequestDTO));
         
         // Cập nhât thông tin nhân viên
         app.MapPost("/Admin/UpdateThanhVienAdmin", ([FromQuery] int idTaiKhoan, [FromBody] AdminUpdateThanhVienRequestDTO request) =>
@@ -89,11 +92,11 @@ public static class ThanhVienEndpoints
             var existedEmail = dbContext.ExcuteQuerry("SELECT * FROM taikhoan WHERE email = ? AND id != ?", request.email, idTaiKhoan).ToList().Any();
             if (existedEmail) return Results.BadRequest($"email: {request.email} đã tồn tại");
             
-            var existedPhone = dbContext.ExcuteQuerry("SELECT * FROM taikhoan WHERE sodienthoai = ? AND id != ?", request.email, idTaiKhoan).ToList().Any();
+            var existedPhone = dbContext.ExcuteQuerry("SELECT * FROM thanhvien WHERE sodienthoai = ? AND id != ?", request.sodienthoai, idThanhVien).ToList().Any();
             if (existedPhone) return Results.BadRequest($"số điện thoại: {request.sodienthoai} đã tồn tại");
             
             var queryUpdateStaff = "UPDATE taikhoan SET username = ?, email = ? WHERE id = ?";
-            if (request.password != null || request.password != "")
+            if (request.password != "")
             {
                 request.password = passwordHashService.HashPassword(request.password);
                 queryUpdateStaff = "UPDATE taikhoan SET username = ?, email = ?, password = ? WHERE id = ?";
@@ -142,6 +145,24 @@ public static class ThanhVienEndpoints
             }
             
             return Results.Ok($"Cập nhật thành viên {idThanhVien} thành công");
+        }).WithTags("admin");
+
+        app.MapPost("/Admin/DeleteBulkThanhVien", ([FromBody] List<DeleteBulkThanhVienRequestDTO> request) =>
+        {
+            foreach (var r in request)
+            {
+                var sucessTK = dbContext.ExecuteNonQuery("UPDATE thanhvien SET tinhtrang = ? WHERE id = ?", "Ẩn", r.id_thanhvien);
+                if (sucessTK != 1)
+                {
+                    return Results.BadRequest($"Xóa thành viên {r.id_thanhvien} không thành công");
+                }
+                var succesTV = dbContext.ExecuteNonQuery("UPDATE taikhoan SET tinhtrang = ? WHERE id = ?", "Ẩn", r.id_taikhoan);
+                if (succesTV != 1)
+                {
+                    return Results.BadRequest($"Xóa tài khoản {r.id_thanhvien} không thành công");
+                }
+            }
+            return Results.Ok("Xóa thành công");
         }).WithTags("admin");
     }
 }
