@@ -41,16 +41,11 @@ public static class ThanhVienEndpoints
         {
             Console.WriteLine(requestDTO);
     
-            var existedUsername = taiKhoanRepository.GetAccount().Where(x => x.UserName == requestDTO.username).ToList();
-            if (existedUsername.Any())
-            {
-                return Results.BadRequest("Tên tài khoản đã tồn tại");
-            }
-            var existedEmail = taiKhoanRepository.GetAccount().Where(x => x.Email == requestDTO.email).ToList();
-            if (existedEmail.Any())
-            {
-                return Results.BadRequest("Tên email đã tồn tại");
-            }
+            var existedUsername = taiKhoanRepository.GetAccount().Where(x => x.UserName == requestDTO.username).ToList().Any();
+            if (existedUsername) return Results.BadRequest("Tên tài khoản đã tồn tại");
+            
+            var existedEmail = taiKhoanRepository.GetAccount().Where(x => x.Email == requestDTO.email).ToList().Any();
+            if (existedEmail) return Results.BadRequest("Tên email đã tồn tại");
             
             requestDTO.password = passwordHashService.HashPassword(requestDTO.password);
             
@@ -88,16 +83,14 @@ public static class ThanhVienEndpoints
             var idThanhVien = dbContext.ExcuteQuerry(queryFindStaff, idTaiKhoan).Select(x => x["id"]).FirstOrDefault();
             Console.WriteLine(idTaiKhoan);
             
-            var existedUsername = dbContext.ExcuteQuerry("SELECT * FROM taikhoan WHERE username = ? AND id != ?", request.username, idTaiKhoan).ToList();
-            if (existedUsername.Any())
-            {
-                return Results.BadRequest("Tên tài khoản đã tồn tại");
-            }
-            var existedEmail = dbContext.ExcuteQuerry("SELECT * FROM taikhoan WHERE email = ? AND id != ?", request.email, idTaiKhoan).ToList();
-            if (existedEmail.Any())
-            {
-                return Results.BadRequest("email đã tồn tại");
-            }
+            var existedUsername = dbContext.ExcuteQuerry("SELECT * FROM taikhoan WHERE username = ? AND id != ?", request.username, idTaiKhoan).ToList().Any();
+            if (existedUsername) return Results.BadRequest($"Tên tài khoản: {request.username} đã tồn tại");
+            
+            var existedEmail = dbContext.ExcuteQuerry("SELECT * FROM taikhoan WHERE email = ? AND id != ?", request.email, idTaiKhoan).ToList().Any();
+            if (existedEmail) return Results.BadRequest($"email: {request.email} đã tồn tại");
+            
+            var existedPhone = dbContext.ExcuteQuerry("SELECT * FROM taikhoan WHERE sodienthoai = ? AND id != ?", request.email, idTaiKhoan).ToList().Any();
+            if (existedPhone) return Results.BadRequest($"số điện thoại: {request.sodienthoai} đã tồn tại");
             
             var queryUpdateStaff = "UPDATE taikhoan SET username = ?, email = ? WHERE id = ?";
             if (request.password != null || request.password != "")
@@ -109,14 +102,14 @@ public static class ThanhVienEndpoints
             var result_1 = dbContext.ExecuteNonQuery(queryUpdateStaff, request.username, request.email, request.password != "" || request.password != null ? request.password : null, idTaiKhoan);
             if (result_1  != 1)
             {
-                return Results.BadRequest("Cập nhật thông tin thành viên không thành công");
+                return Results.BadRequest($"Cập nhật thành viên {idThanhVien} thành công");
             }
             
             var queryUpdateThanhVien = "UPDATE thanhvien SET hoten = ?, sodienthoai = ? WHERE id = ?";
             var result_2 = dbContext.ExecuteNonQuery(queryUpdateThanhVien, request.hoten, request.sodienthoai, idThanhVien);
             if (result_2 != 1)
             {
-                return Results.BadRequest("Cập nhật thông tin tài khoản không thành công");
+                return Results.BadRequest($"Cập nhật thành viên {idThanhVien} thành công");
             }
 
             return Results.Ok("Cập nhât thông tin tài khoản thành viên thành công");
@@ -138,17 +131,17 @@ public static class ThanhVienEndpoints
             var result_1 = dbContext.ExecuteNonQuery(queryLockAccount, status, idTaiKhoan);
             if (result_1  != 1)
             {
-                return Results.BadRequest("Cập nhật tai khoan không thành công");
+                return Results.BadRequest($"Cập nhật thành viên {idThanhVien}  không thành công");
             }
             
             var queryLockThanhVien = "UPDATE thanhvien SET tinhtrang = ? WHERE id = ?";
             var result_2 = dbContext.ExecuteNonQuery(queryLockThanhVien, status, idThanhVien);
             if (result_2  != 1)
             {
-                return Results.BadRequest("Cập nhật thanhvien không thành công");
+                return Results.BadRequest($"Cập nhật thành viên {idThanhVien}  không thành công");
             }
             
-            return Results.Ok("Cap nhap thanh cong");
+            return Results.Ok($"Cập nhật thành viên {idThanhVien} thành công");
         }).WithTags("admin");
     }
 }

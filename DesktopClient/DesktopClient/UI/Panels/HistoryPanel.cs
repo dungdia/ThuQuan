@@ -31,9 +31,9 @@ namespace DesktopClient.UI.Panels
         public void refeshTable(string type, string value)
         {
             NhanvienList = APIContext.GetMethod<ThanhVienDTO>($"Admin/GetThanhVien");
-            if (type == "phone")
+            if (type == "id")
             {
-                NhanvienList = NhanvienList.Where(x => x.sodienthoai.ToString().StartsWith(value, StringComparison.OrdinalIgnoreCase)).ToList();
+                NhanvienList = NhanvienList.Where(x => x.id_thanhvien.ToString().StartsWith(value, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
             LichSuTable.DataSource = NhanvienList;
@@ -89,7 +89,7 @@ namespace DesktopClient.UI.Panels
         private void SearchEvent(object sender, EventArgs e)
         {
             var input = search_Input.Text;
-            refeshTable("phone", input);
+            refeshTable("id", input);
         }
 
         private void LichSuTable_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)

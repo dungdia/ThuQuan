@@ -51,6 +51,7 @@ namespace DesktopClient.UI.Dialog
                 {
                     var error = APIContext.getErrorMessage(response);
                     MessageBox.Show(error, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
                 MessageBox.Show(response.Content);
                 _parent.refeshTable("all", "");

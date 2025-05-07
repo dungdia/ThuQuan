@@ -8,7 +8,7 @@ public class RegisterAccountRequestDTO
     public string username { get; set; }
     
     [Required(ErrorMessage = "Mật khẩu không được để trống")]
-    [MinLength(6, ErrorMessage = "Mật khóa phải nhất 6 ki tự")]
+    [MinLength(6, ErrorMessage = "Mật khóa phải nhất 6 kí tự")]
     public string password { get; set; }
     
     [Required(ErrorMessage = "Email không được để trống")]
