@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ThuQuanServer.Dtos.Request;
 
-public class ThongKeLichSuKhoangTGRequestDTO
+public class ThongKeKhoangTGRequestDTO
 {
     [Required(ErrorMessage = "Ngày không được để trống")]
     

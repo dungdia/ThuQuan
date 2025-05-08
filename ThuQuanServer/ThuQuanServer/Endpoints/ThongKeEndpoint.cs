@@ -24,10 +24,17 @@ public static class ThongKeEndpoint
         }).WithTags("ThongKe");
         
         app.MapPost("/ThongKeLichSuKhoangTG", (
-            [FromBody] ThongKeLichSuKhoangTGRequestDTO tklsktgRequestDTO) =>
+            [FromBody] ThongKeKhoangTGRequestDTO tklsktgRequestDTO) =>
         {
             var thongKeLichSu = ThongKeRepository.ThongKeLichSuKhoangNgay(tklsktgRequestDTO.ngayBatDau, tklsktgRequestDTO.ngayKetThuc);
             return Results.Ok(thongKeLichSu);
+        }).WithTags("ThongKe");
+        
+        app.MapPost("/ThongKeVatDungMuon", (
+            [FromBody] ThongKeKhoangTGRequestDTO tkktgRequestDTO) => 
+        {
+            var thongKeVatDung = ThongKeRepository.ThongKeVatDungMuon(tkktgRequestDTO.ngayBatDau, tkktgRequestDTO.ngayKetThuc);
+            return Results.Ok(thongKeVatDung);
         }).WithTags("ThongKe");
     }
 }

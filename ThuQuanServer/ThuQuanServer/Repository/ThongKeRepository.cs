@@ -48,4 +48,26 @@ public class ThongKeRepository : IThongKeRepository
         var thongKeLichSu = _dbContext.ExcuteQuerry(query, startDate, endDate);
         return thongKeLichSu;
     }
+
+    public IEnumerable<Dictionary<string, object>> ThongKeVatDungMuon(DateTime ngayBatDau, DateTime ngayKetThuc)
+    {
+        string startDate = ngayBatDau.ToString("yyyy-MM-dd");
+        string endDate = ngayKetThuc.ToString("yyyy-MM-dd");
+        string query = @"WITH RECURSIVE dates AS (
+              SELECT DATE(?) AS Ngay
+              UNION ALL
+              SELECT DATE_ADD(Ngay, INTERVAL 1 DAY)
+              FROM dates
+              WHERE Ngay < ?
+            )
+            SELECT d.Ngay, COUNT(pm.id) AS SoLuong
+            FROM dates d
+            LEFT JOIN phieumuon pm ON DATE(pm.thoigianmuon) = d.Ngay
+            LEFT JOIN chitietphieumuon ctpm ON ctpm.id_phieumuon = pm.id
+            GROUP BY d.Ngay
+            ORDER BY d.Ngay;";
+        var ThongKeVatDungMuon = _dbContext.ExcuteQuerry(query, startDate, endDate);
+        return ThongKeVatDungMuon;
+    }
+    
 }
