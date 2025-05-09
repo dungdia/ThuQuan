@@ -60,19 +60,20 @@ public partial class StatisticPanel : UserControl
         string endDateString = endDate.ToString("yyyy-MM-dd");
         List<ThongKeKhoangTG> results = APIContext.GetMethod<ThongKeKhoangTG>($"ThongKeLichSuKhoangTG?startDate={startDateString}&endDate={endDateString}");
 
+        //chart1.DataSource = null;
+        chart1.DataSource = results;
         chart1.ChartAreas[0].AxisX.LabelStyle.Angle = -45;
         chart1.ChartAreas[0].AxisX.Interval = 1;
         chart1.Series["SoLuong"].IsValueShownAsLabel = true;
         chart1.Series["SoLuong"].XValueMember = "Ngay";
         chart1.Series["SoLuong"].YValueMembers = "SoLuong";
-        chart1.DataSource = results;
         //chart1.DataBind();
     }
 
     public void thongKeMuon()
     {
-        DateTime startDate = ngayBD1.Value.Date;
-        DateTime endDate = ngayKT1.Value.Date;
+        DateTime startDate = ngayBD2.Value.Date;
+        DateTime endDate = ngayKT2.Value.Date;
 
         if (startDate > endDate)
         {
@@ -90,14 +91,16 @@ public partial class StatisticPanel : UserControl
 
         string startDateString = startDate.ToString("yyyy-MM-dd");
         string endDateString = endDate.ToString("yyyy-MM-dd");
+        //MessageBox.Show($"startDate:{startDateString};endDate:{endDateString}");
         List<ThongKeKhoangTG> results = APIContext.GetMethod<ThongKeKhoangTG>($"ThongKeVatDungMuon?startDate={startDateString}&endDate={endDateString}");
 
+        //chart2.DataSource = null;
+        chart2.DataSource = results;
         chart2.ChartAreas[0].AxisX.LabelStyle.Angle = -45;
         chart2.ChartAreas[0].AxisX.Interval = 1;
         chart2.Series["SoLuong"].IsValueShownAsLabel = true;
         chart2.Series["SoLuong"].XValueMember = "Ngay";
         chart2.Series["SoLuong"].YValueMembers = "SoLuong";
-        chart2.DataSource = results;
         //chart2.DataBind();
     }
 
