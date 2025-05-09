@@ -16,25 +16,18 @@ public static class ThongKeEndpoint
         var groupName = "Thong Ke";
         
         // GET
-        app.MapPost("/thongKeLichSuNgay", (
-            [FromBody] ThongKeLichSuNgayRequestDTO thongKeLichSuNgayRequest) =>
-        {
-            var thongKeLichSuNgay = ThongKeRepository.ThongKeLichSuNgay(thongKeLichSuNgayRequest.ngay);
-            return Results.Ok(thongKeLichSuNgay);
-        }).WithTags("ThongKe");
         
-        app.MapPost("/ThongKeLichSuKhoangTG", (
-            [FromBody] ThongKeKhoangTGRequestDTO tklsktgRequestDTO) =>
+        app.MapGet("/ThongKeLichSuKhoangTG", ([FromQuery] string startDate, string endDate) =>
         {
-            var thongKeLichSu = ThongKeRepository.ThongKeLichSuKhoangNgay(tklsktgRequestDTO.ngayBatDau, tklsktgRequestDTO.ngayKetThuc);
+            var thongKeLichSu = ThongKeRepository.ThongKeLichSuKhoangNgay(startDate, endDate);
             return Results.Ok(thongKeLichSu);
         }).WithTags("ThongKe");
         
-        app.MapPost("/ThongKeVatDungMuon", (
-            [FromBody] ThongKeKhoangTGRequestDTO tkktgRequestDTO) => 
+        app.MapGet("/ThongKeVatDungMuon", ([FromQuery] string startDate, string endDate) => 
         {
-            var thongKeVatDung = ThongKeRepository.ThongKeVatDungMuon(tkktgRequestDTO.ngayBatDau, tkktgRequestDTO.ngayKetThuc);
+            var thongKeVatDung = ThongKeRepository.ThongKeVatDungMuon(startDate, endDate);
             return Results.Ok(thongKeVatDung);
         }).WithTags("ThongKe");
+        
     }
 }

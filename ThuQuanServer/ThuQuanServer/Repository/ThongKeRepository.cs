@@ -27,10 +27,8 @@ public class ThongKeRepository : IThongKeRepository
         return thongKeNgay;
     }
 
-    public IEnumerable<Dictionary<string, object>> ThongKeLichSuKhoangNgay(DateTime ngayBatDau, DateTime ngayKetThuc)
+    public IEnumerable<Dictionary<string, object>> ThongKeLichSuKhoangNgay(string startDate, string endDate)
     {
-        string startDate = ngayBatDau.ToString("yyyy-MM-dd");
-        string endDate = ngayKetThuc.ToString("yyyy-MM-dd");
         string query = @"
             WITH RECURSIVE dates AS (
               SELECT DATE(?) AS Ngay
@@ -49,10 +47,8 @@ public class ThongKeRepository : IThongKeRepository
         return thongKeLichSu;
     }
 
-    public IEnumerable<Dictionary<string, object>> ThongKeVatDungMuon(DateTime ngayBatDau, DateTime ngayKetThuc)
+    public IEnumerable<Dictionary<string, object>> ThongKeVatDungMuon(string startDate, string endDate)
     {
-        string startDate = ngayBatDau.ToString("yyyy-MM-dd");
-        string endDate = ngayKetThuc.ToString("yyyy-MM-dd");
         string query = @"WITH RECURSIVE dates AS (
               SELECT DATE(?) AS Ngay
               UNION ALL
@@ -66,8 +62,8 @@ public class ThongKeRepository : IThongKeRepository
             LEFT JOIN chitietphieumuon ctpm ON ctpm.id_phieumuon = pm.id
             GROUP BY d.Ngay
             ORDER BY d.Ngay;";
-        var ThongKeVatDungMuon = _dbContext.ExcuteQuerry(query, startDate, endDate);
-        return ThongKeVatDungMuon;
+        var thongKeVatDungMuon = _dbContext.ExcuteQuerry(query, startDate, endDate);
+        return thongKeVatDungMuon;
     }
     
 }
