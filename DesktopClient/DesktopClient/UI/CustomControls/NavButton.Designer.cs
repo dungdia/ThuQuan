@@ -52,7 +52,7 @@
             // icon
             // 
             icon.Cursor = Cursors.Hand;
-            icon.Image = Properties.Resources.home_svgrepo_com;
+            icon.Image = Properties.Resources.statistic;
             icon.Location = new Point(3, 3);
             icon.Name = "icon";
             icon.Size = new Size(36, 36);
