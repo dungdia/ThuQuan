@@ -142,7 +142,7 @@
             // 
             // contextMenuStrip1
             // 
-            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { xemToolStripMenuItem, xóaToolStripMenuItem });
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { xemToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new Size(181, 70);
             // 
@@ -162,12 +162,6 @@
             label1.Size = new Size(100, 28);
             label1.TabIndex = 12;
             label1.Text = "Tìm kiếm";
-            // 
-            // xóaToolStripMenuItem
-            // 
-            xóaToolStripMenuItem.Name = "xóaToolStripMenuItem";
-            xóaToolStripMenuItem.Size = new Size(210, 24);
-            xóaToolStripMenuItem.Text = "Xóa";
             // 
             // HistoryPanel
             // 

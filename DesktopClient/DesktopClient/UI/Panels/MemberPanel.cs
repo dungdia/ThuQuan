@@ -192,7 +192,7 @@ namespace DesktopClient.UI
             selectedMembers.ForEach(x => Debug.WriteLine("id_thanhvien: " + x.id_thanhvien + "id_taikhoan: " + x.id_taikhoan));
             if (selectedMembers.Count > 0)
             {
-                var deleteDialog = new DeleteMemeberDialog(selectedMembers);
+                var deleteDialog = new DeleteMemeberDialog(selectedMembers, this);
                 deleteDialog.ShowDialog();
             }
             else
@@ -261,6 +261,7 @@ namespace DesktopClient.UI
                             MessageBox.Show(error);
                         }
                         MessageBox.Show(response.Content, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                        refeshTable("all", "");
                     }
                 }
             });

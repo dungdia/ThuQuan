@@ -42,13 +42,13 @@ public static class ThanhVienEndpoints
         // Đăng kí nhan viên
         app.MapPost("/Admin/AddThanhVien", (AdminThanhVienRequestDTO request) =>
         {
-            var existedUsername = dbContext.ExcuteQuerry("SELECT * FROM taikhoan WHERE username = ?", request.username).ToList().Any();
+            var existedUsername = dbContext.ExcuteQuerry("SELECT * FROM taikhoan WHERE username = ? AND taikhoan.tinhtrang != 'Ẩn'", request.username).ToList().Any();
             if (existedUsername) return Results.BadRequest($"tên tài khoản: {request.username} đã tồn tại");
             
-            var existedEmail = dbContext.ExcuteQuerry("SELECT * FROM taikhoan WHERE email = ?", request.email).ToList().Any();
+            var existedEmail = dbContext.ExcuteQuerry("SELECT * FROM taikhoan WHERE email = ? AND taikhoan.tinhtrang != 'Ẩn'", request.email).ToList().Any();
             if (existedEmail) return Results.BadRequest($"email: {request.email} đã tồn tại");
             
-            var existedPhone = dbContext.ExcuteQuerry("SELECT * FROM thanhvien WHERE sodienthoai = ?", request.sodienthoai).ToList().Any();
+            var existedPhone = dbContext.ExcuteQuerry("SELECT * FROM thanhvien WHERE sodienthoai = ? AND thanhvien.tinhtrang != 'Ẩn'", request.sodienthoai).ToList().Any();
             if (existedPhone) return Results.BadRequest($"số điện thoại: {request.sodienthoai} đã tồn tại");
             
             request.password = passwordHashService.HashPassword(request.password);
