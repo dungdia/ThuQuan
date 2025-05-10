@@ -25,7 +25,7 @@ public static class ThanhVienEndpoints
             if (idThanhVien == null)
             {
                 var queryFindAccount = @"SELECT tk.id AS id_taikhoan, tk.username, tk.email, tk.ngaythamgia, tv.id as id_thanhvien, tv.hoten, tv.sodienthoai, tv.tinhtrang 
-                                     FROM taikhoan tk JOIN thanhvien tv ON tk.id = tv.id_taikhoan WHERE tk.tinhtrang != 'Ẩn' OR tv.tinhtrang != 'Ẩn'";
+                                     FROM taikhoan tk JOIN thanhvien tv ON tk.id = tv.id_taikhoan WHERE tk.tinhtrang != 'Ẩn' AND tv.tinhtrang != 'Ẩn'";
                 var tks = dbContext.ExcuteQuerry(queryFindAccount, idThanhVien);
                 return Results.Ok(tks);
             }
