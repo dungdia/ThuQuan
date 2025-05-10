@@ -67,7 +67,7 @@
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
             LichSuTable.DefaultCellStyle = dataGridViewCellStyle2;
-            LichSuTable.Location = new Point(58, 140);
+            LichSuTable.Location = new Point(66, 187);
             LichSuTable.Margin = new Padding(0);
             LichSuTable.MultiSelect = false;
             LichSuTable.Name = "LichSuTable";
@@ -75,7 +75,7 @@
             LichSuTable.RowHeadersVisible = false;
             LichSuTable.RowHeadersWidth = 51;
             LichSuTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            LichSuTable.Size = new Size(994, 538);
+            LichSuTable.Size = new Size(1136, 717);
             LichSuTable.TabIndex = 2;
             LichSuTable.CellMouseClick += LichSuTable_CellMouseClick;
             // 
@@ -88,9 +88,10 @@
             check_Btn.ForeColor = Color.White;
             check_Btn.Image = Properties.Resources.check_circle_svgrepo_com__3_1;
             check_Btn.ImageAlign = ContentAlignment.TopCenter;
-            check_Btn.Location = new Point(977, 56);
+            check_Btn.Location = new Point(1090, 75);
+            check_Btn.Margin = new Padding(3, 4, 3, 4);
             check_Btn.Name = "check_Btn";
-            check_Btn.Size = new Size(75, 65);
+            check_Btn.Size = new Size(113, 87);
             check_Btn.TabIndex = 3;
             check_Btn.Text = "Checkin";
             check_Btn.TextAlign = ContentAlignment.BottomCenter;
@@ -106,9 +107,10 @@
             button1.ForeColor = Color.White;
             button1.Image = Properties.Resources.history_svgrepo_com__2___1_;
             button1.ImageAlign = ContentAlignment.TopCenter;
-            button1.Location = new Point(872, 56);
+            button1.Location = new Point(971, 75);
+            button1.Margin = new Padding(3, 4, 3, 4);
             button1.Name = "button1";
-            button1.Size = new Size(99, 65);
+            button1.Size = new Size(113, 87);
             button1.TabIndex = 4;
             button1.Text = "Xem lịch sử";
             button1.TextAlign = ContentAlignment.BottomCenter;
@@ -118,11 +120,10 @@
             // search_Input
             // 
             search_Input.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            search_Input.Location = new Point(58, 86);
-            search_Input.Margin = new Padding(3, 2, 3, 2);
+            search_Input.Location = new Point(66, 115);
             search_Input.Name = "search_Input";
             search_Input.PlaceholderText = "Nhập id thành viên";
-            search_Input.Size = new Size(257, 27);
+            search_Input.Size = new Size(293, 32);
             search_Input.TabIndex = 5;
             // 
             // search_btn
@@ -131,9 +132,10 @@
             search_btn.FlatAppearance.BorderSize = 0;
             search_btn.FlatStyle = FlatStyle.Flat;
             search_btn.Image = Properties.Resources.search;
-            search_btn.Location = new Point(321, 81);
+            search_btn.Location = new Point(367, 108);
+            search_btn.Margin = new Padding(3, 4, 3, 4);
             search_btn.Name = "search_btn";
-            search_btn.Size = new Size(32, 32);
+            search_btn.Size = new Size(37, 43);
             search_btn.TabIndex = 6;
             search_btn.UseVisualStyleBackColor = false;
             search_btn.Click += SearchEvent;
@@ -142,12 +144,12 @@
             // 
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { xemToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(181, 48);
+            contextMenuStrip1.Size = new Size(181, 70);
             // 
             // xemToolStripMenuItem
             // 
             xemToolStripMenuItem.Name = "xemToolStripMenuItem";
-            xemToolStripMenuItem.Size = new Size(180, 22);
+            xemToolStripMenuItem.Size = new Size(108, 24);
             xemToolStripMenuItem.Text = "Xem";
             xemToolStripMenuItem.Click += Xem_Event;
             // 
@@ -155,15 +157,15 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(58, 63);
+            label1.Location = new Point(66, 84);
             label1.Name = "label1";
-            label1.Size = new Size(81, 21);
+            label1.Size = new Size(100, 28);
             label1.TabIndex = 12;
             label1.Text = "Tìm kiếm";
             // 
             // HistoryPanel
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
             Controls.Add(label1);
@@ -172,8 +174,9 @@
             Controls.Add(button1);
             Controls.Add(check_Btn);
             Controls.Add(LichSuTable);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "HistoryPanel";
-            Size = new Size(1114, 681);
+            Size = new Size(1273, 908);
             ((System.ComponentModel.ISupportInitialize)LichSuTable).EndInit();
             contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);

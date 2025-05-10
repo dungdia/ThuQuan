@@ -42,13 +42,13 @@ public static class ThanhVienEndpoints
         // Đăng kí nhan viên
         app.MapPost("/Admin/AddThanhVien", (AdminThanhVienRequestDTO request) =>
         {
-            var existedUsername = dbContext.ExcuteQuerry("SELECT * FROM taikhoan WHERE username = ?", request.username).ToList().Any();
+            var existedUsername = dbContext.ExcuteQuerry("SELECT * FROM taikhoan WHERE username = ? AND taikhoan.tinhtrang != 'Ẩn'", request.username).ToList().Any();
             if (existedUsername) return Results.BadRequest($"tên tài khoản: {request.username} đã tồn tại");
             
-            var existedEmail = dbContext.ExcuteQuerry("SELECT * FROM taikhoan WHERE email = ?", request.email).ToList().Any();
+            var existedEmail = dbContext.ExcuteQuerry("SELECT * FROM taikhoan WHERE email = ? AND taikhoan.tinhtrang != 'Ẩn'", request.email).ToList().Any();
             if (existedEmail) return Results.BadRequest($"email: {request.email} đã tồn tại");
             
-            var existedPhone = dbContext.ExcuteQuerry("SELECT * FROM thanhvien WHERE sodienthoai = ?", request.sodienthoai).ToList().Any();
+            var existedPhone = dbContext.ExcuteQuerry("SELECT * FROM thanhvien WHERE sodienthoai = ? AND thanhvien.tinhtrang != 'Ẩn'", request.sodienthoai).ToList().Any();
             if (existedPhone) return Results.BadRequest($"số điện thoại: {request.sodienthoai} đã tồn tại");
             
             request.password = passwordHashService.HashPassword(request.password);
@@ -105,14 +105,14 @@ public static class ThanhVienEndpoints
             var result_1 = dbContext.ExecuteNonQuery(queryUpdateStaff, request.username, request.email, request.password != "" || request.password != null ? request.password : null, idTaiKhoan);
             if (result_1  != 1)
             {
-                return Results.BadRequest($"Cập nhật thành viên {idThanhVien} thành công");
+                return Results.BadRequest($"Cập nhật thành viên {idThanhVien} thất bại");
             }
             
             var queryUpdateThanhVien = "UPDATE thanhvien SET hoten = ?, sodienthoai = ? WHERE id = ?";
             var result_2 = dbContext.ExecuteNonQuery(queryUpdateThanhVien, request.hoten, request.sodienthoai, idThanhVien);
             if (result_2 != 1)
             {
-                return Results.BadRequest($"Cập nhật thành viên {idThanhVien} thành công");
+                return Results.BadRequest($"Cập nhật thành viên {idThanhVien} thất bại");
             }
 
             return Results.Ok("Cập nhât thông tin tài khoản thành viên thành công");

@@ -37,28 +37,33 @@
             // delete_member_table
             // 
             delete_member_table.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            delete_member_table.Location = new Point(12, 12);
+            delete_member_table.Location = new Point(14, 16);
+            delete_member_table.Margin = new Padding(3, 4, 3, 4);
             delete_member_table.Name = "delete_member_table";
-            delete_member_table.Size = new Size(776, 268);
+            delete_member_table.RowHeadersWidth = 51;
+            delete_member_table.Size = new Size(887, 357);
             delete_member_table.TabIndex = 0;
             // 
             // close_btn
             // 
             close_btn.BackColor = SystemColors.Info;
-            close_btn.Location = new Point(552, 306);
+            close_btn.Location = new Point(631, 408);
+            close_btn.Margin = new Padding(3, 4, 3, 4);
             close_btn.Name = "close_btn";
-            close_btn.Size = new Size(96, 57);
+            close_btn.Size = new Size(110, 76);
             close_btn.TabIndex = 2;
             close_btn.Text = "Hủy";
             close_btn.UseVisualStyleBackColor = false;
+            close_btn.Click += close_btn_Click;
             // 
             // confirm_btn
             // 
             confirm_btn.BackColor = Color.IndianRed;
             confirm_btn.ForeColor = SystemColors.ButtonHighlight;
-            confirm_btn.Location = new Point(689, 306);
+            confirm_btn.Location = new Point(787, 408);
+            confirm_btn.Margin = new Padding(3, 4, 3, 4);
             confirm_btn.Name = "confirm_btn";
-            confirm_btn.Size = new Size(99, 57);
+            confirm_btn.Size = new Size(113, 76);
             confirm_btn.TabIndex = 3;
             confirm_btn.Text = "Xóa";
             confirm_btn.UseVisualStyleBackColor = false;
@@ -66,13 +71,17 @@
             // 
             // DeleteMemeberDialog
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 390);
+            ClientSize = new Size(914, 520);
             Controls.Add(confirm_btn);
             Controls.Add(close_btn);
             Controls.Add(delete_member_table);
+            Margin = new Padding(3, 4, 3, 4);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "DeleteMemeberDialog";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Xóa thành viên";
             ((System.ComponentModel.ISupportInitialize)delete_member_table).EndInit();
             ResumeLayout(false);

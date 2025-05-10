@@ -1350,7 +1350,7 @@ export default function HeaderUser() {
                               : "list__detail--title-text-status-broken"
                         }`}
                      >
-                        {`Tình trạng: ${foundPenalty.tinhTrang}`}
+                        {`Tình trạng: ${foundPenalty.tinhTrang === "Ẩn" ? "Vật dung đã bị xóa khỏi thư quán" : foundPenalty.tinhTrang}`}
                      </p>
                   </span>
                </div>
