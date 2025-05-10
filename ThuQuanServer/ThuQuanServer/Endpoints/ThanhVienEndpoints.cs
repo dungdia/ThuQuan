@@ -105,14 +105,14 @@ public static class ThanhVienEndpoints
             var result_1 = dbContext.ExecuteNonQuery(queryUpdateStaff, request.username, request.email, request.password != "" || request.password != null ? request.password : null, idTaiKhoan);
             if (result_1  != 1)
             {
-                return Results.BadRequest($"Cập nhật thành viên {idThanhVien} thành công");
+                return Results.BadRequest($"Cập nhật thành viên {idThanhVien} thất bại");
             }
             
             var queryUpdateThanhVien = "UPDATE thanhvien SET hoten = ?, sodienthoai = ? WHERE id = ?";
             var result_2 = dbContext.ExecuteNonQuery(queryUpdateThanhVien, request.hoten, request.sodienthoai, idThanhVien);
             if (result_2 != 1)
             {
-                return Results.BadRequest($"Cập nhật thành viên {idThanhVien} thành công");
+                return Results.BadRequest($"Cập nhật thành viên {idThanhVien} thất bại");
             }
 
             return Results.Ok("Cập nhât thông tin tài khoản thành viên thành công");

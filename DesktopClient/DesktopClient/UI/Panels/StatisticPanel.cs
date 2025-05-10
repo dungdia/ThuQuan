@@ -42,7 +42,7 @@ public partial class StatisticPanel : UserControl
         DateTime startDate = ngayBD1.Value;
         DateTime endDate = ngayKT1.Value;
 
-        if (startDate > endDate)
+        if (startDate.Date > endDate.Date)
         {
             MessageBox.Show("Ngày bắt đầu phải trước ngày kết thúc");
             return;
@@ -75,7 +75,7 @@ public partial class StatisticPanel : UserControl
         DateTime startDate = ngayBD2.Value.Date;
         DateTime endDate = ngayKT2.Value.Date;
 
-        if (startDate > endDate)
+        if (startDate.Date > endDate.Date)
         {
             MessageBox.Show("Ngày bắt đầu phải trước ngày kết thúc");
             return;

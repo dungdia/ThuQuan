@@ -260,7 +260,7 @@ namespace DesktopClient.UI
                             var error = APIContext.getErrorMessage(response);
                             MessageBox.Show(error);
                         }
-                        MessageBox.Show(response.Content);
+                        MessageBox.Show(response.Content, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                     }
                 }
             });

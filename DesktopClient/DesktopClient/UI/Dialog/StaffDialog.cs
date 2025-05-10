@@ -103,7 +103,7 @@ namespace DesktopClient.UI.Dialog
 
         private void PreventFocus(object sender, EventArgs e)
         {
-            this.ActiveControl = closeBtn; // hoặc control nào bạn muốn
+            this.ActiveControl = closeBtn;
         }
 
         private void closeBtn_Click(object sender, EventArgs e)
