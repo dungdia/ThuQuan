@@ -49,7 +49,7 @@ namespace DesktopClient.UI
             {
                 case "all": break;
                 // Tìm theo những ký tự đầu tiên
-                case "name": thanhViens = thanhViens.Where(x => x.hoten.ToString().StartsWith(value, StringComparison.OrdinalIgnoreCase)).ToList(); break;
+                case "id": thanhViens = thanhViens.Where(x => x.id_thanhvien.ToString().StartsWith(value, StringComparison.OrdinalIgnoreCase)).ToList(); break;
             }
 
             ThanhVienTable.DataSource = thanhViens;
@@ -154,7 +154,7 @@ namespace DesktopClient.UI
         private void SearchEvent(object sender, EventArgs e)
         {
             var value = timkiem_Input.Text;
-            refeshTable("name", value);
+            refeshTable("id", value);
         }
 
         private void XemEvent(object sender, EventArgs e)

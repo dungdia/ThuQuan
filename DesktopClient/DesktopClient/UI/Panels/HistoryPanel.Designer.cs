@@ -39,7 +39,6 @@
             contextMenuStrip1 = new ContextMenuStrip(components);
             xemToolStripMenuItem = new ToolStripMenuItem();
             label1 = new Label();
-            xóaToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)LichSuTable).BeginInit();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
@@ -143,10 +142,9 @@
             // 
             // contextMenuStrip1
             // 
-            contextMenuStrip1.ImageScalingSize = new Size(20, 20);
-            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { xemToolStripMenuItem });
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { xemToolStripMenuItem, xóaToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(109, 28);
+            contextMenuStrip1.Size = new Size(181, 70);
             // 
             // xemToolStripMenuItem
             // 
@@ -201,6 +199,5 @@
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem xemToolStripMenuItem;
         private Label label1;
-        private ToolStripMenuItem xóaToolStripMenuItem;
     }
 }
